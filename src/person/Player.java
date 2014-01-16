@@ -7,6 +7,7 @@ public class Player extends Person {
 	private String name;
 	private int health = 100;
 	private Weapon weapon;
+	private int location;
 	
 	public Player(String n, Weapon w) {
 		name = n;
@@ -37,5 +38,12 @@ public class Player extends Person {
 		return weapon;
 	}
 
+	public void setLocation(int l){
+		location = l;
+	}
+	
+	public int getLocation() {
+		return location;
+	}
 	
 }

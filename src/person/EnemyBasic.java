@@ -20,10 +20,13 @@ public class EnemyBasic extends Enemy {
 
 	public char getAction() {
 		int x = RandGen.getRand(1, 4);
-		if(x == 1)
-			return 'w'; //wait
-		else
-			return 'a'; //attack
+		switch(x){
+		case 1: return 'w';
+		case 2: return 'a';
+		case 3: return 'd';
+		case 4: return 'r';
+		default: return '?';
+		}
 	}
 	
 }

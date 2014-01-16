@@ -5,7 +5,7 @@ import weapon.status.*;
 public class Fists extends Weapon {
 
 	private int damage = 10;
-	private int range = 30; //cm?
+	private int range = 30;
 	private Status status = new BlankStatus();
 	
 	public Fists() {
