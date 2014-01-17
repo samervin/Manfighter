@@ -13,10 +13,9 @@ public class Manfighter {
 	}
 
 	public Manfighter() {
-		int itemp = RandGen.getRand(1, 3);
-
 		System.out.println("Welcome to Manfighter! What's your name?");
 		String stemp = in.nextLine();
+		int itemp = RandGen.getRand(1, 3);
 		if(itemp == 1) {
 			System.out.println("That name sucks. Try again.");
 			stemp = in.nextLine();
@@ -37,14 +36,13 @@ public class Manfighter {
 
 		Enemy e = new EnemyBasic();
 		System.out.println("Your first opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
-
 		combat(p, e);
 	}
 
 
 	private void combat(Player p, Enemy e) {
-		p.setLocation(0);
-		e.setLocation(200);
+		p.setLocation(500);
+		e.setLocation(0);
 
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
 			combatTurn(p, e);
@@ -73,14 +71,13 @@ public class Manfighter {
 			}
 			break;
 		case 'd':
-			System.out.println("You stepped forward 75 cm.");
-			//TODO: advance/retreat are absolute, this doesn't make much sense
-			p.setLocation(p.getLocation() + 75);
+			int dis = move(p, e, 75, 0);
+			System.out.println("You stepped forward " + dis + " cm.");
 			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			break;
 		case 'r':
-			System.out.println("You stepped backward 60 cm.");
-			p.setLocation(p.getLocation() - 60);
+			dis = move(p, e, -60, 0);
+			System.out.println("You stepped backward " + dis + " cm.");
 			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			break;
 		case 'w':
@@ -108,13 +105,13 @@ public class Manfighter {
 			}
 			break;
 		case 'd':
-			System.out.println(e.getName() + " stepped forward 75 cm.");
-			e.setLocation(e.getLocation() - 75);
+			int dis = move(p, e, 0, 75);
+			System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
 			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			break;
 		case 'r':
-			System.out.println(e.getName() + " stepped backward 60 cm.");
-			e.setLocation(e.getLocation() + 60);
+			dis = move(p, e, 0, -60);
+			System.out.println(e.getName() + " stepped backward " + dis + " cm.");
 			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			break;
 		case 'w':
@@ -123,5 +120,78 @@ public class Manfighter {
 		default:
 			System.out.println("The computer did something it can't do...?");
 		}
+	}
+
+	
+	//positive value for newP or newE indicates that they are moving TOWARD their target
+	//negative value for newP or newE indicates that they are moving AWAY FROM their target
+	//returns cm moved
+	private int move(Player p, Enemy e, int pmove, int emove) {
+		int ploc = p.getLocation();
+		int eloc = e.getLocation();
+		int close = 20; //if your move takes you closer than this, you will only get this close
+		
+		if(ploc < eloc) { //player is left of enemy
+			if(pmove > 0) { //player is attempting to advance
+				if(eloc - ploc > pmove + close) { //if player has space to move (cannot move through people)
+					p.setLocation(ploc + pmove);
+					return pmove;
+				}
+				else { //get as close as possible
+					p.setLocation(eloc - close);
+					return eloc - ploc - close;
+				}
+			}
+			else if(pmove < 0) { //player is attempting to retreat
+				p.setLocation(ploc + pmove);
+				return -pmove;
+			}
+			else if(emove > 0) { //enemy is attempting to advance
+				if(eloc - ploc > emove + close) { //if enemy has space to move
+					e.setLocation(eloc - emove);
+					return emove;
+				}
+				else { //get as close as possible
+					e.setLocation(ploc + close);
+					return eloc - ploc - close;
+				}
+			}
+			else if(emove < 0) { //enemy is attempting to retreat
+				e.setLocation(eloc - emove);
+				return -emove;
+			}
+		}
+		else { //player is right of enemy (signs flip)
+			if(pmove > 0) { //player is attempting to advance
+				if(ploc - eloc > pmove + close) { //if player has space to move (cannot move through people)
+					p.setLocation(ploc - pmove);
+					return pmove;
+				}
+				else { //get as close as possible
+					p.setLocation(eloc + close);
+					return ploc - eloc - close;
+				}
+			}
+			else if(pmove < 0) { //player is attempting to retreat
+				p.setLocation(ploc - pmove);
+				return -pmove;
+			}
+			else if(emove > 0) { //enemy is attempting to advance
+				if(ploc - eloc > emove + close) { //if enemy has space to move
+					e.setLocation(eloc + emove);
+					return emove;
+				}
+				else { //get as close as possible
+					e.setLocation(ploc - close);
+					return ploc - eloc - close;
+				}
+			}
+			else if(emove < 0) { //enemy is attempting to retreat
+				e.setLocation(eloc + emove);
+				return -emove;
+			}
+		}
+		
+		return 0;
 	}
 }
