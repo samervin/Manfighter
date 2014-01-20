@@ -4,7 +4,7 @@ import weapon.status.*;
 
 public class Fists extends Weapon {
 
-	private int damage = 10;
+	private int damage = 100;
 	private int range = 30;
 	private Status status = new BlankStatus();
 	
@@ -14,7 +14,9 @@ public class Fists extends Weapon {
 		}
 	}
 	
-	public String toString() {
+	public String toString() {		
+		if(status instanceof BlankStatus)
+			return "Bare fists";
 		return "Bare fists, with " + status.toString();
 	}
 	
@@ -24,7 +26,14 @@ public class Fists extends Weapon {
 	}
 	
 	public int getRange() {
-		int r = status.getRange(range);
-		return r;
+		return range;
+	}
+	
+	public boolean isReadied() {
+		return false; //fists are trivially always ready -- no movement penalty
+	}
+	
+	public void setReadied(boolean r) {
+		//do nothing, invalid
 	}
 }

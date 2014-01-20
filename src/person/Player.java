@@ -5,7 +5,7 @@ import game.*;
 public class Player extends Person {
 
 	private String name;
-	private int health = 100;
+	private int health = 500;
 	private Weapon weapon;
 	private int location;
 	

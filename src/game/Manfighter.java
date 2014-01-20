@@ -15,19 +15,20 @@ public class Manfighter {
 	public Manfighter() {
 		System.out.println("Welcome to Manfighter! What's your name?");
 		String stemp = in.nextLine();
-		int itemp = RandGen.getRand(1, 3);
+		int itemp = RandGen.getRand(1, 4);
 		if(itemp == 1) {
 			System.out.println("That name sucks. Try again.");
 			stemp = in.nextLine();
 			System.out.println("Okay, fine, I suppose.");
 		}
 
-		itemp = RandGen.getRand(1, 3);
+		itemp = RandGen.getRand(1, 4);
 		Player p;
 		switch(itemp) {
 		case 1: p = new Player(stemp, new Fists()); break;
 		case 2: p = new Player(stemp, new Dagger()); break;
 		case 3: p = new Player(stemp, new RocketLauncher()); break;
+		case 4: p = new Player(stemp, new SniperRifle()); break;
 		default: p = new Player(stemp, new Fists());
 		}
 
@@ -55,10 +56,18 @@ public class Manfighter {
 	}
 
 	private void combatTurn(Player p, Enemy e) {
-		System.out.println("Will you attack(a), advance(d), retreat(r), or wait(w)?");
+		System.out.println("Will you ready your weapon(e), lower your weapon(l), attack(a), advance(d), retreat(r), or wait(w)?");
 		char action = in.nextLine().toLowerCase().charAt(0);
 
 		switch(action) {
+		case 'e':
+			p.getWeapon().setReadied(true);
+			System.out.println("You readied your " + p.getWeapon() + ". Movement speed lowered.");
+			break;
+		case 'l':
+			p.getWeapon().setReadied(false);
+			System.out.println("You lowered your " + p.getWeapon() + ". Movement speed increased.");
+			break;
 		case 'a':
 			if(p.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				int dmg = p.getWeapon().getDamage();
@@ -71,14 +80,28 @@ public class Manfighter {
 			}
 			break;
 		case 'd':
-			int dis = move(p, e, 75, 0);
-			System.out.println("You stepped forward " + dis + " cm.");
-			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			if(p.getWeapon().isReadied()) {
+				int dis = move(p, e, 60, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else {
+				int dis = move(p, e, 75, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			}
+
 			break;
 		case 'r':
-			dis = move(p, e, -60, 0);
-			System.out.println("You stepped backward " + dis + " cm.");
-			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			if(p.getWeapon().isReadied()) {
+				int dis = move(p, e, -45, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else {
+				int dis = move(p, e, -60, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			}
+
 			break;
 		case 'w':
 			System.out.println("You're waiting a turn.");
@@ -91,8 +114,21 @@ public class Manfighter {
 
 		if(p.getHealth() < 1 || e.getHealth() < 1) return;
 
+		
+		
+		
+		
+		
 		char reaction = e.getAction();
 		switch(reaction) {
+		case 'e':
+			e.getWeapon().setReadied(true);
+			System.out.println(e.getName() + " readied his " + e.getWeapon() + ". His movement speed is lowered.");
+			break;
+		case 'l':
+			e.getWeapon().setReadied(false);
+			System.out.println(e.getName() + " lowered his " + e.getWeapon() + ". His movement speed is increased.");
+			break;
 		case 'a':
 			if(e.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				int dmg = e.getWeapon().getDamage();
@@ -104,33 +140,47 @@ public class Manfighter {
 				System.out.println(e.getName() + " tried to attack, but is not in range!");
 			}
 			break;
-		case 'd':
-			int dis = move(p, e, 0, 75);
-			System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
-			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+		case 'd':			
+			if(e.getWeapon().isReadied()) {
+				int dis = move(p, e, 60, 0);
+				System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else {
+				int dis = move(p, e, 75, 0);
+				System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			}
+
 			break;
-		case 'r':
-			dis = move(p, e, 0, -60);
-			System.out.println(e.getName() + " stepped backward " + dis + " cm.");
-			System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+		case 'r':			
+			if(e.getWeapon().isReadied()) {
+				int dis = move(p, e, -45, 0);
+				System.out.println(e.getName() + " stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else {
+				int dis = move(p, e, -60, 0);
+				System.out.println(e.getName() + " stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			}
+
 			break;
 		case 'w':
 			System.out.println(e.getName() + " is waiting a turn.");
 			break;
 		default:
-			System.out.println("The computer did something it can't do...?");
+			System.out.println("The computer accidentally did this: " + reaction);
 		}
 	}
 
-	
+
 	//positive value for newP or newE indicates that they are moving TOWARD their target
 	//negative value for newP or newE indicates that they are moving AWAY FROM their target
-	//returns cm moved
+	//returns centimeters moved
 	private int move(Player p, Enemy e, int pmove, int emove) {
 		int ploc = p.getLocation();
 		int eloc = e.getLocation();
 		int close = 20; //if your move takes you closer than this, you will only get this close
-		
+
 		if(ploc < eloc) { //player is left of enemy
 			if(pmove > 0) { //player is attempting to advance
 				if(eloc - ploc > pmove + close) { //if player has space to move (cannot move through people)
@@ -191,7 +241,7 @@ public class Manfighter {
 				return -emove;
 			}
 		}
-		
+
 		return 0;
 	}
 }

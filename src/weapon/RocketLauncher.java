@@ -6,16 +6,17 @@ import game.Weapon;
 
 public class RocketLauncher extends Weapon {
 
-	private int damage = 75;
+	private int damage = 350;
 	private int range = 100;
 	private Status status = new BlankStatus();
-	
+	private boolean ready = false;
+
 	public RocketLauncher() {
 		if(RandGen.getRand(1, 10) == 1) {
 			status = new DoubleDamage();
 		}
 	}
-	
+
 	public String toString() {		
 		if(status instanceof BlankStatus)
 			return "Rocket Launcher";
@@ -23,9 +24,17 @@ public class RocketLauncher extends Weapon {
 	}
 
 	public int getDamage() {
-		if(RandGen.getRand(1, 3) == 1) {
-			return status.getDamage(damage);
+		if(ready) {
+			if(RandGen.getRand(1, 3) == 1) {
+				return status.getDamage(damage);
+			}
 		}
+		else {
+			if(RandGen.getRand(1, 4) == 1) {
+				return status.getDamage(damage);
+			}
+		}
+
 		System.out.println(this.toString() + " missed!");
 		return 0;
 	}
@@ -34,4 +43,11 @@ public class RocketLauncher extends Weapon {
 		return range;
 	}
 
+	public boolean isReadied() {
+		return ready;
+	}
+
+	public void setReadied(boolean r) {
+		ready = r;
+	}
 }
