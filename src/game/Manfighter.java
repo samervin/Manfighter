@@ -56,9 +56,24 @@ public class Manfighter {
 	}
 
 	private void combatTurn(Player p, Enemy e) {
-		System.out.println("Will you ready your weapon(e), lower your weapon(l), attack(a), advance(d), retreat(r), or wait(w)?");
+		char[] allactions = p.getActions();
+		System.out.print("Will you: ");
+		for(int j = 0; j < allactions.length; j++) {
+			if(allactions[j] == 'e')
+				System.out.print("ready your weapon[e], ");
+			if(allactions[j] == 'l')
+				System.out.print("lower your weapon[l], ");
+			if(allactions[j] == 'a')
+				System.out.print("attack[a], ");
+			if(allactions[j] == 'd')
+				System.out.print("advance[d], ");
+			if(allactions[j] == 'r')
+				System.out.print("retreat[r], ");
+		}
+		System.out.print("or wait[w]?\n");
+		
+		
 		char action = in.nextLine().toLowerCase().charAt(0);
-
 		switch(action) {
 		case 'e':
 			p.getWeapon().setReadied(true);

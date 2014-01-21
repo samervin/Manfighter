@@ -46,4 +46,13 @@ public class Player extends Person {
 		return location;
 	}
 	
+	public char[] getActions() {
+		char[] weaponReadied = {     'l', 'a', 'd', 'r'};
+		char[] weaponLowered = {'e',      'a', 'd', 'r'};
+		
+		if(weapon.isReadied())
+			return weaponReadied;
+		return weaponLowered;
+	}
+	
 }
