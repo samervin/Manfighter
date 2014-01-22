@@ -42,7 +42,7 @@ public class Manfighter {
 
 
 	private void combat(Player p, Enemy e) {
-		p.setLocation(500);
+		p.setLocation(300);
 		e.setLocation(0);
 
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
@@ -70,7 +70,7 @@ public class Manfighter {
 			if(allactions[j] == 'r')
 				System.out.print("retreat[r], ");
 		}
-		System.out.print("or wait[w]?\n");
+		System.out.print("move[m], or wait[w]?\n");
 		
 		
 		char action = in.nextLine().toLowerCase().charAt(0);
@@ -117,6 +117,30 @@ public class Manfighter {
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			}
 
+			break;
+		case 'm':
+			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
+			int distance = Integer.parseInt(in.nextLine());
+			if(p.getWeapon().isReadied() && distance >= -45 && distance <=0) {
+				int dis = move(p, e, distance, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else if(p.getWeapon().isReadied() && distance <=60 && distance >=0) {
+				int dis = move(p, e, distance, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else if(!p.getWeapon().isReadied() && distance >= -60 && distance <=0) {
+				int dis = move(p, e, distance, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else if(!p.getWeapon().isReadied() && distance <=75 && distance >=0) {
+				int dis = move(p, e, distance, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+			} else {
+				//TODO: also dumb
+				System.out.println("You can't move that far, you dummy.");
+			}
 			break;
 		case 'w':
 			System.out.println("You're waiting a turn.");
@@ -194,7 +218,7 @@ public class Manfighter {
 	private int move(Player p, Enemy e, int pmove, int emove) {
 		int ploc = p.getLocation();
 		int eloc = e.getLocation();
-		int close = 20; //if your move takes you closer than this, you will only get this close
+		int close = 60; //if your move takes you closer than this, you will only get this close
 
 		if(ploc < eloc) { //player is left of enemy
 			if(pmove > 0) { //player is attempting to advance

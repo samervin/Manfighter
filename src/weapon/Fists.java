@@ -5,14 +5,8 @@ import weapon.status.*;
 public class Fists extends Weapon {
 
 	private int damage = 100;
-	private int range = 30;
+	private int range = 60;
 	private Status status = new BlankStatus();
-	
-	public Fists() {
-		if(RandGen.getRand(0,1) == 1) {
-			status = new DoubleDamage();
-		}
-	}
 	
 	public String toString() {		
 		if(status instanceof BlankStatus)

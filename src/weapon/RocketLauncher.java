@@ -7,7 +7,7 @@ import game.Weapon;
 public class RocketLauncher extends Weapon {
 
 	private int damage = 350;
-	private int range = 100;
+	private int range = 200;
 	private Status status = new BlankStatus();
 	private boolean ready = false;
 

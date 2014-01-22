@@ -8,7 +8,7 @@ import weapon.status.*;
 public class Dagger extends Weapon {
 
 	private int damage = 100;
-	private int range = 45;
+	private int range = 75;
 	private Status status = new BlankStatus();
 	private boolean ready = false;
 			
