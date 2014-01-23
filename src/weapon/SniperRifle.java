@@ -10,10 +10,14 @@ public class SniperRifle extends Weapon {
 	private Status status = new BlankStatus();
 	private int ready = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
 
-	public String toString() {		
+	public String toString() {
 		if(status instanceof BlankStatus)
-			return "Sniper Rifle";
-		return "Sniper Rifle, with " + status.toString();
+			return this.getBaseName();
+		return this.getBaseName() + ", with " + status.toString();
+	}
+	
+	public String getBaseName() {
+		return "Sniper rifle";
 	}
 
 	public int getDamage() {

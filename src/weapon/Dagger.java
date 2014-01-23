@@ -11,17 +11,21 @@ public class Dagger extends Weapon {
 	private int range = 75;
 	private Status status = new BlankStatus();
 	private boolean ready = false;
-			
+
 	public Dagger() {
 		if(RandGen.getRand(1, 4) == 1) {
 			status = new DoubleDamage();
 		}
 	}
-	
+
 	public String toString() {
 		if(status instanceof BlankStatus)
-			return "Dagger";
-		return "Dagger, with " + status.toString();
+			return this.getBaseName();
+		return this.getBaseName() + ", with " + status.toString();
+	}
+
+	public String getBaseName() {
+		return "Dagger";
 	}
 
 	public int getDamage() {
@@ -41,11 +45,11 @@ public class Dagger extends Weapon {
 	public int getRange() {
 		return range;
 	}
-	
+
 	public boolean isReadied() {
 		return ready;
 	}
-	
+
 	public void setReadied(boolean r) {
 		ready = r;
 	}

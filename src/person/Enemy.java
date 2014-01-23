@@ -1,24 +1,28 @@
 package person;
 
+import java.util.HashSet;
+
+import weapon.Fists;
+import weapon.SniperRifle;
 import game.*;
 
 public abstract class Enemy extends Person {
-	
+
 	protected String name;
 	protected int health;
 	protected Weapon weapon;
 	protected int location;
-	
+
 	public abstract char getAction();
-	
+
 	public int getDamage() {
 		return weapon.getDamage();
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public void setHealth(int h) {
 		health = h;
 	}
@@ -34,47 +38,66 @@ public abstract class Enemy extends Person {
 	public Weapon getWeapon() {
 		return weapon;
 	}
-	
+
 	public void setLocation(int l){
 		location = l;
 	}
-	
+
 	public int getLocation() {
 		return location;
 	}
-	
-	public char[] getActions() {
-		char[] weaponReadied = {     'l', 'a', 'd', 'r'};
-		char[] weaponLowered = {'e',      'a', 'd', 'r'};
-		
+
+	public HashSet<Character> getActions() {
+
+		HashSet<Character> a = new HashSet<Character>(); //regular arrays are hard
+		//a.add('e'); //ready weapon
+		//a.add('l'); //lower weapon
+		a.add('a'); //attack
+		a.add('d'); //advance
+		a.add('r'); //retreat
+
 		if(weapon.isReadied())
-			return weaponReadied;
-		return weaponLowered;
+			a.add('l');
+		else
+			a.add('e');
+
+		if(weapon instanceof SniperRifle)
+			a.add('e'); //can always ready a sniper rifle
+			else if(weapon instanceof Fists)
+				a.remove('e'); //fists are trivially always ready
+
+
+				return a;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	protected String createRandomName() {
-		String n;
-		int x = RandGen.getRand(1,3);
+		String n = "";
+		int x = RandGen.getRand(1, 3);
 		switch(x) {
-			case 1: n = "Willem"; break;
-			case 2: n = "Skeletor"; break;
-			case 3: n = "Dr. Neo Cortex"; break;
-			default: n = "Programmer Sam";
+		case 1: n += "Dr. "; break;
 		}
-		
-		x = RandGen.getRand(1,6);
+
+		x = RandGen.getRand(1,3);
 		switch(x) {
-			case 1: n+= " DaFoe"; break;
-			case 2: n+= " the Outrageous"; break;
-			case 3: n+= " the Particularly Smelly"; break;
-			case 4: n+= " the Terrible"; break;
+		case 1: n += "Willem"; break;
+		case 2: n += "Skeletor"; break;
+		case 3: n += "Neo"; break;
+		default: n += "ERROR";
 		}
-		
+
+		x = RandGen.getRand(1,8);
+		switch(x) {
+		case 1: n+= " DaFoe"; break;
+		case 2: n+= " the Outrageous"; break;
+		case 3: n+= " the Particularly Smelly"; break;
+		case 4: n+= " the Terrible"; break;
+		}
+
 		return n;
 	}
 }

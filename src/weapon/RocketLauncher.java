@@ -17,10 +17,14 @@ public class RocketLauncher extends Weapon {
 		}
 	}
 
-	public String toString() {		
+	public String toString() {
 		if(status instanceof BlankStatus)
-			return "Rocket Launcher";
-		return "Rocket Launcher, with " + status.toString();
+			return this.getBaseName();
+		return this.getBaseName() + ", with " + status.toString();
+	}
+
+	public String getBaseName() {
+		return "Rocket launcher";
 	}
 
 	public int getDamage() {

@@ -8,10 +8,14 @@ public class Fists extends Weapon {
 	private int range = 60;
 	private Status status = new BlankStatus();
 	
-	public String toString() {		
+	public String toString() {
 		if(status instanceof BlankStatus)
-			return "Bare fists";
-		return "Bare fists, with " + status.toString();
+			return this.getBaseName();
+		return this.getBaseName() + ", with " + status.toString();
+	}
+	
+	public String getBaseName() {
+		return "Bare fists";
 	}
 	
 	public int getDamage() {
@@ -30,4 +34,6 @@ public class Fists extends Weapon {
 	public void setReadied(boolean r) {
 		//do nothing, invalid
 	}
+
+	
 }

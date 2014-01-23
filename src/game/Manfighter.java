@@ -1,12 +1,20 @@
 package game;
 
+import java.util.HashSet;
 import java.util.Scanner;
-import person.*;
-import weapon.*;
+
+import person.Enemy;
+import person.EnemyBasic;
+import person.Player;
+import weapon.Dagger;
+import weapon.Fists;
+import weapon.RocketLauncher;
+import weapon.SniperRifle;
 
 public class Manfighter {
 
 	Scanner in = new Scanner(System.in);
+	int close = 60; //minimum distance apart, in cm
 
 	public static void main(String[] args) {
 		new Manfighter();
@@ -15,14 +23,15 @@ public class Manfighter {
 	public Manfighter() {
 		System.out.println("Welcome to Manfighter! What's your name?");
 		String stemp = in.nextLine();
-		int itemp = RandGen.getRand(1, 4);
-		if(itemp == 1) {
-			System.out.println("That name sucks. Try again.");
-			stemp = in.nextLine();
+		if(stringDivisibleBy(stemp, 2)) {
+			while(stringDivisibleBy(stemp, 2)) {
+				System.out.println("That name sucks. Try again.");
+				stemp = in.nextLine();
+			}
 			System.out.println("Okay, fine, I suppose.");
 		}
 
-		itemp = RandGen.getRand(1, 4);
+		int itemp = RandGen.getRand(1, 4);
 		Player p;
 		switch(itemp) {
 		case 1: p = new Player(stemp, new Fists()); break;
@@ -56,34 +65,29 @@ public class Manfighter {
 	}
 
 	private void combatTurn(Player p, Enemy e) {
-		char[] allactions = p.getActions();
+		HashSet<Character> allactions = p.getActions();
 		System.out.print("Will you: ");
-		for(int j = 0; j < allactions.length; j++) {
-			if(allactions[j] == 'e')
-				System.out.print("ready your weapon[e], ");
-			if(allactions[j] == 'l')
-				System.out.print("lower your weapon[l], ");
-			if(allactions[j] == 'a')
-				System.out.print("attack[a], ");
-			if(allactions[j] == 'd')
-				System.out.print("advance[d], ");
-			if(allactions[j] == 'r')
-				System.out.print("retreat[r], ");
-		}
+		if(allactions.contains('e'))
+			System.out.print("ready your weapon[e], ");
+		if(allactions.contains('l'))
+			System.out.print("lower your weapon[l], ");
+		if(allactions.contains('a'))
+			System.out.print("attack[a], ");
+		if(allactions.contains('d') && canAdvance(p, e))
+			System.out.print("advance[d], ");
+		if(allactions.contains('r'))
+			System.out.print("retreat[r], ");
 		System.out.print("move[m], or wait[w]?\n");
-		
-		
+
+
 		char action = in.nextLine().toLowerCase().charAt(0);
-		switch(action) {
-		case 'e':
+		if(action == 'e' && allactions.contains('e')) {
 			p.getWeapon().setReadied(true);
 			System.out.println("You readied your " + p.getWeapon() + ". Movement speed lowered.");
-			break;
-		case 'l':
+		} else if(action == 'l' && allactions.contains('l')) {	
 			p.getWeapon().setReadied(false);
 			System.out.println("You lowered your " + p.getWeapon() + ". Movement speed increased.");
-			break;
-		case 'a':
+		} else if(action == 'a' && allactions.contains('a')) {
 			if(p.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				int dmg = p.getWeapon().getDamage();
 				System.out.println("You're dealing " + dmg + " damage!");
@@ -93,8 +97,7 @@ public class Manfighter {
 			else {
 				System.out.println("You tried to attack, but you're not in range!");
 			}
-			break;
-		case 'd':
+		} else if(action == 'd' && allactions.contains('d')) {
 			if(p.getWeapon().isReadied()) {
 				int dis = move(p, e, 60, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
@@ -105,8 +108,7 @@ public class Manfighter {
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			}
 
-			break;
-		case 'r':
+		} else if(action == 'r' && allactions.contains('r')) {
 			if(p.getWeapon().isReadied()) {
 				int dis = move(p, e, -45, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
@@ -117,9 +119,10 @@ public class Manfighter {
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			}
 
-			break;
-		case 'm':
+		} else if(action == 'm') {
 			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
+			
+			//TODO: better parsing
 			int distance = Integer.parseInt(in.nextLine());
 			if(p.getWeapon().isReadied() && distance >= -45 && distance <=0) {
 				int dis = move(p, e, distance, 0);
@@ -141,23 +144,23 @@ public class Manfighter {
 				//TODO: also dumb
 				System.out.println("You can't move that far, you dummy.");
 			}
-			break;
-		case 'w':
+		} else if(action == 'w') {
 			System.out.println("You're waiting a turn.");
-			break;
-		default:
+		} else {
 			//TODO: this is dumb
 			System.out.println("Not an option, sorry, you lost a turn.");
 		}
+		
 		System.out.println();
-
 		if(p.getHealth() < 1 || e.getHealth() < 1) return;
 
+
+
+
+
 		
 		
-		
-		
-		
+
 		char reaction = e.getAction();
 		switch(reaction) {
 		case 'e':
@@ -218,7 +221,7 @@ public class Manfighter {
 	private int move(Player p, Enemy e, int pmove, int emove) {
 		int ploc = p.getLocation();
 		int eloc = e.getLocation();
-		int close = 60; //if your move takes you closer than this, you will only get this close
+		//close = 60; min distance
 
 		if(ploc < eloc) { //player is left of enemy
 			if(pmove > 0) { //player is attempting to advance
@@ -282,5 +285,21 @@ public class Manfighter {
 		}
 
 		return 0;
+	}
+
+	private boolean canAdvance(Player p, Enemy e) {
+		if(Math.abs(p.getLocation() - e.getLocation()) == close)
+			return false;
+		return true;
+	}
+	
+	private boolean stringDivisibleBy(String str, int num) {
+		char[] a = str.toCharArray();
+		int in = 0;
+		for(int k = 0; k < a.length; k++) {
+			in += a[k]; //47
+		}
+		
+		return (in % num == 0);
 	}
 }

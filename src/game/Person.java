@@ -1,5 +1,7 @@
 package game;
 
+import java.util.HashSet;
+
 public abstract class Person {
 	
 	public abstract String getName();
@@ -9,5 +11,5 @@ public abstract class Person {
 	public abstract void setHealth(int newHealth);
 	public abstract void setLocation(int newLocation);
 	public abstract int getLocation();
-	public abstract char[] getActions();
+	public abstract HashSet<Character> getActions();
 }
