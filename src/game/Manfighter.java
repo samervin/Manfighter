@@ -13,8 +13,10 @@ import weapon.SniperRifle;
 
 public class Manfighter {
 
-	Scanner in = new Scanner(System.in);
-	int close = 60; //minimum distance apart, in cm
+	private Scanner in = new Scanner(System.in);
+	private final int close = 60; //minimum distance apart, in cm
+	private final int timeStep = 900; //.9 seconds per each step
+	private final int timeOther = 600; //place holder for "other" actions
 
 	public static void main(String[] args) {
 		new Manfighter();
@@ -45,17 +47,32 @@ public class Manfighter {
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
 
 		Enemy e = new EnemyBasic();
+		//Enemy e = new EnemyTest();
 		System.out.println("Your first opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 		combat(p, e);
 	}
 
 
 	private void combat(Player p, Enemy e) {
-		p.setLocation(300);
-		e.setLocation(0);
+		p.setLocation(0);
+		e.setLocation(150);
 
+		int playerClock = 0;
+		int enemyClock = 0;
+		int totalClock = 0;
+		
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
-			combatTurn(p, e);
+			if(playerClock == 0) {
+				playerClock = playerTurn(p,e);
+				System.out.println("\t\t\t\t\t\t\tYour action will burn: " + playerClock + "ms, time elapsed: " + totalClock + " ms.");
+			} else if(enemyClock == 0) {
+				enemyClock = enemyTurn(p,e);
+				System.out.println("\t\t\t\t\t\t\tEnemy actions will burn: " + enemyClock + "ms, time elapsed: " + totalClock + " ms.");
+			} else {
+				playerClock --;
+				enemyClock --;
+				totalClock++;
+			}			
 		}
 
 		if(p.getHealth() < 1)
@@ -63,8 +80,10 @@ public class Manfighter {
 		else
 			System.out.println("Congratulations, you defeated " + e.getName() + "!");
 	}
-
-	private void combatTurn(Player p, Enemy e) {
+	
+	private int playerTurn(Player p, Enemy e) {
+		int actionTime;
+		
 		HashSet<Character> allactions = p.getActions();
 		System.out.print("Will you: ");
 		if(allactions.contains('e'))
@@ -82,22 +101,27 @@ public class Manfighter {
 
 		char action = in.nextLine().toLowerCase().charAt(0);
 		if(action == 'e' && allactions.contains('e')) {
+			actionTime = timeOther;
 			p.getWeapon().setReadied(true);
 			System.out.println("You readied your " + p.getWeapon() + ". Movement speed lowered.");
-		} else if(action == 'l' && allactions.contains('l')) {	
+		} else if(action == 'l' && allactions.contains('l')) {
+			actionTime = timeOther;
 			p.getWeapon().setReadied(false);
 			System.out.println("You lowered your " + p.getWeapon() + ". Movement speed increased.");
 		} else if(action == 'a' && allactions.contains('a')) {
 			if(p.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
+				actionTime = p.getWeapon().getFireTime();
 				int dmg = p.getWeapon().getDamage();
 				System.out.println("You're dealing " + dmg + " damage!");
 				e.setHealth(e.getHealth() - dmg);
 				System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
 			}
 			else {
+				actionTime = timeOther;
 				System.out.println("You tried to attack, but you're not in range!");
 			}
 		} else if(action == 'd' && allactions.contains('d')) {
+			actionTime = timeStep;
 			if(p.getWeapon().isReadied()) {
 				int dis = move(p, e, 60, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
@@ -109,6 +133,7 @@ public class Manfighter {
 			}
 
 		} else if(action == 'r' && allactions.contains('r')) {
+			actionTime = timeStep;
 			if(p.getWeapon().isReadied()) {
 				int dis = move(p, e, -45, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
@@ -120,6 +145,7 @@ public class Manfighter {
 			}
 
 		} else if(action == 'm') {
+			actionTime = timeStep;
 			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
 			
 			//TODO: better parsing
@@ -145,44 +171,48 @@ public class Manfighter {
 				System.out.println("You can't move that far, you dummy.");
 			}
 		} else if(action == 'w') {
+			actionTime = timeOther;
 			System.out.println("You're waiting a turn.");
 		} else {
 			//TODO: this is dumb
-			System.out.println("Not an option, sorry, you lost a turn.");
+			actionTime = timeOther;
+			System.out.println("Not an option, sorry, you forfeit your turn.");
 		}
 		
 		System.out.println();
-		if(p.getHealth() < 1 || e.getHealth() < 1) return;
-
-
-
-
-
-		
-		
-
+		return actionTime;
+	}
+	
+	private int enemyTurn(Player p, Enemy e) {
+		int reactionTime;
 		char reaction = e.getAction();
+		
 		switch(reaction) {
 		case 'e':
+			reactionTime = timeOther;
 			e.getWeapon().setReadied(true);
 			System.out.println(e.getName() + " readied his " + e.getWeapon() + ". His movement speed is lowered.");
 			break;
 		case 'l':
+			reactionTime = timeOther;
 			e.getWeapon().setReadied(false);
 			System.out.println(e.getName() + " lowered his " + e.getWeapon() + ". His movement speed is increased.");
 			break;
 		case 'a':
 			if(e.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
+				reactionTime = e.getWeapon().getFireTime();
 				int dmg = e.getWeapon().getDamage();
 				System.out.println(e.getName() + " is dealing " + dmg + " damage!");
 				p.setHealth(p.getHealth() - dmg);
 				System.out.println(p.getName() + "'s new health is " + p.getHealth() + ".");
 			}
 			else {
+				reactionTime = timeOther;
 				System.out.println(e.getName() + " tried to attack, but is not in range!");
 			}
 			break;
-		case 'd':			
+		case 'd':
+			reactionTime = timeStep;
 			if(e.getWeapon().isReadied()) {
 				int dis = move(p, e, 60, 0);
 				System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
@@ -194,7 +224,8 @@ public class Manfighter {
 			}
 
 			break;
-		case 'r':			
+		case 'r':
+			reactionTime = timeStep;
 			if(e.getWeapon().isReadied()) {
 				int dis = move(p, e, -45, 0);
 				System.out.println(e.getName() + " stepped backward " + dis + " cm.");
@@ -207,13 +238,16 @@ public class Manfighter {
 
 			break;
 		case 'w':
+			reactionTime = timeOther;
 			System.out.println(e.getName() + " is waiting a turn.");
 			break;
 		default:
+			reactionTime = timeOther;
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
+		
+		return reactionTime;
 	}
-
 
 	//positive value for newP or newE indicates that they are moving TOWARD their target
 	//negative value for newP or newE indicates that they are moving AWAY FROM their target
@@ -286,7 +320,7 @@ public class Manfighter {
 
 		return 0;
 	}
-
+	
 	private boolean canAdvance(Player p, Enemy e) {
 		if(Math.abs(p.getLocation() - e.getLocation()) == close)
 			return false;

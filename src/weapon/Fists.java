@@ -35,5 +35,8 @@ public class Fists extends Weapon {
 		//do nothing, invalid
 	}
 
+	public int getFireTime() {
+		return 1000; //milliseconds
+	}
 	
 }

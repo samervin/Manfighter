@@ -59,5 +59,12 @@ public class SniperRifle extends Weapon {
 		else
 			ready = 0;
 	}
+	
+	public int getFireTime() {
+		if(ready > 7)
+			return 1500;
+		else
+			return 3000;
+	}
 
 }

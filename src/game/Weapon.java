@@ -8,5 +8,5 @@ public abstract class Weapon {
 	public abstract int getRange();
 	public abstract boolean isReadied();
 	public abstract void setReadied(boolean readiness);
-	
+	public abstract int getFireTime();
 }

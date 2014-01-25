@@ -54,4 +54,11 @@ public class RocketLauncher extends Weapon {
 	public void setReadied(boolean r) {
 		ready = r;
 	}
+	
+	public int getFireTime() {
+		if(ready)
+			return 2000;
+		else
+			return 3000;
+	}
 }
