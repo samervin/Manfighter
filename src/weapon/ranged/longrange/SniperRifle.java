@@ -64,6 +64,7 @@ public class SniperRifle extends BaseLongrange {
 			ready = 0;
 	}
 	
+<<<<<<< HEAD:src/weapon/ranged/longrange/SniperRifle.java
 	public boolean hasLoadedAmmo() {
 		if(clip == 0)
 			return false;
@@ -73,6 +74,13 @@ public class SniperRifle extends BaseLongrange {
 
 	public void reload() {
 		clip = maxClip;
+=======
+	public int getFireTime() {
+		if(ready > 7)
+			return 1500;
+		else
+			return 3000;
+>>>>>>> 912e415c789495c74e241e65b49e7ca2a9be82fa:src/weapon/SniperRifle.java
 	}
 
 }

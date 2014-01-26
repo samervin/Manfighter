@@ -53,4 +53,11 @@ public class Dagger extends BaseSword {
 	public void setReadied(boolean r) {
 		ready = r;
 	}
+	
+	public int getFireTime() {
+		if(ready)
+			return 1000;
+		else
+			return 1500;
+	}
 }

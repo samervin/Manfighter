@@ -58,6 +58,7 @@ public class RocketLauncher extends BaseExplosive {
 	public void setReadied(boolean r) {
 		ready = r;
 	}
+<<<<<<< HEAD:src/weapon/ranged/explosive/RocketLauncher.java
 
 	public boolean hasLoadedAmmo() {
 		if(clip == 0)
@@ -68,5 +69,13 @@ public class RocketLauncher extends BaseExplosive {
 
 	public void reload() {
 		clip = maxClip;
+=======
+	
+	public int getFireTime() {
+		if(ready)
+			return 2000;
+		else
+			return 3000;
+>>>>>>> 912e415c789495c74e241e65b49e7ca2a9be82fa:src/weapon/RocketLauncher.java
 	}
 }
