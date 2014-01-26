@@ -1,4 +1,4 @@
-package weapon.status;
+package status.weapon;
 
 import game.Status;
 

@@ -5,8 +5,8 @@ import game.Weapon;
 
 import java.util.HashSet;
 
-import weapon.Fists;
-import weapon.SniperRifle;
+import weapon.melee.fists.Fists;
+import weapon.ranged.longrange.SniperRifle;
 
 public class Player extends Person {
 

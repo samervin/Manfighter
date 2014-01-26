@@ -1,6 +1,9 @@
 package person;
 
-import weapon.*;
+import weapon.melee.fists.*;
+import weapon.melee.sword.Dagger;
+import weapon.ranged.explosive.RocketLauncher;
+import weapon.ranged.longrange.SniperRifle;
 import game.RandGen;
 
 public class EnemyBasic extends Enemy {

@@ -1,10 +1,13 @@
 package person;
 
+import game.Person;
+import game.RandGen;
+import game.Weapon;
+
 import java.util.HashSet;
 
-import weapon.Fists;
-import weapon.SniperRifle;
-import game.*;
+import weapon.melee.fists.Fists;
+import weapon.ranged.longrange.SniperRifle;
 
 public abstract class Enemy extends Person {
 

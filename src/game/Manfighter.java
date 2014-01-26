@@ -6,10 +6,10 @@ import java.util.Scanner;
 import person.Enemy;
 import person.EnemyBasic;
 import person.Player;
-import weapon.Dagger;
-import weapon.Fists;
-import weapon.RocketLauncher;
-import weapon.SniperRifle;
+import weapon.melee.fists.Fists;
+import weapon.melee.sword.Dagger;
+import weapon.ranged.explosive.RocketLauncher;
+import weapon.ranged.longrange.SniperRifle;
 
 public class Manfighter {
 

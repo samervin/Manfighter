@@ -1,15 +1,18 @@
-package weapon;
+package weapon.ranged.explosive;
 
-import game.*;
-import weapon.status.*;
-import game.Weapon;
+import game.RandGen;
+import game.Status;
+import status.weapon.BaseStatus;
+import status.weapon.DoubleDamage;
 
-public class RocketLauncher extends Weapon {
+public class RocketLauncher extends BaseExplosive {
 
 	private int damage = 350;
 	private int range = 200;
-	private Status status = new BlankStatus();
+	private Status status = new BaseStatus();
 	private boolean ready = false;
+	private int maxClip = 4;
+	private int clip = 4;
 
 	public RocketLauncher() {
 		if(RandGen.getRand(1, 10) == 1) {
@@ -18,7 +21,7 @@ public class RocketLauncher extends Weapon {
 	}
 
 	public String toString() {
-		if(status instanceof BlankStatus)
+		if(status instanceof BaseStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}
@@ -28,6 +31,7 @@ public class RocketLauncher extends Weapon {
 	}
 
 	public int getDamage() {
+		clip--;
 		if(ready) {
 			if(RandGen.getRand(1, 3) == 1) {
 				return status.getDamage(damage);
@@ -53,5 +57,16 @@ public class RocketLauncher extends Weapon {
 
 	public void setReadied(boolean r) {
 		ready = r;
+	}
+
+	public boolean hasLoadedAmmo() {
+		if(clip == 0)
+			return false;
+		else
+			return true;
+	}
+
+	public void reload() {
+		clip = maxClip;
 	}
 }

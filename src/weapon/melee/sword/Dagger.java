@@ -1,15 +1,15 @@
-package weapon;
+package weapon.melee.sword;
 
 import game.RandGen;
 import game.Status;
-import game.Weapon;
-import weapon.status.*;
+import status.weapon.BaseStatus;
+import status.weapon.DoubleDamage;
 
-public class Dagger extends Weapon {
+public class Dagger extends BaseSword {
 
 	private int damage = 100;
 	private int range = 75;
-	private Status status = new BlankStatus();
+	private Status status = new BaseStatus();
 	private boolean ready = false;
 
 	public Dagger() {
@@ -19,7 +19,7 @@ public class Dagger extends Weapon {
 	}
 
 	public String toString() {
-		if(status instanceof BlankStatus)
+		if(status instanceof BaseStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}

@@ -1,17 +1,19 @@
-package weapon;
+package weapon.ranged.longrange;
 
-import weapon.status.*;
+import status.weapon.*;
 import game.*;
 
-public class SniperRifle extends Weapon {
+public class SniperRifle extends BaseLongrange {
 
 	private int damage = 75;
 	private int range = 1000; //a lot
-	private Status status = new BlankStatus();
+	private Status status = new BaseStatus();
 	private int ready = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
+	private int maxClip = 2;
+	private int clip = 2;
 
 	public String toString() {
-		if(status instanceof BlankStatus)
+		if(status instanceof BaseStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}
@@ -21,6 +23,8 @@ public class SniperRifle extends Weapon {
 	}
 
 	public int getDamage() {
+		clip--;
+		
 		if(ready == 0) {
 			if(RandGen.getRand(1, 8) == 1)
 				return status.getDamage(damage);
@@ -58,6 +62,17 @@ public class SniperRifle extends Weapon {
 			ready++;
 		else
 			ready = 0;
+	}
+	
+	public boolean hasLoadedAmmo() {
+		if(clip == 0)
+			return false;
+		else
+			return true;
+	}
+
+	public void reload() {
+		clip = maxClip;
 	}
 
 }

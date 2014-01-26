@@ -1,8 +1,8 @@
-package weapon.status;
+package status.weapon;
 
 import game.Status;
 
-public class BlankStatus extends Status {
+public class BaseStatus extends Status {
 
 	public String toString() {
 		return "no special effects";
