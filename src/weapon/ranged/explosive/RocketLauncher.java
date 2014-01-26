@@ -1,5 +1,7 @@
 package weapon.ranged.explosive;
 
+import java.util.HashSet;
+
 import game.RandGen;
 import game.Status;
 import status.weapon.BaseStatus;
@@ -58,7 +60,6 @@ public class RocketLauncher extends BaseExplosive {
 	public void setReadied(boolean r) {
 		ready = r;
 	}
-<<<<<<< HEAD:src/weapon/ranged/explosive/RocketLauncher.java
 
 	public boolean hasLoadedAmmo() {
 		if(clip == 0)
@@ -66,16 +67,34 @@ public class RocketLauncher extends BaseExplosive {
 		else
 			return true;
 	}
+	
+	public boolean hasFullAmmo() {
+		return (clip == maxClip);
+	}
 
 	public void reload() {
 		clip = maxClip;
-=======
+	}
 	
 	public int getFireTime() {
 		if(ready)
 			return 2000;
 		else
 			return 3000;
->>>>>>> 912e415c789495c74e241e65b49e7ca2a9be82fa:src/weapon/RocketLauncher.java
+	}
+	
+	public HashSet<Character> getWeaponActions() {
+		HashSet<Character> a = new HashSet<Character>();
+		if(this.hasLoadedAmmo())
+			a.add('a'); //attack
+		if(!this.hasLoadedAmmo())
+			a.add('o'); //reload
+			
+		if(ready)
+			a.add('l');
+		else
+			a.add('e');
+		
+		return a;
 	}
 }

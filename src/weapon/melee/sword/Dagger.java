@@ -1,5 +1,7 @@
 package weapon.melee.sword;
 
+import java.util.HashSet;
+
 import game.RandGen;
 import game.Status;
 import status.weapon.BaseStatus;
@@ -59,5 +61,17 @@ public class Dagger extends BaseSword {
 			return 1000;
 		else
 			return 1500;
+	}
+	
+	public HashSet<Character> getWeaponActions() {
+		HashSet<Character> a = new HashSet<Character>();
+		a.add('a'); //attack
+		
+		if(ready)
+			a.add('l');
+		else
+			a.add('e');
+		
+		return a;
 	}
 }

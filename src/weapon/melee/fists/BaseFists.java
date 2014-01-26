@@ -2,6 +2,8 @@ package weapon.melee.fists;
 
 import game.Weapon;
 
+import java.util.HashSet;
+
 public abstract class BaseFists extends Weapon {
 	
 	public boolean isReadied() {
@@ -12,11 +14,22 @@ public abstract class BaseFists extends Weapon {
 		//do nothing
 	}
 	
+	public boolean hasFullAmmo() {
+		return true; // trivially
+	}
+	
 	public boolean hasLoadedAmmo() {
 		return true; //fists don't reload!
 	}
 	
 	public void reload() {
 		//do nothing
+	}
+	
+	public HashSet<Character> getWeaponActions() {
+		HashSet<Character> a = new HashSet<Character>();
+		a.add('a'); //attack
+		
+		return a;
 	}
 }

@@ -90,6 +90,8 @@ public class Manfighter {
 			System.out.print("ready your weapon[e], ");
 		if(allactions.contains('l'))
 			System.out.print("lower your weapon[l], ");
+		if(allactions.contains('o'))
+			System.out.print("reload your weapon[l], ");
 		if(allactions.contains('a'))
 			System.out.print("attack[a], ");
 		if(allactions.contains('d') && canAdvance(p, e))

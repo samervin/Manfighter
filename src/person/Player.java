@@ -57,7 +57,8 @@ public class Player extends Person {
 		HashSet<Character> a = new HashSet<Character>(); //regular arrays are hard
 		//a.add('e'); //ready weapon
 		//a.add('l'); //lower weapon
-		a.add('a'); //attack
+		if(weapon.hasLoadedAmmo())
+			a.add('a'); //attack
 		a.add('d'); //advance
 		a.add('r'); //retreat
 
@@ -66,10 +67,16 @@ public class Player extends Person {
 		else
 			a.add('e');
 		
+		if(!weapon.hasFullAmmo())
+			a.add('o'); //reload
+		
 		if(weapon instanceof SniperRifle)
 			a.add('e'); //can always ready a sniper rifle
-		else if(weapon instanceof Fists)
+		else if(weapon instanceof Fists) {
 			a.remove('e'); //fists are trivially always ready
+		}
+			
+		
 		
 		
 		return a;

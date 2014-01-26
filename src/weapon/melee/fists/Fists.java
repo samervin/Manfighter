@@ -26,9 +26,7 @@ public class Fists extends BaseFists {
 	public int getRange() {
 		return range;
 	}
-	
-<<<<<<< HEAD:src/weapon/melee/fists/Fists.java
-=======
+
 	public boolean isReadied() {
 		return false; //fists are trivially always ready -- no movement penalty
 	}
@@ -40,6 +38,4 @@ public class Fists extends BaseFists {
 	public int getFireTime() {
 		return 1000; //milliseconds
 	}
-	
->>>>>>> 912e415c789495c74e241e65b49e7ca2a9be82fa:src/weapon/Fists.java
 }
