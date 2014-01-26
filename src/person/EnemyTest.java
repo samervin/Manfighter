@@ -1,6 +1,6 @@
 package person;
 
-import weapon.Fists;
+import weapon.melee.fists.Fists;
 
 public class EnemyTest extends Enemy{
 
