@@ -9,13 +9,17 @@ public class SniperRifle extends BaseLongrange {
 
 	private int damage = 75;
 	private int range = 1000; //a lot
-	private Status status = new BaseStatus();
+	private Status status = new NoStatus();
 	private int ready = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
 	private int maxClip = 2;
 	private int clip = 2;
 
+	public SniperRifle() {
+		status = getRandomStatus();
+	}
+	
 	public String toString() {
-		if(status instanceof BaseStatus)
+		if(status instanceof NoStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}
@@ -93,7 +97,7 @@ public class SniperRifle extends BaseLongrange {
 		
 		if(this.hasLoadedAmmo())
 			a.add('a'); //attack
-		if(!this.hasLoadedAmmo())
+		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
 		if(ready > 0)

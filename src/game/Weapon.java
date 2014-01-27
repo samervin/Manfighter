@@ -2,8 +2,23 @@ package game;
 
 import java.util.HashSet;
 
+import status.weapon.DoubleDamage;
+import status.weapon.HalfDamage;
+import status.weapon.NoStatus;
+
 public abstract class Weapon {
 
+	protected Status getRandomStatus() {
+		int k = RandGen.getRand(1, 5);
+		Status s = new NoStatus();
+		switch(k) {
+		case 1: s = new DoubleDamage();
+		case 2: s = new HalfDamage();
+		}
+		
+		return s;
+	}
+	
 	// these apply to every weapon
 	public abstract String toString();
 	public abstract String getBaseName();

@@ -1,27 +1,24 @@
 package weapon.melee.sword;
 
+import game.Status;
+
 import java.util.HashSet;
 
-import game.RandGen;
-import game.Status;
-import status.weapon.BaseStatus;
-import status.weapon.DoubleDamage;
+import status.weapon.NoStatus;
 
 public class Dagger extends BaseSword {
 
 	private int damage = 100;
 	private int range = 75;
-	private Status status = new BaseStatus();
+	private Status status;
 	private boolean ready = false;
 
 	public Dagger() {
-		if(RandGen.getRand(1, 4) == 1) {
-			status = new DoubleDamage();
-		}
+		status = getRandomStatus();
 	}
 
 	public String toString() {
-		if(status instanceof BaseStatus)
+		if(status instanceof NoStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}

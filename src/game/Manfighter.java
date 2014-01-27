@@ -91,7 +91,7 @@ public class Manfighter {
 		if(allactions.contains('l'))
 			System.out.print("lower your weapon[l], ");
 		if(allactions.contains('o'))
-			System.out.print("reload your weapon[l], ");
+			System.out.print("reload your weapon[o], ");
 		if(allactions.contains('a'))
 			System.out.print("attack[a], ");
 		if(allactions.contains('d') && canAdvance(p, e))
@@ -110,6 +110,10 @@ public class Manfighter {
 			actionTime = timeOther;
 			p.getWeapon().setReadied(false);
 			System.out.println("You lowered your " + p.getWeapon() + ". Movement speed increased.");
+		} else if(action == 'o' && allactions.contains('o')) {
+			actionTime = timeOther;
+			p.getWeapon().reload();
+			System.out.println("You reloaded your " + p.getWeapon() + ".");
 		} else if(action == 'a' && allactions.contains('a')) {
 			if(p.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				actionTime = p.getWeapon().getFireTime();
@@ -199,6 +203,11 @@ public class Manfighter {
 			reactionTime = timeOther;
 			e.getWeapon().setReadied(false);
 			System.out.println(e.getName() + " lowered his " + e.getWeapon() + ". His movement speed is increased.");
+			break;
+		case 'o':
+			reactionTime = timeOther;
+			e.getWeapon().reload();
+			System.out.println(e.getName() + " reloaded his " + e.getWeapon() + ".");
 			break;
 		case 'a':
 			if(e.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {

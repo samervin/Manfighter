@@ -5,9 +5,6 @@ import game.Weapon;
 
 import java.util.HashSet;
 
-import weapon.melee.fists.Fists;
-import weapon.ranged.longrange.SniperRifle;
-
 public class Player extends Person {
 
 	private String name;
@@ -54,31 +51,10 @@ public class Player extends Person {
 
 	public HashSet<Character> getActions() {
 
-		HashSet<Character> a = new HashSet<Character>(); //regular arrays are hard
-		//a.add('e'); //ready weapon
-		//a.add('l'); //lower weapon
-		if(weapon.hasLoadedAmmo())
-			a.add('a'); //attack
+		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload
 		a.add('d'); //advance
 		a.add('r'); //retreat
-
-		if(weapon.isReadied())
-			a.add('l');
-		else
-			a.add('e');
-		
-		if(!weapon.hasFullAmmo())
-			a.add('o'); //reload
-		
-		if(weapon instanceof SniperRifle)
-			a.add('e'); //can always ready a sniper rifle
-		else if(weapon instanceof Fists) {
-			a.remove('e'); //fists are trivially always ready
-		}
-			
-		
-		
-		
+				
 		return a;
 	}
 

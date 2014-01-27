@@ -1,29 +1,27 @@
 package weapon.ranged.explosive;
 
-import java.util.HashSet;
-
 import game.RandGen;
 import game.Status;
-import status.weapon.BaseStatus;
-import status.weapon.DoubleDamage;
+
+import java.util.HashSet;
+
+import status.weapon.NoStatus;
 
 public class RocketLauncher extends BaseExplosive {
 
 	private int damage = 350;
 	private int range = 200;
-	private Status status = new BaseStatus();
+	private Status status = new NoStatus();
 	private boolean ready = false;
 	private int maxClip = 4;
 	private int clip = 4;
 
 	public RocketLauncher() {
-		if(RandGen.getRand(1, 10) == 1) {
-			status = new DoubleDamage();
-		}
+		status = getRandomStatus();
 	}
 
 	public String toString() {
-		if(status instanceof BaseStatus)
+		if(status instanceof NoStatus)
 			return this.getBaseName();
 		return this.getBaseName() + ", with " + status.toString();
 	}
@@ -87,7 +85,7 @@ public class RocketLauncher extends BaseExplosive {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
 			a.add('a'); //attack
-		if(!this.hasLoadedAmmo())
+		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
 		if(ready)
