@@ -22,6 +22,6 @@ public class Fists extends BaseFists {
 	}
 
 	public int getFireTime() {
-		return 1000; //milliseconds
+		return 750; //milliseconds
 	}
 }

@@ -12,8 +12,8 @@ public abstract class Weapon {
 		int k = RandGen.getRand(1, 5);
 		Status s = new NoStatus();
 		switch(k) {
-		case 1: s = new DoubleDamage();
-		case 2: s = new HalfDamage();
+		case 1: s = new DoubleDamage(); break;
+		case 2: s = new HalfDamage(); break;
 		}
 		
 		return s;

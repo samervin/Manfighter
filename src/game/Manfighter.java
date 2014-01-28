@@ -10,6 +10,7 @@ import weapon.melee.fists.Fists;
 import weapon.melee.sword.Dagger;
 import weapon.ranged.explosive.RocketLauncher;
 import weapon.ranged.longrange.SniperRifle;
+import weapon.ranged.unpowered.Shortbow;
 
 public class Manfighter {
 
@@ -33,34 +34,43 @@ public class Manfighter {
 			System.out.println("Okay, fine, I suppose.");
 		}
 
-		int itemp = RandGen.getRand(1, 4);
-		Player p;
+		int itemp = RandGen.getRand(1, 5);
+		Weapon w;
 		switch(itemp) {
-		case 1: p = new Player(stemp, new Fists()); break;
-		case 2: p = new Player(stemp, new Dagger()); break;
-		case 3: p = new Player(stemp, new RocketLauncher()); break;
-		case 4: p = new Player(stemp, new SniperRifle()); break;
-		default: p = new Player(stemp, new Fists());
+		case 1: w = new Fists(); break;
+		case 2: w = new Dagger(); break;
+		case 3: w = new RocketLauncher(); break;
+		case 4: w = new SniperRifle(); break;
+		case 5: w = new Shortbow(); break;
+		default: w = new Fists();
 		}
+
+		Player p = new Player(stemp, w);
 
 		System.out.println("\nStep into the battleground, " + p.getName() + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
 
-		Enemy e = new EnemyBasic();
-		//Enemy e = new EnemyTest();
-		System.out.println("Your first opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
-		combat(p, e);
+		int kills = -1;
+		while(p.getHealth() > 0) {
+			kills++;
+			Enemy e = new EnemyBasic();
+			System.out.println("\n\n\nYour next opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
+			combat(p, e);
+		}
+		
+		System.out.println("You finished with " + kills + " kills!");
 	}
 
 
 	private void combat(Player p, Enemy e) {
 		p.setLocation(0);
-		e.setLocation(150);
+		e.setLocation(400);
+		System.out.println("You begin " + e.getLocation() + " cm apart.");
 
 		int playerClock = 0;
 		int enemyClock = 0;
 		int totalClock = 0;
-		
+
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
 			if(playerClock == 0) {
 				playerClock = playerTurn(p,e);
@@ -80,20 +90,20 @@ public class Manfighter {
 		else
 			System.out.println("Congratulations, you defeated " + e.getName() + "!");
 	}
-	
+
 	private int playerTurn(Player p, Enemy e) {
 		int actionTime;
-		
+
 		HashSet<Character> allactions = p.getActions();
 		System.out.print("Will you: ");
+		if(allactions.contains('a') && getDistanceBetween(p, e) <= p.getWeapon().getRange())
+			System.out.print("attack[a], ");
 		if(allactions.contains('e'))
 			System.out.print("ready your weapon[e], ");
 		if(allactions.contains('l'))
 			System.out.print("lower your weapon[l], ");
 		if(allactions.contains('o'))
 			System.out.print("reload your weapon[o], ");
-		if(allactions.contains('a'))
-			System.out.print("attack[a], ");
 		if(allactions.contains('d') && canAdvance(p, e))
 			System.out.print("advance[d], ");
 		if(allactions.contains('r'))
@@ -153,7 +163,7 @@ public class Manfighter {
 		} else if(action == 'm') {
 			actionTime = timeStep;
 			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
-			
+
 			//TODO: better parsing
 			int distance = Integer.parseInt(in.nextLine());
 			if(p.getWeapon().isReadied() && distance >= -45 && distance <=0) {
@@ -184,15 +194,15 @@ public class Manfighter {
 			actionTime = timeOther;
 			System.out.println("Not an option, sorry, you forfeit your turn.");
 		}
-		
+
 		System.out.println();
 		return actionTime;
 	}
-	
+
 	private int enemyTurn(Player p, Enemy e) {
 		int reactionTime;
-		char reaction = e.getAction();
-		
+		char reaction = e.getAction(getDistanceBetween(p, e));
+
 		switch(reaction) {
 		case 'e':
 			reactionTime = timeOther;
@@ -256,7 +266,7 @@ public class Manfighter {
 			reactionTime = timeOther;
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
-		
+
 		return reactionTime;
 	}
 
@@ -331,20 +341,24 @@ public class Manfighter {
 
 		return 0;
 	}
-	
+
+	private int getDistanceBetween(Person p, Person e) {
+		return(Math.abs(p.getLocation() - e.getLocation()));
+	}
+
 	private boolean canAdvance(Player p, Enemy e) {
 		if(Math.abs(p.getLocation() - e.getLocation()) == close)
 			return false;
 		return true;
 	}
-	
+
 	private boolean stringDivisibleBy(String str, int num) {
 		char[] a = str.toCharArray();
 		int in = 0;
 		for(int k = 0; k < a.length; k++) {
 			in += a[k]; //47
 		}
-		
+
 		return (in % num == 0);
 	}
 }

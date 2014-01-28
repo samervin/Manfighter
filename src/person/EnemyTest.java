@@ -12,7 +12,7 @@ public class EnemyTest extends Enemy{
 		weapon = new Fists();
 	}
 
-	public char getAction() {
+	public char getAction(int distance) {
 		turn++;
 		
 		switch(turn){		

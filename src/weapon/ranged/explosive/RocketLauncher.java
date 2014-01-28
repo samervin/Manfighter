@@ -10,7 +10,7 @@ import status.weapon.NoStatus;
 public class RocketLauncher extends BaseExplosive {
 
 	private int damage = 350;
-	private int range = 200;
+	private int range = 500;
 	private Status status = new NoStatus();
 	private boolean ready = false;
 	private int maxClip = 4;
@@ -33,12 +33,12 @@ public class RocketLauncher extends BaseExplosive {
 	public int getDamage() {
 		clip--;
 		if(ready) {
-			if(RandGen.getRand(1, 3) == 1) {
+			if(RandGen.getRand(1, 5) > 1) {
 				return status.getDamage(damage);
 			}
 		}
 		else {
-			if(RandGen.getRand(1, 4) == 1) {
+			if(RandGen.getRand(1, 5) > 3) {
 				return status.getDamage(damage);
 			}
 		}
@@ -76,9 +76,9 @@ public class RocketLauncher extends BaseExplosive {
 	
 	public int getFireTime() {
 		if(ready)
-			return 2000;
+			return 1900;
 		else
-			return 3000;
+			return 2400;
 	}
 	
 	public HashSet<Character> getWeaponActions() {

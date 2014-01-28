@@ -4,6 +4,7 @@ import game.Person;
 import game.RandGen;
 import game.Weapon;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Enemy extends Person {
@@ -13,7 +14,7 @@ public abstract class Enemy extends Person {
 	protected Weapon weapon;
 	protected int location;
 
-	public abstract char getAction();
+	public abstract char getAction(int distance);
 
 	public int getDamage() {
 		return weapon.getDamage();
@@ -56,7 +57,15 @@ public abstract class Enemy extends Person {
 		return a;
 	}
 
-
+	protected ArrayList<Character> removeActions(ArrayList<Character> actionList, char action) {
+		for(int i = 0; i < actionList.size(); i++) {
+			if(actionList.get(i) == action) {
+				actionList.remove(i);
+			}
+		}
+		
+		return actionList;
+	}
 
 
 

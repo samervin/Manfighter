@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class Player extends Person {
 
 	private String name;
-	private int health = 500;
+	private int health = 750;
 	private Weapon weapon;
 	private int location;
 

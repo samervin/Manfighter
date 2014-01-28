@@ -32,17 +32,17 @@ public class SniperRifle extends BaseLongrange {
 		clip--;
 		
 		if(ready == 0) {
-			if(RandGen.getRand(1, 8) == 1)
+			if(RandGen.getRand(1, 4) == 1)
 				return status.getDamage(damage);
 			else
 				return 0;
 		} else if(ready <= 3) {
-			if(RandGen.getRand(1, 5) == 1) {
+			if(RandGen.getRand(1, 3) > 1) {
 				return (ready * 5) + status.getDamage(damage);
 			} else
 				return 0;
 		} else if(ready <= 6) {
-			if(RandGen.getRand(1, 3) == 1) {
+			if(RandGen.getRand(1, 4) > 1) {
 				System.out.println("A shot on a vital organ!");
 				return (ready * 12) + status.getDamage(damage);
 			} else
@@ -86,9 +86,9 @@ public class SniperRifle extends BaseLongrange {
 	}
 	public int getFireTime() {
 		if(ready > 7)
-			return 1500;
+			return 1200;
 		else
-			return 3000;
+			return 2500;
 	}
 
 	public HashSet<Character> getWeaponActions() {
