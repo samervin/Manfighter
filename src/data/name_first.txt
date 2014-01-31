@@ -1,4 +1,4 @@
-39
+35
 Willem
 Neo
 Lex
@@ -20,7 +20,6 @@ Artemis
 Abercrombie
 Ace
 Otto
-Gargamel
 Conan
 Aldrich
 Obadiah
@@ -30,11 +29,8 @@ Richard
 Harry
 Flint
 N.
-N.
 Ebenezer
-Jango
-Boba
-Ulfric
 Dagoth
 Jagar
 Mankar
+Manni

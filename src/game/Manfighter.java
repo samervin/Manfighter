@@ -32,7 +32,7 @@ public class Manfighter {
 				stemp = in.nextLine();
 			}
 			System.out.println("Okay, fine, I suppose.");
-		}
+		}		
 
 		int itemp = RandGen.getRand(1, 5);
 		Weapon w;
@@ -128,15 +128,21 @@ public class Manfighter {
 			if(p.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				actionTime = p.getWeapon().getFireTime();
 				int dmg = p.getWeapon().getDamage();
-				System.out.println("You're dealing " + dmg + " damage!");
-				e.setHealth(e.getHealth() - dmg);
-				System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+				dmg = getCritDamage(p, dmg);
+				if(dmg > 0) {
+					System.out.println("You " + p.getWeapon().getVerb() + " " + e.getName() + ", dealing " + dmg + " damage!");
+					e.setHealth(e.getHealth() - dmg);
+						System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+				} else {
+					System.out.println("You missed!");
+				}
+				
 			}
 			else {
 				actionTime = timeOther;
 				System.out.println("You tried to attack, but you're not in range!");
 			}
-		} else if(action == 'd' && allactions.contains('d')) {
+		} else if(action == 'd' && getDistanceBetween(p, e) > close) {
 			actionTime = timeStep;
 			if(p.getWeapon().isReadied()) {
 				int dis = move(p, e, 60, 0);
@@ -223,9 +229,15 @@ public class Manfighter {
 			if(e.getWeapon().getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
 				reactionTime = e.getWeapon().getFireTime();
 				int dmg = e.getWeapon().getDamage();
-				System.out.println(e.getName() + " is dealing " + dmg + " damage!");
-				p.setHealth(p.getHealth() - dmg);
-				System.out.println(p.getName() + "'s new health is " + p.getHealth() + ".");
+				dmg = getCritDamage(e, dmg);
+				if(dmg > 0) {
+					System.out.println(e.getName() + " " + e.getWeapon().getVerb() + " you, dealing " + dmg + " damage!");
+					p.setHealth(p.getHealth() - dmg);
+					System.out.println(p.getName() + "'s new health is " + p.getHealth() + ".");
+				} else {
+					System.out.println(e.getName() + " missed!");
+				}
+				
 			}
 			else {
 				reactionTime = timeOther;
@@ -352,6 +364,16 @@ public class Manfighter {
 		return true;
 	}
 
+	private int getCritDamage(Person y, int damage) {
+		if(y.getWeapon().isCrit()) {
+			System.out.println("A critical hit!");
+			damage*=3;
+			damage/=2; //net result 1.5x
+		}
+		
+		return damage;
+	}
+	
 	private boolean stringDivisibleBy(String str, int num) {
 		char[] a = str.toCharArray();
 		int in = 0;

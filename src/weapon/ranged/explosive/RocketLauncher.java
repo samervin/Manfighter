@@ -42,8 +42,7 @@ public class RocketLauncher extends BaseExplosive {
 				return status.getDamage(damage);
 			}
 		}
-
-		System.out.println(this.toString() + " missed!");
+		
 		return 0;
 	}
 
@@ -72,6 +71,7 @@ public class RocketLauncher extends BaseExplosive {
 
 	public void reload() {
 		clip = maxClip;
+		ready = false;
 	}
 	
 	public int getFireTime() {

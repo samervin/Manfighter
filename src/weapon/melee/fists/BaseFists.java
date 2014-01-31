@@ -1,5 +1,6 @@
 package weapon.melee.fists;
 
+import game.RandGen;
 import game.Weapon;
 
 import java.util.HashSet;
@@ -31,5 +32,13 @@ public abstract class BaseFists extends Weapon {
 		a.add('a'); //attack
 		
 		return a;
+	}
+	
+	public boolean isCrit() {
+		return(RandGen.getRand(1,50) < 10);
+	}
+	
+	public String getVerb() {
+		return "punched";
 	}
 }

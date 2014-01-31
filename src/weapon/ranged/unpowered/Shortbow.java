@@ -37,7 +37,7 @@ public class Shortbow extends BaseUnpowered {
 	}
 
 	public int getFireTime() {
-		return 900;
+		return 975;
 	}
 
 	public HashSet<Character> getWeaponActions() {

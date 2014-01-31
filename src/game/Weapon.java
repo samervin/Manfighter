@@ -26,6 +26,9 @@ public abstract class Weapon {
 	public abstract int getRange();
 	public abstract int getFireTime();
 	public abstract HashSet<Character> getWeaponActions();
+	public abstract boolean isCrit();
+	
+	public abstract String getVerb();
 	
 	// these don't apply to fist-types, which are always ready
 	public abstract boolean isReadied(); 
@@ -35,5 +38,4 @@ public abstract class Weapon {
 	public abstract boolean hasFullAmmo();
 	public abstract boolean hasLoadedAmmo();
 	public abstract void reload();
-	
 }

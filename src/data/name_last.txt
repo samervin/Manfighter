@@ -1,4 +1,4 @@
-54
+50
 Dafoe
 Zod
 Luthor
@@ -12,7 +12,6 @@ Blofeld
 Scaramanga
 Mozart
 Dooku
-Vader
 Gratch
 Vox
 Tachyon
@@ -21,11 +20,6 @@ Azimuth
 Fowl
 Vorselon
 Hardlight
-the Barbarian
-the Red
-the Far-Travelled
-the Boneless
-the Mad
 Killian
 Doom
 Stane
@@ -40,16 +34,18 @@ Brio
 Tropy
 Oxide
 Trance
-Von Clutch
 Potoroo
-the Hutt
-Fett
 Tarkin
-Stormcloak
 Ur
 Tharn
 Jr.
 III
 IV
 Esquire
+the Hutt
+the Barbarian
+the Red
+the Far-Travelled
+the Boneless
+the Mad
 the Particularly Smelly

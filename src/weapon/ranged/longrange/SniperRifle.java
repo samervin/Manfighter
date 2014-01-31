@@ -83,7 +83,9 @@ public class SniperRifle extends BaseLongrange {
 
 	public void reload() {
 		clip = maxClip;
+		ready = 0;
 	}
+	
 	public int getFireTime() {
 		if(ready > 7)
 			return 1200;
