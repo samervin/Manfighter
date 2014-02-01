@@ -1,10 +1,10 @@
-package weapon.melee.sword;
+package weapon.melee.club;
 
 import game.RandGen;
 import game.Weapon;
 
-public abstract class BaseSword extends Weapon {
-	
+public abstract class BaseClub extends Weapon {
+
 	public boolean hasFullAmmo() {
 		return true; // trivially
 	}
@@ -18,11 +18,11 @@ public abstract class BaseSword extends Weapon {
 	}
 	
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 8) || status.getCritChance());
+		return((RandGen.getRand(1,50) < 8) || status.getCritChance());
 	}
 	
 	public String getVerb() {
-		return "slashed";
+		return "smashed";
 	}
 	
 }

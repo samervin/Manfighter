@@ -1,27 +1,19 @@
 package weapon.ranged.longrange;
 
-import java.util.HashSet;
+import game.RandGen;
 
-import status.weapon.*;
-import game.*;
+import java.util.HashSet;
 
 public class SniperRifle extends BaseLongrange {
 
 	private int damage = 75;
 	private int range = 1000; //a lot
-	private Status status = new NoStatus();
 	private int ready = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
 	private int maxClip = 2;
 	private int clip = 2;
 
 	public SniperRifle() {
 		status = getRandomStatus();
-	}
-	
-	public String toString() {
-		if(status instanceof NoStatus)
-			return this.getBaseName();
-		return this.getBaseName() + ", with " + status.toString();
 	}
 	
 	public String getBaseName() {
@@ -54,7 +46,7 @@ public class SniperRifle extends BaseLongrange {
 	}
 
 	public int getRange() {
-		return range;
+		return status.getRange(range);
 	}
 
 	public boolean isReadied() {

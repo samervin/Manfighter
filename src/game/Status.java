@@ -12,4 +12,7 @@ public abstract class Status {
 		return r;
 	}
 	
+	public boolean getCritChance() {
+		return false;
+	}
 }

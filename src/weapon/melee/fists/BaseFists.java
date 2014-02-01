@@ -35,7 +35,7 @@ public abstract class BaseFists extends Weapon {
 	}
 	
 	public boolean isCrit() {
-		return(RandGen.getRand(1,50) < 10);
+		return((RandGen.getRand(1,50) < 10) || status.getCritChance());
 	}
 	
 	public String getVerb() {

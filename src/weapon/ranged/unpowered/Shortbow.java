@@ -1,26 +1,15 @@
 package weapon.ranged.unpowered;
 
-import game.Status;
-
 import java.util.HashSet;
-
-import status.weapon.NoStatus;
 
 public class Shortbow extends BaseUnpowered {
 
 	private int damage = 175;
 	private int range = 400;
-	private Status status = new NoStatus();
 	private boolean ready = false;
 	
 	public Shortbow() {
 		status = getRandomStatus();
-	}
-	
-	public String toString() {
-		if(status instanceof NoStatus)
-			return this.getBaseName();
-		return this.getBaseName() + ", with " + status.toString();
 	}
 
 	public String getBaseName() {
@@ -33,7 +22,7 @@ public class Shortbow extends BaseUnpowered {
 	}
 
 	public int getRange() {
-		return range;
+		return status.getRange(range);
 	}
 
 	public int getFireTime() {

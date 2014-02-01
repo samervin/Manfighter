@@ -12,9 +12,9 @@ public class Player extends Person {
 	private Weapon weapon;
 	private int location;
 
-	public Player(String n, Weapon w) {
+	public Player(String n) {
 		name = n;
-		weapon = w;
+		weapon = getRandomWeapon();
 	}
 
 	public int getDamage() {

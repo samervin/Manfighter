@@ -5,27 +5,12 @@ import game.RandGen;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import weapon.melee.fists.Fists;
-import weapon.melee.sword.Dagger;
-import weapon.ranged.explosive.RocketLauncher;
-import weapon.ranged.longrange.SniperRifle;
-import weapon.ranged.unpowered.Shortbow;
-
 public class EnemyBasic extends Enemy {
 	
 	public EnemyBasic() {
 		name = createRandomName();
 		health = 750;
-		
-		int i = RandGen.getRand(1, 5);
-		switch(i) {
-			case 1: weapon = new Fists(); break;
-			case 2: weapon = new Dagger(); break;
-			case 3: weapon = new RocketLauncher(); break;
-			case 4: weapon = new SniperRifle(); break;
-			case 5: weapon = new Shortbow(); break;
-			default: weapon = new Fists();
-		}
+		weapon = getRandomWeapon();
 	}
 
 	public char getAction(int distance) {

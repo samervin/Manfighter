@@ -1,30 +1,29 @@
-package weapon.melee.sword;
+package weapon.melee.club;
 
 import java.util.HashSet;
 
-public class Dagger extends BaseSword {
+public class Mace extends BaseClub {
 
-	private int damage = 100;
-	private int range = 75;
+	private int damage = 200;
+	private int range = 100;
 	private boolean ready = false;
-
-	public Dagger() {
+	
+	public Mace() {
 		status = getRandomStatus();
 	}
 
 	public String getBaseName() {
-		return "Dagger";
+		return "Mace";
 	}
 
 	public int getDamage() {
 		if(ready) {
 			ready = false;
-			int d = status.getDamage(damage * 2);
+			int d = status.getDamage(damage);
 			return d;
 		}
 		else {
 			ready = true;
-			System.out.println("Dagger's on the backswing, less damage!");
 			int d = status.getDamage(damage);
 			return d;
 		}
@@ -34,21 +33,14 @@ public class Dagger extends BaseSword {
 		return status.getRange(range);
 	}
 
-	public boolean isReadied() {
-		return ready;
+	public int getFireTime() {
+		if(ready) {
+			return 1500;
+		} else {
+			return 2100;
+		}
 	}
 
-	public void setReadied(boolean r) {
-		ready = r;
-	}
-	
-	public int getFireTime() {
-		if(ready)
-			return 1000;
-		else
-			return 1500;
-	}
-	
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		a.add('a'); //attack
@@ -60,4 +52,13 @@ public class Dagger extends BaseSword {
 		
 		return a;
 	}
+
+	public boolean isReadied() {
+		return ready;
+	}
+
+	public void setReadied(boolean readiness) {
+		ready = readiness;
+	}
+
 }

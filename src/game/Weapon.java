@@ -2,25 +2,34 @@ package game;
 
 import java.util.HashSet;
 
+import status.weapon.CritIncrease;
 import status.weapon.DoubleDamage;
-import status.weapon.HalfDamage;
+import status.weapon.DoubleRange;
 import status.weapon.NoStatus;
 
 public abstract class Weapon {
 
+	protected Status status = new NoStatus();
+	
 	protected Status getRandomStatus() {
-		int k = RandGen.getRand(1, 5);
+		int k = RandGen.getRand(1, 7);
 		Status s = new NoStatus();
 		switch(k) {
 		case 1: s = new DoubleDamage(); break;
-		case 2: s = new HalfDamage(); break;
+		case 2: s = new CritIncrease(); break;
+		case 3: s = new DoubleRange(); break;
 		}
 		
 		return s;
 	}
 	
+	public String toString() {
+		if(status instanceof NoStatus)
+			return this.getBaseName();
+		return this.getBaseName() + ", with " + status.toString();
+	}
+	
 	// these apply to every weapon
-	public abstract String toString();
 	public abstract String getBaseName();
 	public abstract int getDamage();
 	public abstract int getRange();

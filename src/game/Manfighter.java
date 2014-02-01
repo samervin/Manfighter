@@ -6,14 +6,9 @@ import java.util.Scanner;
 import person.Enemy;
 import person.EnemyBasic;
 import person.Player;
-import weapon.melee.fists.Fists;
-import weapon.melee.sword.Dagger;
-import weapon.ranged.explosive.RocketLauncher;
-import weapon.ranged.longrange.SniperRifle;
-import weapon.ranged.unpowered.Shortbow;
 
 public class Manfighter {
-
+	
 	private Scanner in = new Scanner(System.in);
 	private final int close = 60; //minimum distance apart, in cm
 	private final int timeStep = 900; //.9 seconds per each step
@@ -34,18 +29,7 @@ public class Manfighter {
 			System.out.println("Okay, fine, I suppose.");
 		}		
 
-		int itemp = RandGen.getRand(1, 5);
-		Weapon w;
-		switch(itemp) {
-		case 1: w = new Fists(); break;
-		case 2: w = new Dagger(); break;
-		case 3: w = new RocketLauncher(); break;
-		case 4: w = new SniperRifle(); break;
-		case 5: w = new Shortbow(); break;
-		default: w = new Fists();
-		}
-
-		Player p = new Player(stemp, w);
+		Player p = new Player(stemp);
 
 		System.out.println("\nStep into the battleground, " + p.getName() + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
