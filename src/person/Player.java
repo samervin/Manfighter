@@ -9,7 +9,6 @@ public class Player extends Person {
 
 	private String name;
 	private int health = 750;
-	private Weapon weapon;
 	private int location;
 
 	public Player(String n) {
@@ -54,7 +53,19 @@ public class Player extends Person {
 		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload
 		a.add('d'); //advance
 		a.add('r'); //retreat
+		
+		//TODO: these need to matter
+		a.add('m'); //move
+		a.add('w'); //wait
 				
+		HashSet<Character> restrictions = personstatus.getRestrictedActions();
+		for(Character c : restrictions) {
+			if(a.contains(c)) {
+				a.remove(c);
+			}
+		}
+		
+		System.out.println("^^^^^ " + a);
 		return a;
 	}	
 

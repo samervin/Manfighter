@@ -4,6 +4,8 @@ import game.PersonStatus;
 
 import java.util.HashSet;
 
+import status.person.Stunned;
+
 public class Mace extends BaseClub {
 
 	private int damage = 200;
@@ -12,6 +14,7 @@ public class Mace extends BaseClub {
 	
 	public Mace() {
 		weaponStatus = getRandomStatus();
+		inflictingStatus = new Stunned();
 	}
 
 	public String getBaseName() {

@@ -1,5 +1,7 @@
 package status.person;
 
+import java.util.HashSet;
+
 import game.PersonStatus;
 
 public class BlankPersonStatus extends PersonStatus {
@@ -8,12 +10,20 @@ public class BlankPersonStatus extends PersonStatus {
 		return "nothing";
 	}
 
-	public int getDamagePerHit() {
+	public int getDamage() {
 		return 0;
 	}
+
+	public HashSet<Character> getRestrictedActions() {
+		return new HashSet<Character>();
+	}
 	
-	public int getTimeBetweenHits() {
-		return 0;
+	public void tick() {
+		//nothing
+	}
+	
+	public void reset() {
+		//nothing
 	}
 
 }

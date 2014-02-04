@@ -6,11 +6,10 @@ import java.util.Scanner;
 import person.Enemy;
 import person.EnemyBasic;
 import person.Player;
-import status.person.BlankPersonStatus;
 
 public class Manfighter {
 
-	private int test = 0; //1 for quicker testing, 0 for general play
+	private int test = 1; //1 for quicker testing, 0 for general play
 
 	private Scanner in = new Scanner(System.in);
 	private final int close = 60; //minimum distance apart, in cm
@@ -48,6 +47,8 @@ public class Manfighter {
 			Enemy e = new EnemyBasic();
 			System.out.println("\n\n\nYour next opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 			combat(p, e);
+			p.reset();
+			e.reset();
 		}
 
 		System.out.println("You finished with " + kills + " kills!");
@@ -64,19 +65,24 @@ public class Manfighter {
 		int totalClock = 0;
 
 		while(isValidFight(p, e)) {
-			if(isValidFight(p, e) && !(p.getStatus() instanceof BlankPersonStatus) && totalClock % p.getStatus().getTimeBetweenHits() == 0) {
-				PersonStatus ps = p.getStatus();
-				System.out.println("You lost " + ps.getDamagePerHit() + " health due to " + ps + "!");
-				p.setHealth(p.getHealth() - ps.getDamagePerHit());
-				System.out.println("Your new health is " + p.getHealth() + ".");
-				System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
+			if(isValidFight(p, e)) {
+				int statdmg = p.getStatus().getDamage();
+				if(statdmg != 0) {
+					System.out.println("You lost " + statdmg + " health due to " + p.getStatus() + "!");
+					p.setHealth(p.getHealth() - statdmg);
+					System.out.println("Your new health is " + p.getHealth() + ".");
+					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
+				}
 			}
-			if(isValidFight(p, e) && !(e.getStatus() instanceof BlankPersonStatus) && totalClock % e.getStatus().getTimeBetweenHits() == 0) {
-				PersonStatus es = e.getStatus();
-				System.out.println(e.getName() + " lost " + es.getDamagePerHit() + " health due to " + es + "!");
-				e.setHealth(e.getHealth() - es.getDamagePerHit());
-				System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
-				System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
+			if(isValidFight(p, e)) {
+				int statdmg = e.getStatus().getDamage();
+				if(statdmg != 0) {
+					System.out.println(e.getName() + " lost " + statdmg + " health due to " + e.getStatus() + "!");
+					e.setHealth(e.getHealth() - statdmg);
+					System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
+				}
+				
 			}
 			if(isValidFight(p, e) && playerClock == 0) {
 				playerClock = playerTurn(p,e);
@@ -88,7 +94,9 @@ public class Manfighter {
 			}
 			playerClock --;
 			enemyClock --;
-			totalClock++;		
+			totalClock++;
+			p.tick();
+			e.tick();
 		}
 
 		if(p.getHealth() < 1)

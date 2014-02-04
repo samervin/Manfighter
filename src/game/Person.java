@@ -14,15 +14,31 @@ import weapon.ranged.unpowered.Shortbow;
 public abstract class Person {
 	
 	protected PersonStatus personstatus = new BlankPersonStatus();
+	protected Weapon weapon;
 	
 	public abstract String getName();
 	public abstract int getHealth();
-	protected abstract Weapon getWeapon();
+	public Weapon getWeapon() {
+		return weapon;
+	}
+	
 	public abstract int getDamage();
 	public abstract void setHealth(int newHealth);
 	public abstract void setLocation(int newLocation);
 	public abstract int getLocation();
 	public abstract HashSet<Character> getActions();
+	
+	public void reset() {
+		personstatus.reset();
+	}
+	
+	public void tick() {
+		personstatus.tick();
+	}
+	
+	public int applyDamage(int rawdmg) {
+		return 0;
+	}
 	
 	public PersonStatus getStatus() {
 		return personstatus;

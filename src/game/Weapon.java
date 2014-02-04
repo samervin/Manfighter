@@ -31,6 +31,10 @@ public abstract class Weapon {
 		return this.getBaseName() + ", with " + weaponStatus.toString();
 	}
 	
+	public void reset() {
+		//TODO: this should really do something
+	}
+	
 	// these apply to every weapon
 	public abstract String getBaseName();
 	public abstract int getDamage();

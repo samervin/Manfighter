@@ -14,7 +14,6 @@ public abstract class Enemy extends Person {
 
 	protected String name;
 	protected int health;
-	protected Weapon weapon;
 	protected int location;
 
 	public abstract char getAction(int distance);
