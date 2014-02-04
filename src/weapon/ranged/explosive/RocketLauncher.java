@@ -1,5 +1,6 @@
 package weapon.ranged.explosive;
 
+import game.PersonStatus;
 import game.RandGen;
 
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class RocketLauncher extends BaseExplosive {
 	private int clip = 4;
 
 	public RocketLauncher() {
-		status = getRandomStatus();
+		weaponStatus = getRandomStatus();
 	}
 
 	public String getBaseName() {
@@ -24,12 +25,12 @@ public class RocketLauncher extends BaseExplosive {
 		clip--;
 		if(ready) {
 			if(RandGen.getRand(1, 5) > 1) {
-				return status.getDamage(damage);
+				return weaponStatus.getDamage(damage);
 			}
 		}
 		else {
 			if(RandGen.getRand(1, 5) > 3) {
-				return status.getDamage(damage);
+				return weaponStatus.getDamage(damage);
 			}
 		}
 		
@@ -37,7 +38,7 @@ public class RocketLauncher extends BaseExplosive {
 	}
 
 	public int getRange() {
-		return status.getRange(range);
+		return weaponStatus.getRange(range);
 	}
 
 	public boolean isReadied() {
@@ -84,5 +85,9 @@ public class RocketLauncher extends BaseExplosive {
 			a.add('e');
 		
 		return a;
+	}
+	
+	public PersonStatus getInflictedStatus() {
+		return inflictingStatus;
 	}
 }

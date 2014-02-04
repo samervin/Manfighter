@@ -1,5 +1,6 @@
 package weapon.ranged.longrange;
 
+import game.PersonStatus;
 import game.RandGen;
 
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class SniperRifle extends BaseLongrange {
 	private int clip = 2;
 
 	public SniperRifle() {
-		status = getRandomStatus();
+		weaponStatus = getRandomStatus();
 	}
 	
 	public String getBaseName() {
@@ -25,28 +26,28 @@ public class SniperRifle extends BaseLongrange {
 		
 		if(ready == 0) {
 			if(RandGen.getRand(1, 4) == 1)
-				return status.getDamage(damage);
+				return weaponStatus.getDamage(damage);
 			else
 				return 0;
 		} else if(ready <= 3) {
 			if(RandGen.getRand(1, 3) > 1) {
-				return (ready * 5) + status.getDamage(damage);
+				return (ready * 5) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		} else if(ready <= 6) {
 			if(RandGen.getRand(1, 4) > 1) {
 				System.out.println("A shot on a vital organ!");
-				return (ready * 12) + status.getDamage(damage);
+				return (ready * 12) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		}
 
 		System.out.println("A headshot!");
-		return ready * status.getDamage(damage);
+		return ready * weaponStatus.getDamage(damage);
 	}
 
 	public int getRange() {
-		return status.getRange(range);
+		return weaponStatus.getRange(range);
 	}
 
 	public boolean isReadied() {
@@ -98,6 +99,10 @@ public class SniperRifle extends BaseLongrange {
 			a.add('l');
 		
 		return a;
+	}
+	
+	public PersonStatus getInflictedStatus() {
+		return inflictingStatus;
 	}
 	
 }

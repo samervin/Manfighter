@@ -1,9 +1,9 @@
 package status.weapon;
 
 import game.RandGen;
-import game.Status;
+import game.WeaponStatus;
 
-public class CritIncrease extends Status {
+public class CritIncrease extends WeaponStatus {
 
 	public String toString() {
 		return "more luck";

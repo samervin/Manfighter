@@ -1,30 +1,30 @@
-package weapon.melee.fists;
+package weapon.melee.knife;
+
+import java.util.HashSet;
 
 import game.RandGen;
 import game.Weapon;
 
-import java.util.HashSet;
+public abstract class BaseKnife extends Weapon {
 
-public abstract class BaseFists extends Weapon {
-	
 	public boolean isReadied() {
-		return false; //fists are trivially always ready, false prevents movement penalties
+		return false; //as fists
 	}
 	
 	public void setReadied(boolean r) {
-		//do nothing
+		//as fists
 	}
 	
 	public boolean hasFullAmmo() {
-		return true; // trivially
+		return true; //trivially
 	}
 	
 	public boolean hasLoadedAmmo() {
-		return true; //fists don't reload!
+		return true; //trivially
 	}
 	
 	public void reload() {
-		//do nothing
+		//nothing
 	}
 	
 	public HashSet<Character> getWeaponActions() {
@@ -39,6 +39,6 @@ public abstract class BaseFists extends Weapon {
 	}
 	
 	public String getVerb() {
-		return "punched";
+		return "stabbed";
 	}
 }

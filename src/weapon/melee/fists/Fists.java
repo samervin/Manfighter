@@ -1,5 +1,7 @@
 package weapon.melee.fists;
 
+import game.PersonStatus;
+
 public class Fists extends BaseFists {
 
 	private int damage = 100;
@@ -19,5 +21,9 @@ public class Fists extends BaseFists {
 
 	public int getFireTime() {
 		return 750; //milliseconds
+	}
+	
+	public PersonStatus getInflictedStatus() {
+		return inflictingStatus;
 	}
 }

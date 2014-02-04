@@ -18,7 +18,7 @@ public abstract class BaseSword extends Weapon {
 	}
 	
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 8) || status.getCritChance());
+		return ((RandGen.getRand(1,50) < 8) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

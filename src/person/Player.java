@@ -56,6 +56,6 @@ public class Player extends Person {
 		a.add('r'); //retreat
 				
 		return a;
-	}
+	}	
 
 }

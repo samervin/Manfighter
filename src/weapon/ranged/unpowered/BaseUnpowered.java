@@ -18,7 +18,7 @@ public abstract class BaseUnpowered extends Weapon {
 	}
 	
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 2) || status.getCritChance());
+		return ((RandGen.getRand(1,50) < 2) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

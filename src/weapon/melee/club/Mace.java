@@ -1,5 +1,7 @@
 package weapon.melee.club;
 
+import game.PersonStatus;
+
 import java.util.HashSet;
 
 public class Mace extends BaseClub {
@@ -9,7 +11,7 @@ public class Mace extends BaseClub {
 	private boolean ready = false;
 	
 	public Mace() {
-		status = getRandomStatus();
+		weaponStatus = getRandomStatus();
 	}
 
 	public String getBaseName() {
@@ -19,18 +21,18 @@ public class Mace extends BaseClub {
 	public int getDamage() {
 		if(ready) {
 			ready = false;
-			int d = status.getDamage(damage);
+			int d = weaponStatus.getDamage(damage);
 			return d;
 		}
 		else {
 			ready = true;
-			int d = status.getDamage(damage);
+			int d = weaponStatus.getDamage(damage);
 			return d;
 		}
 	}
 
 	public int getRange() {
-		return status.getRange(range);
+		return weaponStatus.getRange(range);
 	}
 
 	public int getFireTime() {
@@ -59,6 +61,10 @@ public class Mace extends BaseClub {
 
 	public void setReadied(boolean readiness) {
 		ready = readiness;
+	}
+
+	public PersonStatus getInflictedStatus() {
+		return inflictingStatus;
 	}
 
 }

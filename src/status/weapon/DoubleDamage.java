@@ -1,8 +1,8 @@
 package status.weapon;
 
-import game.Status;
+import game.WeaponStatus;
 
-public class DoubleDamage extends Status {
+public class DoubleDamage extends WeaponStatus {
 
 	public String toString() {
 		return "doubled damage";

@@ -2,18 +2,20 @@ package game;
 
 import java.util.HashSet;
 
+import status.person.BlankPersonStatus;
+import status.weapon.BlankWeaponStatus;
 import status.weapon.CritIncrease;
 import status.weapon.DoubleDamage;
 import status.weapon.DoubleRange;
-import status.weapon.NoStatus;
 
 public abstract class Weapon {
 
-	protected Status status = new NoStatus();
+	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
+	protected PersonStatus inflictingStatus = new BlankPersonStatus();
 	
-	protected Status getRandomStatus() {
+	protected WeaponStatus getRandomStatus() {
 		int k = RandGen.getRand(1, 7);
-		Status s = new NoStatus();
+		WeaponStatus s = new BlankWeaponStatus();
 		switch(k) {
 		case 1: s = new DoubleDamage(); break;
 		case 2: s = new CritIncrease(); break;
@@ -24,9 +26,9 @@ public abstract class Weapon {
 	}
 	
 	public String toString() {
-		if(status instanceof NoStatus)
+		if(weaponStatus instanceof BlankWeaponStatus)
 			return this.getBaseName();
-		return this.getBaseName() + ", with " + status.toString();
+		return this.getBaseName() + ", with " + weaponStatus.toString();
 	}
 	
 	// these apply to every weapon
@@ -36,8 +38,8 @@ public abstract class Weapon {
 	public abstract int getFireTime();
 	public abstract HashSet<Character> getWeaponActions();
 	public abstract boolean isCrit();
-	
 	public abstract String getVerb();
+	public abstract PersonStatus getInflictedStatus();
 	
 	// these don't apply to fist-types, which are always ready
 	public abstract boolean isReadied(); 
