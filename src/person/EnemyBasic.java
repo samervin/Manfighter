@@ -68,7 +68,7 @@ public class EnemyBasic extends Enemy {
 		if(a.size() == 0)
 			a.add('w');
 		
-		System.out.println(">>>>> " + a);
+		System.out.println(">>Enemy choices: " + a);
 		
 		int x = RandGen.getRand(0, a.size() - 1);
 		return a.get(x);

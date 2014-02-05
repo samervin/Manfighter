@@ -65,7 +65,6 @@ public class Player extends Person {
 			}
 		}
 		
-		System.out.println("^^^^^ " + a);
 		return a;
 	}	
 

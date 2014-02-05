@@ -15,7 +15,6 @@ public class Mace extends BaseClub {
 	public Mace() {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Stunned();
-		System.out.println("inflictingstatus for mace set to " + inflictingStatus.toString());
 	}
 
 	public String getBaseName() {

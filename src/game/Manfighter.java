@@ -144,7 +144,9 @@ public class Manfighter {
 			System.out.print("advance[d], ");
 		if(allactions.contains('r'))
 			System.out.print("retreat[r], ");
-		System.out.print("move[m], or wait[w]?\n");
+		if(allactions.contains('r')) //temporary hack
+			System.out.print("move[m], ");
+		System.out.print("or wait[w]?\n");
 
 
 		char action = in.nextLine().toLowerCase().charAt(0);

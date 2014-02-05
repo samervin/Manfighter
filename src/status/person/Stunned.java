@@ -43,7 +43,6 @@ public class Stunned extends PersonStatus {
 	
 	public void reset() {
 		counter = 0;
-		System.out.println("<><><> reset method called in STUNNED, counter is " + counter);
 	}
 
 }

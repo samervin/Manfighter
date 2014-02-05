@@ -29,7 +29,6 @@ public class BlankPersonStatus extends PersonStatus {
 	
 	public void reset() {
 		//nothing
-		System.out.println("WTF");
 	}
 
 }
