@@ -6,6 +6,7 @@ import java.util.Scanner;
 import person.Enemy;
 import person.EnemyBasic;
 import person.Player;
+import status.person.BlankPersonStatus;
 
 public class Manfighter {
 
@@ -25,8 +26,8 @@ public class Manfighter {
 		if(test == 0) {
 			System.out.println("Welcome to Manfighter! What's your name?");
 			stemp = in.nextLine();
-			if(stringDivisibleBy(stemp, 2)) {
-				while(stringDivisibleBy(stemp, 2)) {
+			if(stringDivisibleBy(stemp, 3)) {
+				while(stringDivisibleBy(stemp, 3)) {
 					System.out.println("That name sucks. Try again.");
 					stemp = in.nextLine();
 				}
@@ -65,6 +66,7 @@ public class Manfighter {
 		int totalClock = 0;
 
 		while(isValidFight(p, e)) {
+			
 			if(isValidFight(p, e)) {
 				int statdmg = p.getStatus().getDamage();
 				if(statdmg != 0) {
@@ -82,7 +84,22 @@ public class Manfighter {
 					System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
-				
+			}
+			if(isValidFight(p, e)) {
+				if(!p.getStatus().isActive()) {
+					System.out.println("You are no longer " + p.getStatus() + ".");
+					e.getWeapon().reset();
+					p.setStatus(new BlankPersonStatus());
+					
+				}
+			}
+			if(isValidFight(p, e)) {
+				if(!e.getStatus().isActive()) {
+					System.out.println(e.getName() + " is no longer " + e.getStatus() + ".");
+					p.getWeapon().reset();
+					e.setStatus(new BlankPersonStatus());
+					
+				}
 			}
 			if(isValidFight(p, e) && playerClock == 0) {
 				playerClock = playerTurn(p,e);
@@ -94,15 +111,19 @@ public class Manfighter {
 			}
 			playerClock --;
 			enemyClock --;
-			totalClock++;
+			totalClock ++;
 			p.tick();
 			e.tick();
 		}
 
-		if(p.getHealth() < 1)
+		if(p.getHealth() < 1) {
 			System.out.println("You lost, better luck next time!");
-		else
+		}
+		else {
 			System.out.println("Congratulations, you defeated " + e.getName() + "!");
+			p.reset();
+		}
+			
 	}
 
 	private int playerTurn(Player p, Enemy e) {
@@ -151,6 +172,15 @@ public class Manfighter {
 					System.out.println("You " + wep.getVerb() + " " + e.getName() + ", dealing " + dmg + " damage!");
 					e.setHealth(e.getHealth() - dmg);
 					System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+					
+					
+					//TODO: this also blows
+					if(!e.getStatus().getClass().equals(wep.getInflictedStatus().getClass())) {
+						System.out.println("Your weapon inflicted " + wep.getInflictedStatus() + " on your enemy!");
+						e.setStatus(wep.getInflictedStatus());
+					}
+					
+					
 				} else {
 					System.out.println("You missed!");
 				}
@@ -159,10 +189,7 @@ public class Manfighter {
 				actionTime = timeOther;
 				System.out.println("You tried to attack, but you're not in range!");
 			}
-
-			//TODO: this also blows
-			System.out.println("Your weapon inflicted " + wep.getInflictedStatus() + " on your enemy!");
-			e.setStatus(wep.getInflictedStatus());
+			
 		} 
 		else if(action == 'd' && getDistanceBetween(p, e) > close) {
 			actionTime = timeStep;
@@ -231,6 +258,9 @@ public class Manfighter {
 		return actionTime;
 	}
 
+	
+	
+	
 	private int enemyTurn(Player p, Enemy e) {
 		int reactionTime;
 		char reaction = e.getAction(getDistanceBetween(p, e));
@@ -261,6 +291,13 @@ public class Manfighter {
 					System.out.println(e.getName() + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
 					p.setHealth(p.getHealth() - dmg);
 					System.out.println(p.getName() + "'s new health is " + p.getHealth() + ".");
+					
+					if(!p.getStatus().getClass().equals(wep.getInflictedStatus().getClass())) {
+						System.out.println(e.getName() + "'s weapon inflicted " + wep.getInflictedStatus() + " on you!");
+						p.setStatus(wep.getInflictedStatus());
+					}
+					
+					
 				} else {
 					System.out.println(e.getName() + " missed!");
 				}
@@ -270,9 +307,7 @@ public class Manfighter {
 				reactionTime = timeOther;
 				System.out.println(e.getName() + " tried to attack, but is not in range!");
 			}
-
-			System.out.println(e.getName() + "'s weapon inflicted " + wep.getInflictedStatus() + " on you!");
-			p.setStatus(wep.getInflictedStatus());
+			
 			break;
 		case 'd':
 			reactionTime = timeStep;

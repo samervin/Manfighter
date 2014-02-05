@@ -32,7 +32,8 @@ public abstract class Weapon {
 	}
 	
 	public void reset() {
-		//TODO: this should really do something
+		inflictingStatus.reset();
+		System.out.println("???? reset method in weapon called");
 	}
 	
 	// these apply to every weapon

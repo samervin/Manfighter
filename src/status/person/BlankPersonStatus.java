@@ -18,12 +18,18 @@ public class BlankPersonStatus extends PersonStatus {
 		return new HashSet<Character>();
 	}
 	
+	public boolean isActive(){
+		//TODO: this really isn't accurate
+		return true;
+	}
+	
 	public void tick() {
 		//nothing
 	}
 	
 	public void reset() {
 		//nothing
+		System.out.println("WTF");
 	}
 
 }

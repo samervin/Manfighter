@@ -30,6 +30,7 @@ public abstract class Person {
 	
 	public void reset() {
 		personstatus.reset();
+		weapon.inflictingStatus.reset();
 	}
 	
 	public void tick() {

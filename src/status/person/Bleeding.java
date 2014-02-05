@@ -7,16 +7,16 @@ import game.PersonStatus;
 public class Bleeding extends PersonStatus {
 
 	private final int dmg = 30;
-	private final int time = 1000;
-	private int counter = 1000;
+	private final int timeBetween = 1000;
+	private final int totalTime = 5000;
+	private int counter = 0;
 	
 	public String toString() {
 		return "bleeding";
 	}
 	
 	public int getDamage() {
-		if(counter == 0) {
-			counter = time;
+		if(counter % timeBetween == 0) {
 			return dmg;
 		}
 		
@@ -26,13 +26,22 @@ public class Bleeding extends PersonStatus {
 	public HashSet<Character> getRestrictedActions() {
 		return new HashSet<Character>();
 	}
+	
+	public boolean isActive() {
+		if(counter >= totalTime) {
+			return false;
+		}
+		
+		return true;
+		
+	}
 
 	public void tick() {
-		counter--;
+		counter++;
 	}
 	
 	public void reset() {
-		counter = time;
+		counter = 0;
 	}
 
 }

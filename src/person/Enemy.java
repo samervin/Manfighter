@@ -6,7 +6,6 @@ import game.Weapon;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -58,19 +57,6 @@ public abstract class Enemy extends Person {
 
 		return a;
 	}
-
-	protected ArrayList<Character> removeActions(ArrayList<Character> actionList, char action) {
-		for(int i = 0; i < actionList.size(); i++) {
-			if(actionList.get(i) == action) {
-				actionList.remove(i);
-			}
-		}
-		
-		return actionList;
-	}
-
-
-
 
 	protected String createRandomName() {
 		String n = "";

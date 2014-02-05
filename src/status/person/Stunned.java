@@ -5,6 +5,9 @@ import game.PersonStatus;
 import java.util.HashSet;
 
 public class Stunned extends PersonStatus {
+	
+	private final int totalTime = 3000;
+	private int counter = 0;
 
 	public String toString() {
 		return "stunned";
@@ -25,13 +28,22 @@ public class Stunned extends PersonStatus {
 		a.add('m');
 		return a;
 	}
+	
+	public boolean isActive() {
+		if(counter >= totalTime) {
+			return false;
+		}
+		
+		return true;
+	}
 
 	public void tick() {
-		//nothing yet
+		counter++;
 	}
 	
 	public void reset() {
-		//nothing yet
+		counter = 0;
+		System.out.println("<><><> reset method called in STUNNED, counter is " + counter);
 	}
 
 }

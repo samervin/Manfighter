@@ -18,7 +18,7 @@ public class EnemyBasic extends Enemy {
 		HashSet<Character> valids = weapon.getWeaponActions();
 		
 		if(valids.contains('e')) {
-			for(int i = 0; i < 8; i++) {
+			for(int i = 0; i < 7; i++) {
 				a.add('e');
 			}
 		}
@@ -55,6 +55,20 @@ public class EnemyBasic extends Enemy {
 			for(int i = 0; i < 10; i++)
 				a.add('o');
 		}
+		
+		
+		
+		HashSet<Character> restrictions = personstatus.getRestrictedActions();
+		for(Character c : restrictions) {
+			while(a.contains(c)) {
+				a.remove(c);
+			}
+		}
+		
+		if(a.size() == 0)
+			a.add('w');
+		
+		System.out.println(">>>>> " + a);
 		
 		int x = RandGen.getRand(0, a.size() - 1);
 		return a.get(x);

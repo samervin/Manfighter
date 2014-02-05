@@ -31,13 +31,13 @@ public class SniperRifle extends BaseLongrange {
 				return 0;
 		} else if(ready <= 3) {
 			if(RandGen.getRand(1, 3) > 1) {
-				return (ready * 5) + weaponStatus.getDamage(damage);
+				return (ready * 6) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		} else if(ready <= 6) {
 			if(RandGen.getRand(1, 4) > 1) {
 				System.out.println("A shot on a vital organ!");
-				return (ready * 12) + weaponStatus.getDamage(damage);
+				return (ready * 15) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		}
