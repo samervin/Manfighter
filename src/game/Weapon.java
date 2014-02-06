@@ -12,6 +12,7 @@ public abstract class Weapon {
 
 	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
 	protected PersonStatus inflictingStatus = new BlankPersonStatus();
+	protected final PersonStatus blankInflictingStatus = new BlankPersonStatus();
 	
 	protected WeaponStatus getRandomStatus() {
 		int k = RandGen.getRand(1, 7);
@@ -45,8 +46,8 @@ public abstract class Weapon {
 	public abstract String getVerb();
 	public abstract PersonStatus getInflictedStatus();
 	
-	// these don't apply to fist-types, which are always ready
-	public abstract boolean isReadied(); 
+	// these don't apply to fists/knives
+	public abstract boolean isReadied();
 	public abstract void setReadied(boolean readiness);
 	
 	// these don't apply to melee types, which have no ammo (usually)

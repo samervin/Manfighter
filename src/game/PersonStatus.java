@@ -5,10 +5,23 @@ import java.util.HashSet;
 public abstract class PersonStatus {
 
 	public abstract String toString();
-	public abstract int getDamage();
-	public abstract HashSet<Character> getRestrictedActions();
-	public abstract boolean isActive();
+	public void tick() {}
+	public void reset() {}
 	
-	public abstract void tick();
-	public abstract void reset();
+	public int getDamage() {
+		return 0;
+	}
+	
+	public int getDamageChange(int damage) {
+		return damage;
+	}
+	
+	public HashSet<Character> getRestrictedActions() {
+		return new HashSet<Character>();
+	}
+	
+	public boolean isActive() {
+		return true;
+	}
+
 }

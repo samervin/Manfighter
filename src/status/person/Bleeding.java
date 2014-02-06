@@ -1,7 +1,5 @@
 package status.person;
 
-import java.util.HashSet;
-
 import game.PersonStatus;
 
 public class Bleeding extends PersonStatus {
@@ -23,10 +21,6 @@ public class Bleeding extends PersonStatus {
 		return 0;
 	}
 	
-	public HashSet<Character> getRestrictedActions() {
-		return new HashSet<Character>();
-	}
-	
 	public boolean isActive() {
 		if(counter >= totalTime) {
 			return false;
@@ -43,5 +37,4 @@ public class Bleeding extends PersonStatus {
 	public void reset() {
 		counter = 0;
 	}
-
 }

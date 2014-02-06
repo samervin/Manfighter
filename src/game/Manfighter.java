@@ -39,14 +39,14 @@ public class Manfighter {
 
 		Player p = new Player(stemp);
 
-		System.out.println("\nStep into the battleground, " + p.getName() + "!");
+		System.out.println("\nStep into the battleground, " + p + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
 
 		int kills = -1;
 		while(p.getHealth() > 0) {
 			kills++;
 			Enemy e = new EnemyBasic();
-			System.out.println("\n\n\nYour next opponent is " + e.getName() + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
+			System.out.println("\n\n\nYour next opponent is " + e + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 			combat(p, e);
 			p.reset();
 			e.reset();
@@ -70,8 +70,8 @@ public class Manfighter {
 			if(isValidFight(p, e)) {
 				int statdmg = p.getStatus().getDamage();
 				if(statdmg != 0) {
+					statdmg = p.applyDamage(statdmg);
 					System.out.println("You lost " + statdmg + " health due to " + p.getStatus() + "!");
-					p.setHealth(p.getHealth() - statdmg);
 					System.out.println("Your new health is " + p.getHealth() + ".");
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
@@ -79,9 +79,9 @@ public class Manfighter {
 			if(isValidFight(p, e)) {
 				int statdmg = e.getStatus().getDamage();
 				if(statdmg != 0) {
-					System.out.println(e.getName() + " lost " + statdmg + " health due to " + e.getStatus() + "!");
-					e.setHealth(e.getHealth() - statdmg);
-					System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+					statdmg = e.applyDamage(statdmg);
+					System.out.println(e + " lost " + statdmg + " health due to " + e.getStatus() + "!");
+					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
 			}
@@ -95,7 +95,7 @@ public class Manfighter {
 			}
 			if(isValidFight(p, e)) {
 				if(!e.getStatus().isActive()) {
-					System.out.println(e.getName() + " is no longer " + e.getStatus() + ".");
+					System.out.println(e + " is no longer " + e.getStatus() + ".");
 					p.getWeapon().reset();
 					e.setStatus(new BlankPersonStatus());
 					
@@ -120,7 +120,7 @@ public class Manfighter {
 			System.out.println("You lost, better luck next time!");
 		}
 		else {
-			System.out.println("Congratulations, you defeated " + e.getName() + "!");
+			System.out.println("Congratulations, you defeated " + e + "!");
 			p.reset();
 		}
 			
@@ -171,15 +171,15 @@ public class Manfighter {
 				int dmg = wep.getDamage();
 				dmg = getCritDamage(p, dmg);
 				if(dmg > 0) {
-					System.out.println("You " + wep.getVerb() + " " + e.getName() + ", dealing " + dmg + " damage!");
-					e.setHealth(e.getHealth() - dmg);
-					System.out.println(e.getName() + "'s new health is " + e.getHealth() + ".");
+					dmg = e.applyDamage(dmg);
+					System.out.println("You " + wep.getVerb() + " " + e + ", dealing " + dmg + " damage!");
+					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					
-					
+					PersonStatus wepStat = wep.getInflictedStatus();
 					//TODO: this also blows
-					if(!e.getStatus().getClass().equals(wep.getInflictedStatus().getClass())) {
-						System.out.println("Your weapon inflicted " + wep.getInflictedStatus() + " on your enemy!");
-						e.setStatus(wep.getInflictedStatus());
+					if(!(wepStat instanceof BlankPersonStatus) &&!e.getStatus().getClass().equals(wepStat.getClass())) {
+						System.out.println("Your weapon inflicted " + wepStat + " on your enemy!");
+						e.setStatus(wepStat);
 					}
 					
 					
@@ -272,17 +272,17 @@ public class Manfighter {
 		case 'e':
 			reactionTime = timeOther;
 			wep.setReadied(true);
-			System.out.println(e.getName() + " readied his " + wep + ". His movement speed is lowered.");
+			System.out.println(e + " readied his " + wep + ". His movement speed is lowered.");
 			break;
 		case 'l':
 			reactionTime = timeOther;
 			wep.setReadied(false);
-			System.out.println(e.getName() + " lowered his " + wep + ". His movement speed is increased.");
+			System.out.println(e + " lowered his " + wep + ". His movement speed is increased.");
 			break;
 		case 'o':
 			reactionTime = timeOther;
 			wep.reload();
-			System.out.println(e.getName() + " reloaded his " + wep + ".");
+			System.out.println(e + " reloaded his " + wep + ".");
 			break;
 		case 'a':
 			if(wep.getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
@@ -290,24 +290,25 @@ public class Manfighter {
 				int dmg = wep.getDamage();
 				dmg = getCritDamage(e, dmg);
 				if(dmg > 0) {
-					System.out.println(e.getName() + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
-					p.setHealth(p.getHealth() - dmg);
-					System.out.println(p.getName() + "'s new health is " + p.getHealth() + ".");
+					dmg = p.applyDamage(dmg);
+					System.out.println(e + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
+					System.out.println(p + "'s new health is " + p.getHealth() + ".");
 					
-					if(!p.getStatus().getClass().equals(wep.getInflictedStatus().getClass())) {
-						System.out.println(e.getName() + "'s weapon inflicted " + wep.getInflictedStatus() + " on you!");
-						p.setStatus(wep.getInflictedStatus());
+					PersonStatus wepStat = wep.getInflictedStatus();
+					if(!(wepStat instanceof BlankPersonStatus) && !p.getStatus().getClass().equals(wepStat.getClass())) {
+						System.out.println(e + "'s weapon inflicted " + wepStat + " on you!");
+						p.setStatus(wepStat);
 					}
 					
 					
 				} else {
-					System.out.println(e.getName() + " missed!");
+					System.out.println(e + " missed!");
 				}
 
 			}
 			else {
 				reactionTime = timeOther;
-				System.out.println(e.getName() + " tried to attack, but is not in range!");
+				System.out.println(e + " tried to attack, but is not in range!");
 			}
 			
 			break;
@@ -315,11 +316,11 @@ public class Manfighter {
 			reactionTime = timeStep;
 			if(wep.isReadied()) {
 				int dis = move(p, e, 60, 0);
-				System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
+				System.out.println(e + " stepped forward " + dis + " cm.");			
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			} else {
 				int dis = move(p, e, 75, 0);
-				System.out.println(e.getName() + " stepped forward " + dis + " cm.");			
+				System.out.println(e + " stepped forward " + dis + " cm.");			
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			}
 
@@ -328,18 +329,18 @@ public class Manfighter {
 			reactionTime = timeStep;
 			if(wep.isReadied()) {
 				int dis = move(p, e, -45, 0);
-				System.out.println(e.getName() + " stepped backward " + dis + " cm.");
+				System.out.println(e + " stepped backward " + dis + " cm.");
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			} else {
 				int dis = move(p, e, -60, 0);
-				System.out.println(e.getName() + " stepped backward " + dis + " cm.");
+				System.out.println(e + " stepped backward " + dis + " cm.");
 				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
 			}
 
 			break;
 		case 'w':
 			reactionTime = timeOther;
-			System.out.println(e.getName() + " is waiting a turn.");
+			System.out.println(e + " is waiting a turn.");
 			break;
 		default:
 			reactionTime = timeOther;

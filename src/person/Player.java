@@ -1,51 +1,16 @@
 package person;
 
 import game.Person;
-import game.Weapon;
-
 import java.util.HashSet;
 
 public class Player extends Person {
 
-	private String name;
-	private int health = 750;
-	private int location;
+	private final int maxhealth = 750;
 
 	public Player(String n) {
 		name = n;
 		weapon = getRandomWeapon();
-	}
-
-	public int getDamage() {
-		return weapon.getDamage();
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int h) {
-		health = h;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setWeapon(Weapon weapon) {
-		this.weapon = weapon;
-	}
-
-	public Weapon getWeapon() {
-		return weapon;
-	}
-
-	public void setLocation(int l){
-		location = l;
-	}
-
-	public int getLocation() {
-		return location;
+		health = maxhealth;
 	}
 
 	public HashSet<Character> getActions() {

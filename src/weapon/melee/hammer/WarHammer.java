@@ -1,25 +1,25 @@
-package weapon.melee.club;
+package weapon.melee.hammer;
 
 import game.PersonStatus;
 import game.RandGen;
 
 import java.util.HashSet;
 
-import status.person.Bruised;
+import status.person.Stunned;
 
-public class Mace extends BaseClub {
+public class WarHammer extends BaseHammer {
 
-	private int damage = 200;
-	private int range = 100;
+	private final int damage = 500;
+	private final int range = 160;
 	private boolean ready = false;
-	
-	public Mace() {
+
+	public WarHammer() {
 		weaponStatus = getRandomStatus();
-		inflictingStatus = new Bruised();
+		inflictingStatus = new Stunned();
 	}
 
 	public String getBaseName() {
-		return "Mace";
+		return "War hammer";
 	}
 
 	public int getDamage() {
@@ -27,7 +27,7 @@ public class Mace extends BaseClub {
 			ready = false;
 			return weaponStatus.getDamage(damage);
 		}
-		
+
 		return 0;
 	}
 
@@ -36,21 +36,29 @@ public class Mace extends BaseClub {
 	}
 
 	public int getFireTime() {
-		return 1500;
+		return 2500;
 	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
-		
-		
+
+
 		if(ready) {
 			a.add('a'); //attack
 			a.add('l');
 		}	
 		else
 			a.add('e');
-		
+
 		return a;
+	}
+
+	public PersonStatus getInflictedStatus() {
+		int x = RandGen.getRand(1, 10);
+		if(x < 3 && ready)
+			return inflictingStatus;
+		else
+			return blankInflictingStatus;
 	}
 
 	public boolean isReadied() {
@@ -59,14 +67,6 @@ public class Mace extends BaseClub {
 
 	public void setReadied(boolean readiness) {
 		ready = readiness;
-	}
-
-	public PersonStatus getInflictedStatus() {
-		int x = RandGen.getRand(1, 10);
-		if(x < 8 && ready)
-			return inflictingStatus;
-		else
-			return blankInflictingStatus;
 	}
 
 }

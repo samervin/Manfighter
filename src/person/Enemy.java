@@ -2,7 +2,6 @@ package person;
 
 import game.Person;
 import game.RandGen;
-import game.Weapon;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,43 +10,7 @@ import java.util.Scanner;
 
 public abstract class Enemy extends Person {
 
-	protected String name;
-	protected int health;
-	protected int location;
-
 	public abstract char getAction(int distance);
-
-	public int getDamage() {
-		return weapon.getDamage();
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int h) {
-		health = h;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setWeapon(Weapon weapon) {
-		this.weapon = weapon;
-	}
-
-	public Weapon getWeapon() {
-		return weapon;
-	}
-
-	public void setLocation(int l){
-		location = l;
-	}
-
-	public int getLocation() {
-		return location;
-	}
 
 	public HashSet<Character> getActions() {
 

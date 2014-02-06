@@ -15,17 +15,44 @@ public abstract class Person {
 	
 	protected PersonStatus personstatus = new BlankPersonStatus();
 	protected Weapon weapon;
+	protected int health;
+	protected int location;
+	protected String name;
 	
-	public abstract String getName();
-	public abstract int getHealth();
+	public String toString() {
+		return name;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+	
 	public Weapon getWeapon() {
 		return weapon;
 	}
 	
-	public abstract int getDamage();
-	public abstract void setHealth(int newHealth);
-	public abstract void setLocation(int newLocation);
-	public abstract int getLocation();
+	public void setWeapon(Weapon w) {
+		weapon = w;
+	}
+	
+	public int getDamage() {
+		return weapon.getDamage();
+	}
+	
+	public int applyDamage(int dmg)  {//return value is ACTUAL damage done
+		dmg = personstatus.getDamageChange(dmg);
+		health -= dmg;
+		return dmg;
+	}
+	
+	public void setLocation(int newLocation) {
+		location = newLocation;
+	}
+	
+	public int getLocation() {
+		return location;
+	}
+	
 	public abstract HashSet<Character> getActions();
 	
 	public void reset() {
@@ -35,10 +62,6 @@ public abstract class Person {
 	
 	public void tick() {
 		personstatus.tick();
-	}
-	
-	public int applyDamage(int rawdmg) {
-		return 0;
 	}
 	
 	public PersonStatus getStatus() {

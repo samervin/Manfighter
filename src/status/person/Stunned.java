@@ -13,10 +13,6 @@ public class Stunned extends PersonStatus {
 		return "stunned";
 	}
 
-	public int getDamage() {
-		return 0;
-	}
-
 	public HashSet<Character> getRestrictedActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		a.add('a');
@@ -44,5 +40,4 @@ public class Stunned extends PersonStatus {
 	public void reset() {
 		counter = 0;
 	}
-
 }

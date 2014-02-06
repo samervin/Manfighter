@@ -3,7 +3,6 @@ package game;
 public abstract class WeaponStatus {
 
 	public abstract String toString();
-	//public abstract void reset();
 	
 	public int getDamage(int d) {
 		return d;
