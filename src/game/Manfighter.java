@@ -48,8 +48,6 @@ public class Manfighter {
 			Enemy e = new EnemyBasic();
 			System.out.println("\n\n\nYour next opponent is " + e + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 			combat(p, e);
-			p.reset();
-			e.reset();
 		}
 
 		System.out.println("You finished with " + kills + " kills!");
@@ -65,9 +63,9 @@ public class Manfighter {
 		int enemyClock = 0;
 		int totalClock = 0;
 
-		while(isValidFight(p, e)) {
+		while(p.getHealth() > 0 && e.getHealth() > 0) {
 			
-			if(isValidFight(p, e)) {
+			if(p.getHealth() > 0) {
 				int statdmg = p.getStatus().getDamage();
 				if(statdmg != 0) {
 					statdmg = p.applyDamage(statdmg);
@@ -76,7 +74,7 @@ public class Manfighter {
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
 			}
-			if(isValidFight(p, e)) {
+			if(e.getHealth() > 0) {
 				int statdmg = e.getStatus().getDamage();
 				if(statdmg != 0) {
 					statdmg = e.applyDamage(statdmg);
@@ -85,7 +83,7 @@ public class Manfighter {
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
 			}
-			if(isValidFight(p, e)) {
+			if(p.getHealth() > 0) {
 				if(!p.getStatus().isActive()) {
 					System.out.println("You are no longer " + p.getStatus() + ".");
 					e.getWeapon().reset();
@@ -93,7 +91,7 @@ public class Manfighter {
 					
 				}
 			}
-			if(isValidFight(p, e)) {
+			if(e.getHealth() > 0) {
 				if(!e.getStatus().isActive()) {
 					System.out.println(e + " is no longer " + e.getStatus() + ".");
 					p.getWeapon().reset();
@@ -101,11 +99,11 @@ public class Manfighter {
 					
 				}
 			}
-			if(isValidFight(p, e) && playerClock == 0) {
+			if(p.getHealth() > 0 && playerClock == 0) {
 				playerClock = playerTurn(p,e);
 				System.out.println("\t\t\t\t\t\t\tYou will waste: " + playerClock + "ms, current time: " + totalClock + " ms.");
 			}
-			if(isValidFight(p, e) && enemyClock == 0) {
+			if(e.getHealth() > 0 && enemyClock == 0) {
 				enemyClock = enemyTurn(p,e);
 				System.out.println("\t\t\t\t\t\t\tHe will waste: " + enemyClock + "ms, current time: " + totalClock + " ms.");
 			}
@@ -435,15 +433,10 @@ public class Manfighter {
 	private int getCritDamage(Person y, int damage) {
 		if(y.getWeapon().isCrit()) {
 			System.out.println("A critical hit!");
-			damage*=3;
-			damage/=2; //net result 1.5x
+			damage*= 2;
 		}
 
 		return damage;
-	}
-
-	private boolean isValidFight(Person p, Person e) {
-		return (p.getHealth() > 0 && e.getHealth() > 0);
 	}
 
 	private boolean stringDivisibleBy(String str, int num) {

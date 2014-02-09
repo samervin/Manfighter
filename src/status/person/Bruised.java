@@ -9,8 +9,8 @@ public class Bruised extends PersonStatus {
 	}
 	
 	public int getDamageChange(int dmg) {
-		dmg *= 6;
-		dmg /= 5; //20% increase
+		dmg *= 4;
+		dmg /= 3; //33% increase
 		return dmg;
 	}
 	

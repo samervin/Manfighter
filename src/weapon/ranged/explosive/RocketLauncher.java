@@ -1,20 +1,18 @@
 package weapon.ranged.explosive;
 
-import game.PersonStatus;
 import game.RandGen;
 
 import java.util.HashSet;
 
 public class RocketLauncher extends BaseExplosive {
 
-	private int damage = 350;
-	private int range = 500;
-	private boolean ready = false;
-	private int maxClip = 4;
-	private int clip = 4;
-
 	public RocketLauncher() {
 		weaponStatus = getRandomStatus();
+		damage = 300;
+		range = 500;
+		maxClip = 4;
+		clip = 4;
+		fireTime = 2000;
 	}
 
 	public String getBaseName() {
@@ -23,53 +21,20 @@ public class RocketLauncher extends BaseExplosive {
 
 	public int getDamage() {
 		clip--;
+		RandGen rand = new RandGen();
+		
 		if(ready) {
-			if(RandGen.getRand(1, 5) > 1) {
+			if(rand.getRand(1, 5) > 1) {
 				return weaponStatus.getDamage(damage);
 			}
 		}
 		else {
-			if(RandGen.getRand(1, 5) > 3) {
+			if(rand.getRand(1, 5) > 3) {
 				return weaponStatus.getDamage(damage);
 			}
 		}
 		
 		return 0;
-	}
-
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public boolean isReadied() {
-		return ready;
-	}
-
-	public void setReadied(boolean r) {
-		ready = r;
-	}
-
-	public boolean hasLoadedAmmo() {
-		if(clip == 0)
-			return false;
-		else
-			return true;
-	}
-	
-	public boolean hasFullAmmo() {
-		return (clip == maxClip);
-	}
-
-	public void reload() {
-		clip = maxClip;
-		ready = false;
-	}
-	
-	public int getFireTime() {
-		if(ready)
-			return 1900;
-		else
-			return 2400;
 	}
 	
 	public HashSet<Character> getWeaponActions() {
@@ -85,9 +50,5 @@ public class RocketLauncher extends BaseExplosive {
 			a.add('e');
 		
 		return a;
-	}
-	
-	public PersonStatus getInflictedStatus() {
-		return inflictingStatus;
 	}
 }

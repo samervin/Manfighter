@@ -1,31 +1,12 @@
 package weapon.melee.fists;
 
 import game.RandGen;
-import game.Weapon;
 
 import java.util.HashSet;
 
-public abstract class BaseFists extends Weapon {
-	
-	public boolean isReadied() {
-		return false; //fists are trivially always ready, false prevents movement penalties
-	}
-	
-	public void setReadied(boolean r) {
-		//do nothing
-	}
-	
-	public boolean hasFullAmmo() {
-		return true; // trivially
-	}
-	
-	public boolean hasLoadedAmmo() {
-		return true; //fists don't reload!
-	}
-	
-	public void reload() {
-		//do nothing
-	}
+import weapon.WeaponMelee;
+
+public abstract class BaseFists extends WeaponMelee {
 	
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
@@ -35,7 +16,9 @@ public abstract class BaseFists extends Weapon {
 	}
 	
 	public boolean isCrit() {
-		return((RandGen.getRand(1,50) < 10) || weaponStatus.getCritChance());
+		RandGen rand = new RandGen();
+		
+		return((rand.getRand(1,50) < 11) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

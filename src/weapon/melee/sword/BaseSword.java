@@ -1,24 +1,14 @@
 package weapon.melee.sword;
 
 import game.RandGen;
-import game.Weapon;
+import weapon.WeaponMelee;
 
-public abstract class BaseSword extends Weapon {
-	
-	public boolean hasFullAmmo() {
-		return true; // trivially
-	}
-	
-	public boolean hasLoadedAmmo() {
-		return true;
-	}
-
-	public void reload() {
-		//do nothing
-	}
+public abstract class BaseSword extends WeaponMelee {
 	
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 8) || weaponStatus.getCritChance());
+		RandGen rand = new RandGen();
+		
+		return ((rand.getRand(1,50) < 8) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

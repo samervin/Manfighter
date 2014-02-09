@@ -1,17 +1,14 @@
 package weapon.ranged.unpowered;
 
-import game.PersonStatus;
-
 import java.util.HashSet;
 
 public class Shortbow extends BaseUnpowered {
-
-	private int damage = 175;
-	private int range = 400;
-	private boolean ready = false;
 	
 	public Shortbow() {
 		weaponStatus = getRandomStatus();
+		damage = 170;
+		range = 400;
+		fireTime = 975;
 	}
 
 	public String getBaseName() {
@@ -21,14 +18,6 @@ public class Shortbow extends BaseUnpowered {
 	public int getDamage() {
 		ready = false;
 		return weaponStatus.getDamage(damage);
-	}
-
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public int getFireTime() {
-		return 975;
 	}
 
 	public HashSet<Character> getWeaponActions() {
@@ -41,19 +30,6 @@ public class Shortbow extends BaseUnpowered {
 			a.add('e');
 		
 		return a;
-	}
-
-	public boolean isReadied() {
-		return ready;
-	}
-
-	public void setReadied(boolean readiness) {
-		ready = readiness;
-		
-	}
-	
-	public PersonStatus getInflictedStatus() {
-		return inflictingStatus;
 	}
 	
 }

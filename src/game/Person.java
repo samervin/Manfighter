@@ -1,10 +1,12 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
 import weapon.melee.club.Mace;
 import weapon.melee.fists.Fists;
+import weapon.melee.hammer.WarHammer;
 import weapon.melee.knife.Switchblade;
 import weapon.melee.sword.Dagger;
 import weapon.ranged.explosive.RocketLauncher;
@@ -56,7 +58,6 @@ public abstract class Person {
 	public abstract HashSet<Character> getActions();
 	
 	public void reset() {
-		personstatus.reset();
 		weapon.inflictingStatus.reset();
 	}
 	
@@ -72,19 +73,18 @@ public abstract class Person {
 	}
 	
 	public Weapon getRandomWeapon() {
-		int itemp = RandGen.getRand(1, 7);
-		Weapon w;
-		switch(itemp) {
-		case 1: w = new Fists(); break;
-		case 2: w = new Dagger(); break;
-		case 3: w = new RocketLauncher(); break;
-		case 4: w = new SniperRifle(); break;
-		case 5: w = new Shortbow(); break;
-		case 6: w = new Mace(); break;
-		case 7: w = new Switchblade(); break;
-		default: w = new Fists();
-		}
+		ArrayList<Weapon> allWeapons = new ArrayList<Weapon>();
+		allWeapons.add(new Mace());
+		allWeapons.add(new Fists());
+		allWeapons.add(new WarHammer());
+		allWeapons.add(new Switchblade());
+		allWeapons.add(new Dagger());
+		allWeapons.add(new RocketLauncher());
+		allWeapons.add(new SniperRifle());
+		allWeapons.add(new Shortbow());
 		
-		return w;
+		RandGen rand = new RandGen();
+		int x = rand.getRand(0, allWeapons.size() - 1);
+		return allWeapons.get(x);
 	}
 }

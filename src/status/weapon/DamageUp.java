@@ -2,14 +2,16 @@ package status.weapon;
 
 import game.WeaponStatus;
 
-public class DoubleDamage extends WeaponStatus {
+public class DamageUp extends WeaponStatus {
 
 	public String toString() {
-		return "doubled damage";
+		return "Damaging";
 	}
 	
 	public int getDamage(int d) {
-		return d*2;
+		d *= 3;
+		d /= 2; //1.5x increase
+		return d;
 	}
 	
 }

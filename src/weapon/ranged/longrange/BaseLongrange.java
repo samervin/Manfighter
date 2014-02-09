@@ -1,12 +1,14 @@
 package weapon.ranged.longrange;
 
 import game.RandGen;
-import game.Weapon;
+import weapon.WeaponRanged;
 
-public abstract class BaseLongrange extends Weapon {
+public abstract class BaseLongrange extends WeaponRanged {
 
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 2) || weaponStatus.getCritChance());
+		RandGen rand = new RandGen();
+		
+		return ((rand.getRand(1,50) < 2) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

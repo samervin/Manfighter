@@ -1,20 +1,20 @@
 package weapon.ranged.longrange;
 
-import game.PersonStatus;
 import game.RandGen;
 
 import java.util.HashSet;
 
 public class SniperRifle extends BaseLongrange {
 
-	private int damage = 75;
-	private int range = 1000; //a lot
-	private int ready = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
-	private int maxClip = 2;
-	private int clip = 2;
+	private int readyState = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
 
 	public SniperRifle() {
 		weaponStatus = getRandomStatus();
+		damage = 80;
+		range = 1000;
+		maxClip = 2;
+		clip = 2;
+		fireTime = 1250;
 	}
 	
 	public String getBaseName() {
@@ -23,67 +23,53 @@ public class SniperRifle extends BaseLongrange {
 
 	public int getDamage() {
 		clip--;
+		RandGen rand = new RandGen();
 		
-		if(ready == 0) {
-			if(RandGen.getRand(1, 4) == 1)
+		if(readyState == 0) {
+			if(rand.getRand(1, 4) == 1)
 				return weaponStatus.getDamage(damage);
 			else
 				return 0;
-		} else if(ready <= 3) {
-			if(RandGen.getRand(1, 3) > 1) {
-				return (ready * 6) + weaponStatus.getDamage(damage);
+		} else if(readyState <= 3) {
+			if(rand.getRand(1, 3) > 1) {
+				return (readyState * 6) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
-		} else if(ready <= 6) {
-			if(RandGen.getRand(1, 4) > 1) {
+		} else if(readyState <= 6) {
+			if(rand.getRand(1, 4) > 1) {
 				System.out.println("A shot on a vital organ!");
-				return (ready * 15) + weaponStatus.getDamage(damage);
+				return (readyState * 15) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		}
 
 		System.out.println("A headshot!");
-		return ready * weaponStatus.getDamage(damage);
-	}
-
-	public int getRange() {
-		return weaponStatus.getRange(range);
+		return readyState * weaponStatus.getDamage(damage);
 	}
 
 	public boolean isReadied() {
-		if(ready != 0)
+		if(readyState != 0)
 			return true;
 		return false;
 	}
 
 	public void setReadied(boolean readiness) {
 		if(readiness)
-			ready++;
+			readyState++;
 		else
-			ready = 0;
-	}
-	
-	public boolean hasFullAmmo() {
-		return (clip == maxClip);
-	}
-	
-	public boolean hasLoadedAmmo() {
-		if(clip == 0)
-			return false;
-		else
-			return true;
+			readyState = 0;
 	}
 
 	public void reload() {
 		clip = maxClip;
-		ready = 0;
+		readyState = 0;
 	}
 	
 	public int getFireTime() {
-		if(ready > 7)
-			return 1200;
+		if(readyState > 7)
+			return weaponStatus.getAttackSpeed(fireTime);
 		else
-			return 2500;
+			return weaponStatus.getAttackSpeed(fireTime * 2);
 	}
 
 	public HashSet<Character> getWeaponActions() {
@@ -95,14 +81,10 @@ public class SniperRifle extends BaseLongrange {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
-		if(ready > 0)
+		if(readyState > 0)
 			a.add('l');
 		
 		return a;
-	}
-	
-	public PersonStatus getInflictedStatus() {
-		return inflictingStatus;
 	}
 	
 }

@@ -70,7 +70,8 @@ public class EnemyBasic extends Enemy {
 		
 		System.out.println(">>Enemy choices: " + a);
 		
-		int x = RandGen.getRand(0, a.size() - 1);
+		RandGen rand = new RandGen();
+		int x = rand.getRand(0, a.size() - 1);
 		return a.get(x);
 		
 	}

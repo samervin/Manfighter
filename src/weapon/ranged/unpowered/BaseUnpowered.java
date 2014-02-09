@@ -1,24 +1,14 @@
 package weapon.ranged.unpowered;
 
 import game.RandGen;
-import game.Weapon;
+import weapon.WeaponRanged;
 
-public abstract class BaseUnpowered extends Weapon {
-
-	public boolean hasFullAmmo() {
-		return true; //trivially
-	}
-
-	public boolean hasLoadedAmmo() {
-		return true; //trivially
-	}
-
-	public void reload() {
-		//do nothing
-	}
+public abstract class BaseUnpowered extends WeaponRanged {
 	
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 2) || weaponStatus.getCritChance());
+		RandGen rand = new RandGen();
+		
+		return ((rand.getRand(1,50) < 2) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

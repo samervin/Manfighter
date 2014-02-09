@@ -1,12 +1,14 @@
 package weapon.ranged.explosive;
 
 import game.RandGen;
-import game.Weapon;
+import weapon.WeaponRanged;
 
-public abstract class BaseExplosive extends Weapon {
+public abstract class BaseExplosive extends WeaponRanged {
 
 	public boolean isCrit() {
-		return ((RandGen.getRand(1,50) < 2) || weaponStatus.getCritChance());
+		RandGen rand = new RandGen();
+		
+		return ((rand.getRand(1,50) < 2) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

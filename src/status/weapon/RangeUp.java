@@ -2,10 +2,10 @@ package status.weapon;
 
 import game.WeaponStatus;
 
-public class DoubleRange extends WeaponStatus {
+public class RangeUp extends WeaponStatus {
 
 	public String toString() {
-		return "doubled range";
+		return "Long-range";
 	}
 	
 	public int getRange(int r) {

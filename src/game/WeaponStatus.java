@@ -15,4 +15,8 @@ public abstract class WeaponStatus {
 	public boolean getCritChance() {
 		return false;
 	}
+	
+	public int getAttackSpeed(int s) {
+		return s;
+	}
 }

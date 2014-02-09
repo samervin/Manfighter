@@ -22,14 +22,16 @@ public abstract class Enemy extends Person {
 	}
 
 	protected String createRandomName() {
+		RandGen rand = new RandGen();
 		String n = "";
-		int x = RandGen.getRand(1, 50);
+		
+		int x = rand.getRand(1, 50);
 		if(x == 50) {
 			Scanner special;
 			try {
 				special = new Scanner(new File("src/data/name_special.txt"));
 				int max = Integer.parseInt(special.nextLine()) -1; //off-by-one errors
-				int maxRand = RandGen.getRand(0, max);
+				int maxRand = rand.getRand(0, max);
 				for(int i = 0; i < maxRand; i++) {
 					special.nextLine();
 				}
@@ -46,7 +48,7 @@ public abstract class Enemy extends Person {
 				try {
 					prefix = new Scanner(new File("src/data/name_prefix.txt"));
 					int max = Integer.parseInt(prefix.nextLine()) -1; //off-by-one errors
-					int maxRand = RandGen.getRand(0, max);
+					int maxRand = rand.getRand(0, max);
 					for(int i = 0; i < maxRand; i++) {
 						prefix.nextLine();
 					}
@@ -62,7 +64,7 @@ public abstract class Enemy extends Person {
 			try {
 				first = new Scanner(new File("src/data/name_first.txt"));
 				int max = Integer.parseInt(first.nextLine()) -1; //off-by-one errors
-				int maxRand = RandGen.getRand(0, max);
+				int maxRand = rand.getRand(0, max);
 				for(int i = 0; i < maxRand; i++) {
 					first.nextLine();
 				}
@@ -78,7 +80,7 @@ public abstract class Enemy extends Person {
 				try {
 					last = new Scanner(new File("src/data/name_last.txt"));
 					int max = Integer.parseInt(last.nextLine()) -1; //off-by-one errors
-					int maxRand = RandGen.getRand(0, max);
+					int maxRand = rand.getRand(0, max);
 					for(int i = 0; i < maxRand; i++) {
 						last.nextLine();
 					}

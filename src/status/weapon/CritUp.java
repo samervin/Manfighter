@@ -3,14 +3,16 @@ package status.weapon;
 import game.RandGen;
 import game.WeaponStatus;
 
-public class CritIncrease extends WeaponStatus {
+public class CritUp extends WeaponStatus {
 
 	public String toString() {
-		return "more luck";
+		return "Lucky";
 	}
 	
 	public boolean getCritChance() {
-		return (RandGen.getRand(1, 4) == 1);
+		RandGen rand = new RandGen();
+		
+		return (rand.getRand(1, 4) == 1);
 	}
 
 }

@@ -9,13 +9,12 @@ import status.person.Stunned;
 
 public class WarHammer extends BaseHammer {
 
-	private final int damage = 500;
-	private final int range = 160;
-	private boolean ready = false;
-
 	public WarHammer() {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Stunned();
+		damage = 500;
+		range = 160;
+		swingTime = 2500;
 	}
 
 	public String getBaseName() {
@@ -29,14 +28,6 @@ public class WarHammer extends BaseHammer {
 		}
 
 		return 0;
-	}
-
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public int getFireTime() {
-		return 2500;
 	}
 
 	public HashSet<Character> getWeaponActions() {
@@ -54,19 +45,12 @@ public class WarHammer extends BaseHammer {
 	}
 
 	public PersonStatus getInflictedStatus() {
-		int x = RandGen.getRand(1, 10);
-		if(x < 3 && ready)
+		RandGen rand = new RandGen();
+		
+		int x = rand.getRand(1, 10);
+		if(x < 4)
 			return inflictingStatus;
 		else
 			return blankInflictingStatus;
 	}
-
-	public boolean isReadied() {
-		return ready;
-	}
-
-	public void setReadied(boolean readiness) {
-		ready = readiness;
-	}
-
 }

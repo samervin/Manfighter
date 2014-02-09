@@ -8,14 +8,13 @@ import java.util.HashSet;
 import status.person.Bruised;
 
 public class Mace extends BaseClub {
-
-	private int damage = 200;
-	private int range = 100;
-	private boolean ready = false;
 	
 	public Mace() {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Bruised();
+		damage = 200;
+		range = 100;
+		swingTime = 1500;
 	}
 
 	public String getBaseName() {
@@ -31,20 +30,11 @@ public class Mace extends BaseClub {
 		return 0;
 	}
 
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public int getFireTime() {
-		return 1500;
-	}
-
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		
-		
 		if(ready) {
-			a.add('a'); //attack
+			a.add('a');
 			a.add('l');
 		}	
 		else
@@ -53,17 +43,11 @@ public class Mace extends BaseClub {
 		return a;
 	}
 
-	public boolean isReadied() {
-		return ready;
-	}
-
-	public void setReadied(boolean readiness) {
-		ready = readiness;
-	}
-
 	public PersonStatus getInflictedStatus() {
-		int x = RandGen.getRand(1, 10);
-		if(x < 8 && ready)
+		RandGen rand = new RandGen();
+		
+		int x = rand.getRand(1, 10);
+		if(x < 8)
 			return inflictingStatus;
 		else
 			return blankInflictingStatus;

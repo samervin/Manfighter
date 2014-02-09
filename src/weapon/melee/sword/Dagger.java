@@ -1,17 +1,14 @@
 package weapon.melee.sword;
 
-import game.PersonStatus;
-
 import java.util.HashSet;
 
 public class Dagger extends BaseSword {
 
-	private int damage = 100;
-	private int range = 75;
-	private boolean ready = false;
-
 	public Dagger() {
 		weaponStatus = getRandomStatus();
+		damage = 200;
+		range = 75;
+		swingTime = 1000;
 	}
 
 	public String getBaseName() {
@@ -21,34 +18,22 @@ public class Dagger extends BaseSword {
 	public int getDamage() {
 		if(ready) {
 			ready = false;
-			int d = weaponStatus.getDamage(damage * 2);
+			int d = weaponStatus.getDamage(damage);
 			return d;
 		}
 		else {
 			ready = true;
 			System.out.println("Dagger's on the backswing, less damage!");
-			int d = weaponStatus.getDamage(damage);
+			int d = weaponStatus.getDamage(damage / 2);
 			return d;
 		}
-	}
-
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public boolean isReadied() {
-		return ready;
-	}
-
-	public void setReadied(boolean r) {
-		ready = r;
 	}
 	
 	public int getFireTime() {
 		if(ready)
-			return 1000;
+			return weaponStatus.getAttackSpeed(swingTime);
 		else
-			return 1500;
+			return weaponStatus.getAttackSpeed(3 * swingTime / 2);
 	}
 	
 	public HashSet<Character> getWeaponActions() {
@@ -61,9 +46,5 @@ public class Dagger extends BaseSword {
 			a.add('e');
 		
 		return a;
-	}
-	
-	public PersonStatus getInflictedStatus() {
-		return inflictingStatus;
 	}
 }

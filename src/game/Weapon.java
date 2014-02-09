@@ -1,12 +1,15 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
+import status.weapon.AccuracyDown;
 import status.weapon.BlankWeaponStatus;
-import status.weapon.CritIncrease;
-import status.weapon.DoubleDamage;
-import status.weapon.DoubleRange;
+import status.weapon.CritUp;
+import status.weapon.DamageUp;
+import status.weapon.FireRateUp;
+import status.weapon.RangeUp;
 
 public abstract class Weapon {
 
@@ -15,26 +18,33 @@ public abstract class Weapon {
 	protected final PersonStatus blankInflictingStatus = new BlankPersonStatus();
 	
 	protected WeaponStatus getRandomStatus() {
-		int k = RandGen.getRand(1, 7);
-		WeaponStatus s = new BlankWeaponStatus();
-		switch(k) {
-		case 1: s = new DoubleDamage(); break;
-		case 2: s = new CritIncrease(); break;
-		case 3: s = new DoubleRange(); break;
-		}
+		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
+		allStati.add(new DamageUp());
+		allStati.add(new CritUp());
+		allStati.add(new RangeUp());
+		allStati.add(new AccuracyDown());
+		allStati.add(new FireRateUp());
 		
-		return s;
+		int size = allStati.size();
+		for(int i = 0; i < size; i++)
+			allStati.add(new BlankWeaponStatus());
+		
+		RandGen rand = new RandGen();
+		int x = rand.getRand(0, allStati.size()-1);
+		return allStati.get(x);
 	}
 	
 	public String toString() {
 		if(weaponStatus instanceof BlankWeaponStatus)
 			return this.getBaseName();
-		return this.getBaseName() + ", with " + weaponStatus.toString();
+		return weaponStatus + " " + this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1);
 	}
 	
 	public void reset() {
 		inflictingStatus.reset();
 	}
+	
+	
 	
 	// these apply to every weapon
 	public abstract String getBaseName();
