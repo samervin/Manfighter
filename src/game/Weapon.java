@@ -40,10 +40,6 @@ public abstract class Weapon {
 		return weaponStatus + " " + this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1);
 	}
 	
-	public void reset() {
-		inflictingStatus.reset();
-	}
-	
 	
 	
 	// these apply to every weapon

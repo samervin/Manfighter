@@ -27,7 +27,7 @@ public class Shortbow extends BaseUnpowered {
 			a.add('l');
 		}
 		else
-			a.add('e');
+			a.add('r');
 		
 		return a;
 	}

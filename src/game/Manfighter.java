@@ -10,7 +10,7 @@ import status.person.BlankPersonStatus;
 
 public class Manfighter {
 
-	private int test = 1; //1 for quicker testing, 0 for general play
+	private int test = 0; //1 for quicker testing, 0 for general play
 
 	private Scanner in = new Scanner(System.in);
 	private final int close = 60; //minimum distance apart, in cm
@@ -56,7 +56,7 @@ public class Manfighter {
 
 	private void combat(Player p, Enemy e) {
 		p.setLocation(0);
-		e.setLocation(450);
+		e.setLocation(425);
 		System.out.println("You begin " + e.getLocation() + " cm apart.");
 
 		int playerClock = 0;
@@ -86,7 +86,6 @@ public class Manfighter {
 			if(p.getHealth() > 0) {
 				if(!p.getStatus().isActive()) {
 					System.out.println("You are no longer " + p.getStatus() + ".");
-					e.getWeapon().reset();
 					p.setStatus(new BlankPersonStatus());
 					
 				}
@@ -94,17 +93,16 @@ public class Manfighter {
 			if(e.getHealth() > 0) {
 				if(!e.getStatus().isActive()) {
 					System.out.println(e + " is no longer " + e.getStatus() + ".");
-					p.getWeapon().reset();
 					e.setStatus(new BlankPersonStatus());
 					
 				}
 			}
 			if(p.getHealth() > 0 && playerClock == 0) {
-				playerClock = playerTurn(p,e);
+				playerClock = playerTurn(p,e, totalClock);
 				System.out.println("\t\t\t\t\t\t\tYou will waste: " + playerClock + "ms, current time: " + totalClock + " ms.");
 			}
 			if(e.getHealth() > 0 && enemyClock == 0) {
-				enemyClock = enemyTurn(p,e);
+				enemyClock = enemyTurn(p,e, totalClock);
 				System.out.println("\t\t\t\t\t\t\tHe will waste: " + enemyClock + "ms, current time: " + totalClock + " ms.");
 			}
 			playerClock --;
@@ -119,12 +117,12 @@ public class Manfighter {
 		}
 		else {
 			System.out.println("Congratulations, you defeated " + e + "!");
-			p.reset();
+			p.setStatus(new BlankPersonStatus());
 		}
 			
 	}
 
-	private int playerTurn(Player p, Enemy e) {
+	private int playerTurn(Player p, Enemy e, int currentTime) {
 		int actionTime;
 		Weapon wep = p.getWeapon();
 
@@ -132,23 +130,25 @@ public class Manfighter {
 		System.out.print("Will you: ");
 		if(allactions.contains('a') && getDistanceBetween(p, e) <= wep.getRange())
 			System.out.print("attack[a], ");
-		if(allactions.contains('e'))
-			System.out.print("ready your weapon[e], ");
+		if(allactions.contains('r'))
+			System.out.print("ready your weapon[r], ");
 		if(allactions.contains('l'))
 			System.out.print("lower your weapon[l], ");
 		if(allactions.contains('o'))
 			System.out.print("reload your weapon[o], ");
+		if(allactions.contains('i'))
+			System.out.print("aim your weapon[i], ");
 		if(allactions.contains('d') && canAdvance(p, e))
 			System.out.print("advance[d], ");
-		if(allactions.contains('r'))
-			System.out.print("retreat[r], ");
-		if(allactions.contains('r')) //temporary hack
+		if(allactions.contains('e'))
+			System.out.print("retreat[e], ");
+		if(allactions.contains('e')) //temporary hack
 			System.out.print("move[m], ");
 		System.out.print("or wait[w]?\n");
 
 
 		char action = in.nextLine().toLowerCase().charAt(0);
-		if(action == 'e' && allactions.contains('e')) {
+		if(action == 'r' && allactions.contains('r')) {
 			actionTime = timeOther;
 			wep.setReadied(true);
 			System.out.println("You readied your " + wep + ". Movement speed lowered.");
@@ -175,8 +175,9 @@ public class Manfighter {
 					
 					PersonStatus wepStat = wep.getInflictedStatus();
 					//TODO: this also blows
-					if(!(wepStat instanceof BlankPersonStatus) &&!e.getStatus().getClass().equals(wepStat.getClass())) {
+					if(!(wepStat instanceof BlankPersonStatus) && !e.getStatus().getClass().equals(wepStat.getClass())) {
 						System.out.println("Your weapon inflicted " + wepStat + " on your enemy!");
+						wepStat.initialize(currentTime);
 						e.setStatus(wepStat);
 					}
 					
@@ -191,7 +192,7 @@ public class Manfighter {
 			}
 			
 		} 
-		else if(action == 'd' && getDistanceBetween(p, e) > close) {
+		else if(action == 'd' && allactions.contains('d') && getDistanceBetween(p, e) > close) {
 			actionTime = timeStep;
 			if(wep.isReadied()) {
 				int dis = move(p, e, 60, 0);
@@ -204,7 +205,7 @@ public class Manfighter {
 			}
 
 		} 
-		else if(action == 'r' && allactions.contains('r')) {
+		else if(action == 'e' && allactions.contains('e')) {
 			actionTime = timeStep;
 			if(wep.isReadied()) {
 				int dis = move(p, e, -45, 0);
@@ -217,7 +218,7 @@ public class Manfighter {
 			}
 
 		} 
-		else if(action == 'm') {
+		else if(action == 'm' && allactions.contains('e')) { //HACKS
 			actionTime = timeStep;
 			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
 
@@ -261,13 +262,13 @@ public class Manfighter {
 	
 	
 	
-	private int enemyTurn(Player p, Enemy e) {
+	private int enemyTurn(Player p, Enemy e, int currentTime) {
 		int reactionTime;
 		char reaction = e.getAction(getDistanceBetween(p, e));
 		Weapon wep = e.getWeapon();
 
 		switch(reaction) {
-		case 'e':
+		case 'r':
 			reactionTime = timeOther;
 			wep.setReadied(true);
 			System.out.println(e + " readied his " + wep + ". His movement speed is lowered.");
@@ -295,6 +296,7 @@ public class Manfighter {
 					PersonStatus wepStat = wep.getInflictedStatus();
 					if(!(wepStat instanceof BlankPersonStatus) && !p.getStatus().getClass().equals(wepStat.getClass())) {
 						System.out.println(e + "'s weapon inflicted " + wepStat + " on you!");
+						wepStat.initialize(currentTime);
 						p.setStatus(wepStat);
 					}
 					
@@ -323,7 +325,7 @@ public class Manfighter {
 			}
 
 			break;
-		case 'r':
+		case 'e':
 			reactionTime = timeStep;
 			if(wep.isReadied()) {
 				int dis = move(p, e, -45, 0);
@@ -354,7 +356,6 @@ public class Manfighter {
 	private int move(Player p, Enemy e, int pmove, int emove) {
 		int ploc = p.getLocation();
 		int eloc = e.getLocation();
-		//close = 60; min distance
 
 		if(ploc < eloc) { //player is left of enemy
 			if(pmove > 0) { //player is attempting to advance

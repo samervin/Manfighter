@@ -47,7 +47,7 @@ public class RocketLauncher extends BaseExplosive {
 		if(ready)
 			a.add('l');
 		else
-			a.add('e');
+			a.add('r');
 		
 		return a;
 	}

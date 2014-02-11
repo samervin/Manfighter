@@ -38,7 +38,7 @@ public class Mace extends BaseClub {
 			a.add('l');
 		}	
 		else
-			a.add('e');
+			a.add('r');
 		
 		return a;
 	}

@@ -17,15 +17,15 @@ public class EnemyBasic extends Enemy {
 		ArrayList<Character> a = new ArrayList<Character>();
 		HashSet<Character> valids = weapon.getWeaponActions();
 		
-		if(valids.contains('e')) {
+		if(valids.contains('r')) {
 			for(int i = 0; i < 7; i++) {
-				a.add('e');
+				a.add('r');
 			}
 		}
 		
 		if(distance <= 2 * weapon.getRange() / 3) {
 			for(int i = 0; i < 3; i++)
-				a.add('r');
+				a.add('e');
 		}
 		
 		if(distance <= weapon.getRange() && valids.contains('a')) {

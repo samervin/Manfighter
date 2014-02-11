@@ -43,7 +43,7 @@ public class Dagger extends BaseSword {
 		if(ready)
 			a.add('l');
 		else
-			a.add('e');
+			a.add('r');
 		
 		return a;
 	}

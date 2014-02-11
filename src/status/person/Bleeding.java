@@ -3,38 +3,25 @@ package status.person;
 import game.PersonStatus;
 
 public class Bleeding extends PersonStatus {
-
-	private final int dmg = 30;
-	private final int timeBetween = 1000;
-	private final int totalTime = 5000;
-	private int counter = 0;
+	
+	private int timeBetween;
+	
+	public Bleeding() {
+		dmg = 30;
+		timeBetween = 1000;
+		totalTime = 5000;
+	}
 	
 	public String toString() {
 		return "bleeding";
 	}
-	
+
 	public int getDamage() {
-		if(counter % timeBetween == 0) {
+		if((current-start)%timeBetween == 0 && current != start) {
+			check();
 			return dmg;
 		}
-		
 		return 0;
 	}
 	
-	public boolean isActive() {
-		if(counter >= totalTime) {
-			return false;
-		}
-		
-		return true;
-		
-	}
-
-	public void tick() {
-		counter++;
-	}
-	
-	public void reset() {
-		counter = 0;
-	}
 }

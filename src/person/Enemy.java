@@ -16,7 +16,7 @@ public abstract class Enemy extends Person {
 
 		HashSet<Character> a = weapon.getWeaponActions();
 		a.add('d'); //advance
-		a.add('r'); //retreat
+		a.add('e'); //retreat
 
 		return a;
 	}

@@ -74,7 +74,7 @@ public class SniperRifle extends BaseLongrange {
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
-		a.add('e'); //can always ready
+		a.add('r'); //can always ready
 		
 		if(this.hasLoadedAmmo())
 			a.add('a'); //attack

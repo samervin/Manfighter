@@ -57,10 +57,6 @@ public abstract class Person {
 	
 	public abstract HashSet<Character> getActions();
 	
-	public void reset() {
-		weapon.inflictingStatus.reset();
-	}
-	
 	public void tick() {
 		personstatus.tick();
 	}

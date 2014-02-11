@@ -1,6 +1,7 @@
 package person;
 
 import game.Person;
+
 import java.util.HashSet;
 
 public class Player extends Person {
@@ -17,7 +18,7 @@ public class Player extends Person {
 
 		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload
 		a.add('d'); //advance
-		a.add('r'); //retreat
+		a.add('e'); //retreat
 		
 		//TODO: these need to matter
 		a.add('m'); //move
