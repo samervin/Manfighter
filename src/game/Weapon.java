@@ -13,10 +13,12 @@ import status.weapon.RangeUp;
 
 public abstract class Weapon {
 
+	//TODO: should really be sets/lists
 	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
 	protected PersonStatus inflictingStatus = new BlankPersonStatus();
 	protected final PersonStatus blankInflictingStatus = new BlankPersonStatus();
 	
+	//shared methods
 	protected WeaponStatus getRandomStatus() {
 		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
 		allStati.add(new DamageUp());
@@ -40,6 +42,10 @@ public abstract class Weapon {
 		return weaponStatus + " " + this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1);
 	}
 	
+	
+	//void methods; individual weapons can implement
+	//TODO: this ought to be more general
+	public void lastDamageDealt(int damageDealt) {}
 	
 	
 	// these apply to every weapon

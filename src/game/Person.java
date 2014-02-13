@@ -8,6 +8,7 @@ import weapon.melee.club.Mace;
 import weapon.melee.fists.Fists;
 import weapon.melee.hammer.WarHammer;
 import weapon.melee.knife.Switchblade;
+import weapon.melee.saw.HandSaw;
 import weapon.melee.sword.Dagger;
 import weapon.ranged.explosive.RocketLauncher;
 import weapon.ranged.longrange.SniperRifle;
@@ -74,6 +75,7 @@ public abstract class Person {
 		allWeapons.add(new Fists());
 		allWeapons.add(new WarHammer());
 		allWeapons.add(new Switchblade());
+		allWeapons.add(new HandSaw());
 		allWeapons.add(new Dagger());
 		allWeapons.add(new RocketLauncher());
 		allWeapons.add(new SniperRifle());

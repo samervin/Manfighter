@@ -148,6 +148,7 @@ public class Manfighter {
 
 
 		char action = in.nextLine().toLowerCase().charAt(0);
+		int weaponDamageDone = 0;
 		if(action == 'r' && allactions.contains('r')) {
 			actionTime = timeOther;
 			wep.setReadied(true);
@@ -170,6 +171,7 @@ public class Manfighter {
 				dmg = getCritDamage(p, dmg);
 				if(dmg > 0) {
 					dmg = e.applyDamage(dmg);
+					weaponDamageDone = dmg;
 					System.out.println("You " + wep.getVerb() + " " + e + ", dealing " + dmg + " damage!");
 					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					
@@ -190,7 +192,6 @@ public class Manfighter {
 				actionTime = timeOther;
 				System.out.println("You tried to attack, but you're not in range!");
 			}
-			
 		} 
 		else if(action == 'd' && allactions.contains('d') && getDistanceBetween(p, e) > close) {
 			actionTime = timeStep;
@@ -251,10 +252,11 @@ public class Manfighter {
 		} 
 		else {
 			//TODO: this is dumb
-			actionTime = timeOther;
-			System.out.println("Not an option, sorry, you forfeit your turn.");
+			actionTime = 0;
+			System.out.println("Not an option, sorry.");
 		}
 
+		wep.lastDamageDealt(weaponDamageDone);
 		System.out.println();
 		return actionTime;
 	}
@@ -266,6 +268,7 @@ public class Manfighter {
 		int reactionTime;
 		char reaction = e.getAction(getDistanceBetween(p, e));
 		Weapon wep = e.getWeapon();
+		int weaponDamageDone = 0;
 
 		switch(reaction) {
 		case 'r':
@@ -288,6 +291,7 @@ public class Manfighter {
 				reactionTime = wep.getFireTime();
 				int dmg = wep.getDamage();
 				dmg = getCritDamage(e, dmg);
+				weaponDamageDone = dmg;
 				if(dmg > 0) {
 					dmg = p.applyDamage(dmg);
 					System.out.println(e + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
@@ -304,7 +308,6 @@ public class Manfighter {
 				} else {
 					System.out.println(e + " missed!");
 				}
-
 			}
 			else {
 				reactionTime = timeOther;
@@ -343,10 +346,11 @@ public class Manfighter {
 			System.out.println(e + " is waiting a turn.");
 			break;
 		default:
-			reactionTime = timeOther;
+			reactionTime = 0;
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
 
+		wep.lastDamageDealt(weaponDamageDone);
 		return reactionTime;
 	}
 
