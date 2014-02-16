@@ -33,7 +33,6 @@ public class WarHammer extends BaseHammer {
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 
-
 		if(ready) {
 			a.add('a'); //attack
 			a.add('l');

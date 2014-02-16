@@ -15,6 +15,7 @@ public class Mace extends BaseClub {
 		damage = 200;
 		range = 100;
 		swingTime = 1500;
+		knockback = 50;
 	}
 
 	public String getBaseName() {

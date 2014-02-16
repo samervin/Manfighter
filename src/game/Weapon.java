@@ -57,6 +57,7 @@ public abstract class Weapon {
 	public abstract boolean isCrit();
 	public abstract String getVerb();
 	public abstract PersonStatus getInflictedStatus();
+	public abstract int getKnockback();
 	
 	// these don't apply to fists/knives
 	public abstract boolean isReadied();

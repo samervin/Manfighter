@@ -1,36 +1,39 @@
-package weapon.ranged.unpowered;
+package weapon.melee.polearm;
 
 import java.util.HashSet;
 
-public class Shortbow extends BaseUnpowered {
-	
-	public Shortbow() {
+public class Pike extends BasePolearm {
+
+	public Pike() {
 		weaponStatus = getRandomStatus();
-		damage = 170;
-		range = 400;
-		fireTime = 975;
-		knockback = 15;
+		damage = 130;
+		range = 300;
+		swingTime = 800;
+		knockback = 50;
 	}
-
+	
 	public String getBaseName() {
-		return "Short bow";
+		return "Pike";
 	}
-
+	
 	public int getDamage() {
-		ready = false;
-		return weaponStatus.getDamage(damage);
+		if(ready) {
+			return weaponStatus.getDamage(damage);
+		}
+		return 0;
 	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
+
 		if(ready) {
-			a.add('a');
+			a.add('a'); //attack
 			a.add('l');
-		}
+		}	
 		else
 			a.add('r');
-		
+
 		return a;
 	}
-	
+
 }

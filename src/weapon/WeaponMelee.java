@@ -9,6 +9,7 @@ public abstract class WeaponMelee extends Weapon {
 	protected int range;
 	protected boolean ready = false;
 	protected int swingTime;
+	protected int knockback = 0;
 
 	public int getDamage() {
 		return weaponStatus.getDamage(damage);
@@ -32,6 +33,10 @@ public abstract class WeaponMelee extends Weapon {
 
 	public void setReadied(boolean readiness) {
 		ready = readiness;
+	}
+	
+	public int getKnockback() {
+		return knockback;
 	}
 
 	//these don't matter: they are included here because Weapon demands it!

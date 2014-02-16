@@ -10,10 +10,12 @@ import status.person.BlankPersonStatus;
 
 public class Manfighter {
 
-	private int test = 0; //1 for quicker testing, 0 for general play
+	private int TEST = 0; //1 for quicker testing, 0 for general play
 
 	private Scanner in = new Scanner(System.in);
 	private final int close = 60; //minimum distance apart, in cm
+	private final int forwardStep = 85; //how far you step forward
+	private final int backwardStep = 70; //how far you step backward
 	private final int timeStep = 900; //.9 seconds per step
 	private final int timeOther = 600; //place holder for "other" actions
 
@@ -23,7 +25,7 @@ public class Manfighter {
 
 	public Manfighter() {
 		String stemp;
-		if(test == 0) {
+		if(TEST == 0) {
 			System.out.println("Welcome to Manfighter! What's your name?");
 			stemp = in.nextLine();
 			if(stringDivisibleBy(stemp, 3)) {
@@ -183,6 +185,12 @@ public class Manfighter {
 						e.setStatus(wepStat);
 					}
 					
+					if(wep.getKnockback() != 0) {
+						int dis = move(p, e, 0, -wep.getKnockback());
+						System.out.println("You knocked " + e + " back " + dis + " cm.");
+						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+					}
+					
 					
 				} else {
 					System.out.println("You missed!");
@@ -196,26 +204,26 @@ public class Manfighter {
 		else if(action == 'd' && allactions.contains('d') && getDistanceBetween(p, e) > close) {
 			actionTime = timeStep;
 			if(wep.isReadied()) {
-				int dis = move(p, e, 60, 0);
+				int dis = move(p, e, forwardStep-10, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			} else {
-				int dis = move(p, e, 75, 0);
+				int dis = move(p, e, forwardStep, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			}
 
 		} 
 		else if(action == 'e' && allactions.contains('e')) {
 			actionTime = timeStep;
 			if(wep.isReadied()) {
-				int dis = move(p, e, -45, 0);
+				int dis = move(p, e, -backwardStep+10, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			} else {
-				int dis = move(p, e, -60, 0);
+				int dis = move(p, e, -backwardStep, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			}
 
 		} 
@@ -225,25 +233,26 @@ public class Manfighter {
 
 			//TODO: better parsing
 			int distance = Integer.parseInt(in.nextLine());
-			if(wep.isReadied() && distance >= -45 && distance <=0) {
+			if(wep.isReadied() && distance >= -backwardStep+10 && distance <=0) {
 				int dis = move(p, e, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
-			} else if(wep.isReadied() && distance <=60 && distance >=0) {
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+			} else if(wep.isReadied() && distance <= forwardStep-10 && distance >=0) {
 				int dis = move(p, e, distance, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
-			} else if(!wep.isReadied() && distance >= -60 && distance <=0) {
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+			} else if(!wep.isReadied() && distance >= -backwardStep && distance <=0) {
 				int dis = move(p, e, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
-			} else if(!wep.isReadied() && distance <=75 && distance >=0) {
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+			} else if(!wep.isReadied() && distance <= forwardStep && distance >=0) {
 				int dis = move(p, e, distance, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			} else {
 				//TODO: also dumb
 				System.out.println("You can't move that far, you dummy.");
+				actionTime = 0;
 			}
 		} 
 		else if(action == 'w') {
@@ -304,6 +313,12 @@ public class Manfighter {
 						p.setStatus(wepStat);
 					}
 					
+					if(wep.getKnockback() != 0) {
+						int dis = move(p, e, -wep.getKnockback(), 0);
+						System.out.println(e + " knocked you back " + dis + " cm.");
+						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+					}
+					
 					
 				} else {
 					System.out.println(e + " missed!");
@@ -318,26 +333,26 @@ public class Manfighter {
 		case 'd':
 			reactionTime = timeStep;
 			if(wep.isReadied()) {
-				int dis = move(p, e, 60, 0);
+				int dis = move(p, e, forwardStep-10, 0);
 				System.out.println(e + " stepped forward " + dis + " cm.");			
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			} else {
-				int dis = move(p, e, 75, 0);
+				int dis = move(p, e, forwardStep, 0);
 				System.out.println(e + " stepped forward " + dis + " cm.");			
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			}
 
 			break;
 		case 'e':
 			reactionTime = timeStep;
 			if(wep.isReadied()) {
-				int dis = move(p, e, -45, 0);
+				int dis = move(p, e, -backwardStep+10, 0);
 				System.out.println(e + " stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			} else {
-				int dis = move(p, e, -60, 0);
+				int dis = move(p, e, -backwardStep, 0);
 				System.out.println(e + " stepped backward " + dis + " cm.");
-				System.out.println("You're now " + Math.abs(p.getLocation() - e.getLocation()) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 			}
 
 			break;

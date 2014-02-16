@@ -11,6 +11,7 @@ public abstract class WeaponRanged extends Weapon {
 	protected int fireTime;
 	protected int maxClip;
 	protected int clip;
+	protected int knockback;
 	
 	public int getDamage() {
 		clip--;
@@ -35,6 +36,10 @@ public abstract class WeaponRanged extends Weapon {
 
 	public void setReadied(boolean readiness) {
 		ready = readiness;
+	}
+	
+	public int getKnockback() {
+		return knockback;
 	}
 
 	public boolean hasFullAmmo() {

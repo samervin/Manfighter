@@ -8,11 +8,12 @@ public class RocketLauncher extends BaseExplosive {
 
 	public RocketLauncher() {
 		weaponStatus = getRandomStatus();
-		damage = 300;
+		damage = 250;
 		range = 500;
 		maxClip = 4;
 		clip = 4;
 		fireTime = 2000;
+		knockback = 50;
 	}
 
 	public String getBaseName() {

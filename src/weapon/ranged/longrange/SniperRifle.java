@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public class SniperRifle extends BaseLongrange {
 
-	private int readyState = 0; //0 = from the hip, 1-6 = tracking, 7+ = headshot
+	private int readyState = 0; //0 = from the hip, 1-4 = tracking, 5+ = headshot
 
 	public SniperRifle() {
 		weaponStatus = getRandomStatus();
@@ -15,6 +15,7 @@ public class SniperRifle extends BaseLongrange {
 		maxClip = 2;
 		clip = 2;
 		fireTime = 1250;
+		knockback = 65;
 	}
 	
 	public String getBaseName() {
@@ -30,21 +31,15 @@ public class SniperRifle extends BaseLongrange {
 				return weaponStatus.getDamage(damage);
 			else
 				return 0;
-		} else if(readyState <= 3) {
+		} else if(readyState <= 4) {
 			if(rand.getRand(1, 3) > 1) {
-				return (readyState * 6) + weaponStatus.getDamage(damage);
-			} else
-				return 0;
-		} else if(readyState <= 6) {
-			if(rand.getRand(1, 4) > 1) {
-				System.out.println("A shot on a vital organ!");
-				return (readyState * 15) + weaponStatus.getDamage(damage);
+				return (readyState * 40) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		}
 
 		System.out.println("A headshot!");
-		return readyState * weaponStatus.getDamage(damage);
+		return (readyState*100) + weaponStatus.getDamage(damage);
 	}
 
 	public boolean isReadied() {
