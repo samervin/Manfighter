@@ -8,7 +8,7 @@ public class Dagger extends BaseSword {
 		weaponStatus = getRandomStatus();
 		damage = 200;
 		range = 75;
-		swingTime = 1000;
+		fireTime = 1000;
 	}
 
 	public String getBaseName() {
@@ -23,7 +23,7 @@ public class Dagger extends BaseSword {
 		}
 		else {
 			ready = true;
-			System.out.println("Dagger's on the backswing, less damage!");
+			System.out.println(getBaseName() + " is on the backswing, less damage.");
 			int d = weaponStatus.getDamage(damage / 2);
 			return d;
 		}
@@ -31,9 +31,9 @@ public class Dagger extends BaseSword {
 	
 	public int getFireTime() {
 		if(ready)
-			return weaponStatus.getAttackSpeed(swingTime);
+			return weaponStatus.getAttackSpeed(fireTime);
 		else
-			return weaponStatus.getAttackSpeed(3 * swingTime / 2);
+			return weaponStatus.getAttackSpeed(3 * fireTime / 2);
 	}
 	
 	public HashSet<Character> getWeaponActions() {

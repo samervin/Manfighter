@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
+import weapon.melee.axe.Hatchet;
 import weapon.melee.club.Mace;
 import weapon.melee.fists.Fists;
 import weapon.melee.hammer.WarHammer;
@@ -71,6 +72,7 @@ public abstract class Person {
 	
 	public Weapon getRandomWeapon() {
 		ArrayList<Weapon> allWeapons = new ArrayList<Weapon>();
+		allWeapons.add(new Hatchet());
 		allWeapons.add(new Mace());
 		allWeapons.add(new Fists());
 		allWeapons.add(new WarHammer());

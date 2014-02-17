@@ -8,7 +8,7 @@ public class Pike extends BasePolearm {
 		weaponStatus = getRandomStatus();
 		damage = 130;
 		range = 300;
-		swingTime = 800;
+		fireTime = 800;
 		knockback = 50;
 	}
 	

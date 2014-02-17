@@ -14,7 +14,7 @@ public class Mace extends BaseClub {
 		inflictingStatus = new Bruised();
 		damage = 200;
 		range = 100;
-		swingTime = 1500;
+		fireTime = 1500;
 		knockback = 50;
 	}
 

@@ -5,12 +5,6 @@ import game.Weapon;
 
 public abstract class WeaponMelee extends Weapon {
 
-	protected int damage;
-	protected int range;
-	protected boolean ready = false;
-	protected int swingTime;
-	protected int knockback = 0;
-
 	public int getDamage() {
 		return weaponStatus.getDamage(damage);
 	}
@@ -20,7 +14,7 @@ public abstract class WeaponMelee extends Weapon {
 	}
 
 	public int getFireTime() {
-		return weaponStatus.getAttackSpeed(swingTime);
+		return weaponStatus.getAttackSpeed(fireTime);
 	}
 
 	public PersonStatus getInflictedStatus() {

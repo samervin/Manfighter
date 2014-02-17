@@ -5,7 +5,7 @@ public class Fists extends BaseFists {
 	public Fists() {
 		damage = 100;
 		range = 60;
-		swingTime = 700;
+		fireTime = 700;
 	}
 	
 	public String getBaseName() {

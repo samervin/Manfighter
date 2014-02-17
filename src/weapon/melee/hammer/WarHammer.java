@@ -14,7 +14,7 @@ public class WarHammer extends BaseHammer {
 		inflictingStatus = new Stunned();
 		damage = 500;
 		range = 160;
-		swingTime = 2500;
+		fireTime = 2500;
 	}
 
 	public String getBaseName() {

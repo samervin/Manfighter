@@ -18,6 +18,12 @@ public abstract class Weapon {
 	protected PersonStatus inflictingStatus = new BlankPersonStatus();
 	protected final PersonStatus blankInflictingStatus = new BlankPersonStatus();
 	
+	protected int damage;
+	protected int range;
+	protected boolean ready = false;
+	protected int fireTime;
+	protected int knockback = 0;
+	
 	//shared methods
 	protected WeaponStatus getRandomStatus() {
 		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();

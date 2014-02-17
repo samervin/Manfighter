@@ -5,13 +5,8 @@ import game.Weapon;
 
 public abstract class WeaponRanged extends Weapon {
 
-	protected int damage;
-	protected int range;
-	protected boolean ready = false;
-	protected int fireTime;
 	protected int maxClip;
 	protected int clip;
-	protected int knockback;
 	
 	public int getDamage() {
 		clip--;

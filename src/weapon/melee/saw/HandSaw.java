@@ -10,7 +10,7 @@ public class HandSaw extends BaseSaw {
 		weaponStatus = getRandomStatus();
 		damage = 120;
 		range = 90;
-		swingTime = 1100;
+		fireTime = 1100;
 	}
 	
 	public String getBaseName() {

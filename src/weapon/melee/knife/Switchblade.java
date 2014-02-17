@@ -9,7 +9,7 @@ public class Switchblade extends BaseKnife {
 		inflictingStatus = new Bleeding();
 		damage = 130;
 		range = 70;
-		swingTime = 760;
+		fireTime = 760;
 	}
 	
 	public String getBaseName() {
