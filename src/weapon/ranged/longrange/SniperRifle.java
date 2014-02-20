@@ -13,7 +13,7 @@ public class SniperRifle extends BaseLongrange {
 		maxClip = 2;
 		clip = 2;
 		fireTime = 1250;
-		knockback = 65;
+		knockback = 60;
 	}
 	
 	public String getBaseName() {

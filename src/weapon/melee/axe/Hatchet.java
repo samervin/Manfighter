@@ -79,6 +79,14 @@ public class Hatchet extends BaseAxe {
 		}
 	}
 	
+	public void lastActionTaken(char action) {
+		if(stuck && action != 'a') {
+			System.out.println(getBaseName() + " got unstuck!");
+			stuck = false;
+		}
+			
+	}
+	
 	public PersonStatus getInflictedStatus() {
 		if(stuck)
 			return inflictingStatus;

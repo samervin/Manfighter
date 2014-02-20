@@ -4,11 +4,10 @@ import game.PersonStatus;
 
 public class Bleeding extends PersonStatus {
 	
-	private int timeBetween;
+	private int timeBetween = 1000;
 	
 	public Bleeding() {
 		dmg = 30;
-		timeBetween = 1000;
 		totalTime = 5000;
 	}
 	

@@ -16,7 +16,7 @@ public class Manfighter {
 	private final int close = 60; //minimum distance apart, in cm
 	private final int forwardStep = 85; //how far you step forward
 	private final int backwardStep = 70; //how far you step backward
-	private final int timeStep = 900; //.9 seconds per step
+	private final int timeStep = 500; //.5 seconds per step
 	private final int timeOther = 600; //place holder for "other" actions
 
 	public static void main(String[] args) {
@@ -128,6 +128,7 @@ public class Manfighter {
 		int actionTime;
 		Weapon wep = p.getWeapon();
 		boolean killedEnemy = false;
+		int damageDealt = 0;
 		
 		HashSet<Character> allactions = p.getActions();
 		System.out.print("Will you: ");
@@ -150,7 +151,10 @@ public class Manfighter {
 		System.out.print("or wait[w]?\n");
 
 
-		char action = in.nextLine().toLowerCase().charAt(0);
+		String actionLine = in.nextLine().toLowerCase();
+		char action = '?';
+		if(actionLine.length() > 0)
+			action = actionLine.charAt(0);
 		
 		if(action == 'r' && allactions.contains('r')) {
 			actionTime = timeOther;
@@ -174,7 +178,7 @@ public class Manfighter {
 				dmg = getCritDamage(p, dmg);
 				if(dmg > 0) {
 					dmg = e.applyDamage(dmg);
-					wep.lastDamageDealt(dmg);
+					damageDealt = dmg;
 					System.out.println("You " + wep.getVerb() + " " + e + ", dealing " + dmg + " damage!");
 					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					
@@ -230,10 +234,16 @@ public class Manfighter {
 		} 
 		else if(action == 'm' && allactions.contains('e')) { //HACKS
 			actionTime = timeStep;
-			System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
+			int distance;
+			
+			if(actionLine.split(" ").length > 1) {
+				distance = Integer.parseInt(actionLine.split(" ")[1]);
+			} else {
+				System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
+				distance = Integer.parseInt(in.nextLine());
+			}
 
 			//TODO: better parsing
-			int distance = Integer.parseInt(in.nextLine());
 			if(wep.isReadied() && distance >= -backwardStep+10 && distance <=0) {
 				int dis = move(p, e, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
@@ -253,7 +263,7 @@ public class Manfighter {
 			} else {
 				//TODO: also dumb
 				System.out.println("You can't move that far, you dummy.");
-				actionTime = 0;
+				actionTime = 1;
 			}
 		} 
 		else if(action == 'w') {
@@ -261,13 +271,15 @@ public class Manfighter {
 			System.out.println("You're waiting a turn.");
 		} 
 		else {
-			actionTime = 0;
-			System.out.println("Not an option, sorry.");
+			actionTime = 1;
+			System.out.println(action + " is not an option, sorry.");
 		}
 
 		if(e.getHealth() < 1) killedEnemy = true;
 		
+		wep.lastActionTaken(action);
 		wep.lastEnemyKilled(killedEnemy);
+		wep.lastDamageDealt(damageDealt);
 		System.out.println();
 		return actionTime;
 	}
@@ -363,7 +375,7 @@ public class Manfighter {
 			System.out.println(e + " is waiting a turn.");
 			break;
 		default:
-			reactionTime = 0;
+			reactionTime = 1;
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
 

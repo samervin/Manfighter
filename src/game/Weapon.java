@@ -54,6 +54,7 @@ public abstract class Weapon {
 	//TODO: these ought to be more general
 	public void lastDamageDealt(int damageDealt) {}
 	public void lastEnemyKilled(boolean enemyKilled) {}
+	public void lastActionTaken(char action) {}
 	
 	
 	// these apply to every weapon

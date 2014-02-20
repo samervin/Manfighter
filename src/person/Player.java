@@ -11,7 +11,6 @@ public class Player extends Person {
 	public Player(String n) {
 		name = n;
 		weapon = getRandomWeapon();
-		//weapon = new Hatchet();
 		health = maxhealth;
 	}
 

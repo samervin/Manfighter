@@ -24,8 +24,15 @@ public class HandSaw extends BaseSaw {
 			return d;
 		} else {
 			int d = weaponStatus.getDamage(damage);
+			d *= consecutives;
+			d /= 2;
 			return d;
 		}
+	}
+	
+	public void setReadied(boolean readiness) {
+		ready = readiness;
+		consecutives = 1;
 	}
 
 	public HashSet<Character> getWeaponActions() {
