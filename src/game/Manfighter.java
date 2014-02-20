@@ -127,7 +127,8 @@ public class Manfighter {
 	private int playerTurn(Player p, Enemy e, int currentTime) {
 		int actionTime;
 		Weapon wep = p.getWeapon();
-
+		boolean killedEnemy = false;
+		
 		HashSet<Character> allactions = p.getActions();
 		System.out.print("Will you: ");
 		if(allactions.contains('a') && getDistanceBetween(p, e) <= wep.getRange())
@@ -150,7 +151,7 @@ public class Manfighter {
 
 
 		char action = in.nextLine().toLowerCase().charAt(0);
-		int weaponDamageDone = 0;
+		
 		if(action == 'r' && allactions.contains('r')) {
 			actionTime = timeOther;
 			wep.setReadied(true);
@@ -173,7 +174,7 @@ public class Manfighter {
 				dmg = getCritDamage(p, dmg);
 				if(dmg > 0) {
 					dmg = e.applyDamage(dmg);
-					weaponDamageDone = dmg;
+					wep.lastDamageDealt(dmg);
 					System.out.println("You " + wep.getVerb() + " " + e + ", dealing " + dmg + " damage!");
 					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					
@@ -260,12 +261,13 @@ public class Manfighter {
 			System.out.println("You're waiting a turn.");
 		} 
 		else {
-			//TODO: this is dumb
 			actionTime = 0;
 			System.out.println("Not an option, sorry.");
 		}
 
-		wep.lastDamageDealt(weaponDamageDone);
+		if(e.getHealth() < 1) killedEnemy = true;
+		
+		wep.lastEnemyKilled(killedEnemy);
 		System.out.println();
 		return actionTime;
 	}
@@ -277,7 +279,6 @@ public class Manfighter {
 		int reactionTime;
 		char reaction = e.getAction(getDistanceBetween(p, e));
 		Weapon wep = e.getWeapon();
-		int weaponDamageDone = 0;
 
 		switch(reaction) {
 		case 'r':
@@ -300,11 +301,12 @@ public class Manfighter {
 				reactionTime = wep.getFireTime();
 				int dmg = wep.getDamage();
 				dmg = getCritDamage(e, dmg);
-				weaponDamageDone = dmg;
 				if(dmg > 0) {
 					dmg = p.applyDamage(dmg);
 					System.out.println(e + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
 					System.out.println(p + "'s new health is " + p.getHealth() + ".");
+					
+					wep.lastDamageDealt(dmg);
 					
 					PersonStatus wepStat = wep.getInflictedStatus();
 					if(!(wepStat instanceof BlankPersonStatus) && !p.getStatus().getClass().equals(wepStat.getClass())) {
@@ -365,7 +367,6 @@ public class Manfighter {
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
 
-		wep.lastDamageDealt(weaponDamageDone);
 		return reactionTime;
 	}
 

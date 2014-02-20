@@ -12,6 +12,8 @@ import status.weapon.FireRateUp;
 import status.weapon.RangeUp;
 
 public abstract class Weapon {
+	
+	protected RandGen rand = new RandGen();
 
 	//TODO: should really be sets/lists
 	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
@@ -37,7 +39,6 @@ public abstract class Weapon {
 		for(int i = 0; i < size; i++)
 			allStati.add(new BlankWeaponStatus());
 		
-		RandGen rand = new RandGen();
 		int x = rand.getRand(0, allStati.size()-1);
 		return allStati.get(x);
 	}
@@ -50,8 +51,9 @@ public abstract class Weapon {
 	
 	
 	//void methods; individual weapons can implement
-	//TODO: this ought to be more general
+	//TODO: these ought to be more general
 	public void lastDamageDealt(int damageDealt) {}
+	public void lastEnemyKilled(boolean enemyKilled) {}
 	
 	
 	// these apply to every weapon

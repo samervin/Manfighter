@@ -1,7 +1,5 @@
 package weapon.melee.fists;
 
-import game.RandGen;
-
 import java.util.HashSet;
 
 import weapon.WeaponMelee;
@@ -16,8 +14,6 @@ public abstract class BaseFists extends WeaponMelee {
 	}
 	
 	public boolean isCrit() {
-		RandGen rand = new RandGen();
-		
 		return((rand.getRand(1,50) < 11) || weaponStatus.getCritChance());
 	}
 	

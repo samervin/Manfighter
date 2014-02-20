@@ -1,7 +1,6 @@
 package weapon.melee.club;
 
 import game.PersonStatus;
-import game.RandGen;
 
 import java.util.HashSet;
 
@@ -45,8 +44,6 @@ public class Mace extends BaseClub {
 	}
 
 	public PersonStatus getInflictedStatus() {
-		RandGen rand = new RandGen();
-		
 		int x = rand.getRand(1, 10);
 		if(x < 8)
 			return inflictingStatus;

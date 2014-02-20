@@ -1,7 +1,5 @@
 package weapon.ranged.longrange;
 
-import game.RandGen;
-
 import java.util.HashSet;
 
 public class SniperRifle extends BaseLongrange {
@@ -24,7 +22,6 @@ public class SniperRifle extends BaseLongrange {
 
 	public int getDamage() {
 		clip--;
-		RandGen rand = new RandGen();
 		
 		if(readyState == 0) {
 			if(rand.getRand(1, 4) == 1)

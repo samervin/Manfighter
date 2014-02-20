@@ -4,16 +4,14 @@ import game.Person;
 
 import java.util.HashSet;
 
-import weapon.melee.axe.Hatchet;
-
 public class Player extends Person {
 
 	private final int maxhealth = 750;
 
 	public Player(String n) {
 		name = n;
-		//weapon = getRandomWeapon();
-		weapon = new Hatchet();
+		weapon = getRandomWeapon();
+		//weapon = new Hatchet();
 		health = maxhealth;
 	}
 

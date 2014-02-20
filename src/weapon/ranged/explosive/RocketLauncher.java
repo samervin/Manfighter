@@ -1,7 +1,5 @@
 package weapon.ranged.explosive;
 
-import game.RandGen;
-
 import java.util.HashSet;
 
 public class RocketLauncher extends BaseExplosive {
@@ -22,7 +20,6 @@ public class RocketLauncher extends BaseExplosive {
 
 	public int getDamage() {
 		clip--;
-		RandGen rand = new RandGen();
 		
 		if(ready) {
 			if(rand.getRand(1, 5) > 1) {

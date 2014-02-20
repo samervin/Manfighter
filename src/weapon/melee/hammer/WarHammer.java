@@ -1,7 +1,6 @@
 package weapon.melee.hammer;
 
 import game.PersonStatus;
-import game.RandGen;
 
 import java.util.HashSet;
 
@@ -44,8 +43,6 @@ public class WarHammer extends BaseHammer {
 	}
 
 	public PersonStatus getInflictedStatus() {
-		RandGen rand = new RandGen();
-		
 		int x = rand.getRand(1, 10);
 		if(x < 4)
 			return inflictingStatus;
