@@ -27,11 +27,11 @@ public class Manfighter {
 		String stemp;
 		if(TEST == 0) {
 			System.out.println("Welcome to Manfighter! What's your name?");
-			stemp = in.nextLine();
+			stemp = in.nextLine().trim();
 			if(stringDivisibleBy(stemp, 3)) {
 				while(stringDivisibleBy(stemp, 3)) {
 					System.out.println("That name sucks. Try again.");
-					stemp = in.nextLine();
+					stemp = in.nextLine().trim();
 				}
 				System.out.println("Okay, fine, I suppose.");
 			}	
