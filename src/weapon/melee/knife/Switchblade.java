@@ -10,6 +10,7 @@ public class Switchblade extends BaseKnife {
 		damage = 130;
 		range = 70;
 		fireTime = 760;
+		readyTime = 550;
 	}
 	
 	public String getBaseName() {

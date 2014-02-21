@@ -9,6 +9,7 @@ public class Dagger extends BaseSword {
 		damage = 200;
 		range = 75;
 		fireTime = 1000;
+		readyTime = 550;
 	}
 
 	public String getBaseName() {
@@ -31,9 +32,9 @@ public class Dagger extends BaseSword {
 	
 	public int getFireTime() {
 		if(ready)
-			return weaponStatus.getAttackSpeed(fireTime);
+			return weaponStatus.getFireTime(fireTime);
 		else
-			return weaponStatus.getAttackSpeed(3 * fireTime / 2);
+			return weaponStatus.getFireTime(3 * fireTime / 2);
 	}
 	
 	public HashSet<Character> getWeaponActions() {

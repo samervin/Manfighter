@@ -14,7 +14,7 @@ public abstract class BaseKnife extends WeaponMelee {
 	}
 	
 	public boolean isCrit() {
-		return((rand.getRand(1,50) < 10) || weaponStatus.getCritChance());
+		return((rand.getOdds(9,50)) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

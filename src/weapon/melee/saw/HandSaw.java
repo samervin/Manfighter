@@ -11,6 +11,7 @@ public class HandSaw extends BaseSaw {
 		damage = 120;
 		range = 90;
 		fireTime = 1100;
+		readyTime = 550;
 	}
 	
 	public String getBaseName() {

@@ -12,7 +12,7 @@ public class CritUp extends WeaponStatus {
 	public boolean getCritChance() {
 		RandGen rand = new RandGen();
 		
-		return (rand.getRand(1, 4) == 1);
+		return (rand.getOdds(1, 4));
 	}
 
 }

@@ -12,7 +12,7 @@ public class AccuracyDown extends WeaponStatus {
 	public int getDamage(int d) {
 		RandGen rand = new RandGen();
 		
-		if(rand.getRand(1, 6) == 1)
+		if(rand.getOdds(1, 6))
 			return 0;
 		return d;
 	}

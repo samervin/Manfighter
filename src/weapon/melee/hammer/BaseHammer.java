@@ -5,7 +5,7 @@ import weapon.WeaponMelee;
 public abstract class BaseHammer extends WeaponMelee {
 	
 	public boolean isCrit() {
-		return((rand.getRand(1,50) < 6) || weaponStatus.getCritChance());
+		return((rand.getOdds(1,10)) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

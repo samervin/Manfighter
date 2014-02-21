@@ -14,6 +14,7 @@ public class WarHammer extends BaseHammer {
 		damage = 500;
 		range = 160;
 		fireTime = 2500;
+		readyTime = 550;
 	}
 
 	public String getBaseName() {
@@ -43,8 +44,7 @@ public class WarHammer extends BaseHammer {
 	}
 
 	public PersonStatus getInflictedStatus() {
-		int x = rand.getRand(1, 10);
-		if(x < 4)
+		if(rand.getOdds(3, 10))
 			return inflictingStatus;
 		else
 			return blankInflictingStatus;

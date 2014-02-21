@@ -1,29 +1,25 @@
 package weapon.melee.axe;
 
-import game.PersonStatus;
-
 import java.util.HashSet;
-
-import status.person.Rooted;
 
 public class Hatchet extends BaseAxe {
 
 	private boolean stuck = false;
 	private int defaultFireTime = 1000;
 	private int stuckFireTime = 1400;
-	
+
 	public Hatchet() {
 		weaponStatus = getRandomStatus();
-		inflictingStatus = new Rooted();
 		damage = 215;
 		range = 75;
 		fireTime = defaultFireTime;
+		readyTime = 550;
 	}
-	
+
 	public String getBaseName() {
 		return "Hatchet";
 	}
-	
+
 	public int getDamage() {
 		if(!stuck) {
 			if(ready) {
@@ -47,7 +43,7 @@ public class Hatchet extends BaseAxe {
 		HashSet<Character> a = new HashSet<Character>();
 		if(!stuck) {
 			a.add('a'); //attack
-		
+
 			if(ready)
 				a.add('l');
 			else
@@ -57,7 +53,7 @@ public class Hatchet extends BaseAxe {
 		}
 		return a;
 	}
-	
+
 	public void lastDamageDealt(int dam) {
 		if(dam > 0) {
 			if(!stuck && stuckOdds()) { //not already stuck, becoming stuck
@@ -71,38 +67,35 @@ public class Hatchet extends BaseAxe {
 			}
 		}
 	}
-	
+
 	public void lastEnemyKilled(boolean en) {
 		if(en) {
 			stuck = false;
 			fireTime = defaultFireTime;
 		}
 	}
-	
+
 	public void lastActionTaken(char action) {
-		if(stuck && action != 'a') {
-			System.out.println(getBaseName() + " got unstuck!");
-			stuck = false;
+		if(stuck) {
+			switch(action) {
+			case 'd': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
+			case 'e': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
+			case 'm': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
+			}
 		}
-			
 	}
 	
-	public PersonStatus getInflictedStatus() {
-		if(stuck)
-			return inflictingStatus;
-		else
-			return blankInflictingStatus;
+	public void lastEnemyActionTaken(char action) {
+		lastActionTaken(action);
 	}
 
-	//TODO: separate odds chances?
-	//TODO: this also doesn't correctly update if killing a stuck enemy
 	private boolean stuckOdds() {
 		if(rand.getOdds(1, 3)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	private boolean unStuckOdds() {
 		if(rand.getOdds(1, 5)) {
 			return true;

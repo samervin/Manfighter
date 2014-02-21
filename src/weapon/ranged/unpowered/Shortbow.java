@@ -10,6 +10,7 @@ public class Shortbow extends BaseUnpowered {
 		range = 400;
 		fireTime = 975;
 		knockback = 15;
+		readyTime = 550;
 	}
 
 	public String getBaseName() {
@@ -18,7 +19,10 @@ public class Shortbow extends BaseUnpowered {
 
 	public int getDamage() {
 		ready = false;
-		return weaponStatus.getDamage(damage);
+		if(rand.getOdds(9, 10))
+			return weaponStatus.getDamage(damage);
+		else
+			return 0;
 	}
 
 	public HashSet<Character> getWeaponActions() {

@@ -15,6 +15,7 @@ public class Mace extends BaseClub {
 		range = 100;
 		fireTime = 1500;
 		knockback = 50;
+		readyTime = 550;
 	}
 
 	public String getBaseName() {
@@ -44,8 +45,7 @@ public class Mace extends BaseClub {
 	}
 
 	public PersonStatus getInflictedStatus() {
-		int x = rand.getRand(1, 10);
-		if(x < 8)
+		if(rand.getOdds(7, 10))
 			return inflictingStatus;
 		else
 			return blankInflictingStatus;

@@ -12,6 +12,7 @@ public class RocketLauncher extends BaseExplosive {
 		clip = 4;
 		fireTime = 2000;
 		knockback = 50;
+		readyTime = 550;
 	}
 
 	public String getBaseName() {
@@ -22,12 +23,12 @@ public class RocketLauncher extends BaseExplosive {
 		clip--;
 		
 		if(ready) {
-			if(rand.getRand(1, 5) > 1) {
+			if(rand.getOdds(4, 5)) {
 				return weaponStatus.getDamage(damage);
 			}
 		}
 		else {
-			if(rand.getRand(1, 5) > 3) {
+			if(rand.getOdds(2, 5)) {
 				return weaponStatus.getDamage(damage);
 			}
 		}

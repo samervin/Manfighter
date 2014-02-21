@@ -10,6 +10,7 @@ public class Pike extends BasePolearm {
 		range = 300;
 		fireTime = 800;
 		knockback = 50;
+		readyTime = 550;
 	}
 	
 	public String getBaseName() {

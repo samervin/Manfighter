@@ -14,7 +14,7 @@ public abstract class BaseFists extends WeaponMelee {
 	}
 	
 	public boolean isCrit() {
-		return((rand.getRand(1,50) < 11) || weaponStatus.getCritChance());
+		return((rand.getOdds(2,5)) || weaponStatus.getCritChance());
 	}
 	
 	public String getVerb() {

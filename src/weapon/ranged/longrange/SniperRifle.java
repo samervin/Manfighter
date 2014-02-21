@@ -14,6 +14,7 @@ public class SniperRifle extends BaseLongrange {
 		clip = 2;
 		fireTime = 1250;
 		knockback = 60;
+		readyTime = 550;
 	}
 	
 	public String getBaseName() {
@@ -24,12 +25,12 @@ public class SniperRifle extends BaseLongrange {
 		clip--;
 		
 		if(readyState == 0) {
-			if(rand.getRand(1, 4) == 1)
+			if(rand.getOdds(1, 4))
 				return weaponStatus.getDamage(damage);
 			else
 				return 0;
 		} else if(readyState <= 4) {
-			if(rand.getRand(1, 3) > 1) {
+			if(rand.getOdds(2, 3)) {
 				return (readyState * 40) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
@@ -59,9 +60,9 @@ public class SniperRifle extends BaseLongrange {
 	
 	public int getFireTime() {
 		if(readyState > 7)
-			return weaponStatus.getAttackSpeed(fireTime);
+			return weaponStatus.getFireTime(fireTime);
 		else
-			return weaponStatus.getAttackSpeed(fireTime * 2);
+			return weaponStatus.getFireTime(fireTime * 2);
 	}
 
 	public HashSet<Character> getWeaponActions() {

@@ -5,7 +5,7 @@ import weapon.WeaponMelee;
 public abstract class BasePolearm extends WeaponMelee {
 
 	public boolean isCrit() {
-		return ((rand.getRand(1,50) < 8) || weaponStatus.getCritChance());
+		return ((rand.getOdds(7,50)) || weaponStatus.getCritChance());
 	}
 
 	public String getVerb() {

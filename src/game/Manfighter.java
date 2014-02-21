@@ -17,7 +17,7 @@ public class Manfighter {
 	private final int forwardStep = 85; //how far you step forward
 	private final int backwardStep = 70; //how far you step backward
 	private final int timeStep = 500; //.5 seconds per step
-	private final int timeOther = 600; //place holder for "other" actions
+	private final int timeOther = 500; //place holder for "other" actions
 
 	public static void main(String[] args) {
 		new Manfighter();
@@ -157,7 +157,7 @@ public class Manfighter {
 			action = actionLine.charAt(0);
 		
 		if(action == 'r' && allactions.contains('r')) {
-			actionTime = timeOther;
+			actionTime = wep.getReadyTime();
 			wep.setReadied(true);
 			System.out.println("You readied your " + wep + ". Movement speed lowered.");
 		} 
@@ -280,6 +280,8 @@ public class Manfighter {
 		wep.lastActionTaken(action);
 		wep.lastEnemyKilled(killedEnemy);
 		wep.lastDamageDealt(damageDealt);
+		
+		e.getWeapon().lastEnemyActionTaken(action);
 		System.out.println();
 		return actionTime;
 	}
@@ -291,10 +293,11 @@ public class Manfighter {
 		int reactionTime;
 		char reaction = e.getAction(getDistanceBetween(p, e));
 		Weapon wep = e.getWeapon();
+		int damageDealt = 0;
 
 		switch(reaction) {
 		case 'r':
-			reactionTime = timeOther;
+			reactionTime = wep.getReadyTime();
 			wep.setReadied(true);
 			System.out.println(e + " readied his " + wep + ". His movement speed is lowered.");
 			break;
@@ -318,7 +321,7 @@ public class Manfighter {
 					System.out.println(e + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
 					System.out.println(p + "'s new health is " + p.getHealth() + ".");
 					
-					wep.lastDamageDealt(dmg);
+					damageDealt = dmg;
 					
 					PersonStatus wepStat = wep.getInflictedStatus();
 					if(!(wepStat instanceof BlankPersonStatus) && !p.getStatus().getClass().equals(wepStat.getClass())) {
@@ -379,6 +382,9 @@ public class Manfighter {
 			System.out.println("The computer accidentally did this: " + reaction);
 		}
 
+		wep.lastActionTaken(reaction);
+		wep.lastDamageDealt(damageDealt);
+		p.getWeapon().lastEnemyActionTaken(reaction);
 		return reactionTime;
 	}
 

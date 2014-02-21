@@ -8,7 +8,7 @@ public class FireRateUp extends WeaponStatus {
 		return "Quick";
 	}
 
-	public int getAttackSpeed(int s) {
+	public int getFireTime(int s) {
 		s *=2;
 		s /=3;
 		

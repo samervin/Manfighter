@@ -16,7 +16,12 @@ public abstract class WeaponStatus {
 		return false;
 	}
 	
-	public int getAttackSpeed(int s) {
+	public int getFireTime(int s) {
 		return s;
 	}
+	
+	public int getReadyTime(int r) {
+		return r;
+	}
+	
 }
