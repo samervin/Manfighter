@@ -11,6 +11,10 @@ public abstract class WeaponRanged extends Weapon {
 		clip--;
 		return weaponStatus.getDamage(damage);
 	}
+	
+	public int getRange() {
+		return weaponStatus.getRange(range);
+	}
 
 	public int getFireTime() {
 		return weaponStatus.getFireTime(fireTime);

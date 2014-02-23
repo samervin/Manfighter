@@ -7,7 +7,7 @@ public class Dagger extends BaseSword {
 	public Dagger() {
 		weaponStatus = getRandomStatus();
 		damage = 200;
-		range = 75;
+		range = 15;
 		fireTime = 1000;
 		readyTime = 550;
 	}

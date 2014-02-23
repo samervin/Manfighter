@@ -9,7 +9,7 @@ public class HandSaw extends BaseSaw {
 	public HandSaw() {
 		weaponStatus = getRandomStatus();
 		damage = 120;
-		range = 90;
+		range = 30;
 		fireTime = 1100;
 		readyTime = 550;
 	}

@@ -12,7 +12,7 @@ public class WarHammer extends BaseHammer {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Stunned();
 		damage = 500;
-		range = 160;
+		range = 100;
 		fireTime = 2500;
 		readyTime = 550;
 	}

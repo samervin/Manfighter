@@ -7,7 +7,7 @@ import game.PersonStatus;
 public class Rooted extends PersonStatus {
 	
 	public Rooted() {
-		totalTime = 1500;
+		totalTime = 4000;
 	}
 	
 	public String toString() {

@@ -2,45 +2,47 @@ package weapon.ranged.explosive;
 
 import java.util.HashSet;
 
-public class RocketLauncher extends BaseExplosive {
+public class GrenadeLauncher extends BaseExplosive {
 
-	public RocketLauncher() {
+	public GrenadeLauncher() {
 		weaponStatus = getRandomStatus();
-		damage = 300;
+		damage = 350;
 		range = 1000;
-		maxClip = 4;
-		clip = 4;
-		fireTime = 2000;
-		knockback = 50;
-		readyTime = 550;
-		
-		selfDamage = 200;
-		selfDamageRange = 200;
+		maxClip = 6;
+		clip = 6;
+		fireTime = 2450;
+		knockback = 75;
+		readyTime = 700;
+
+		selfDamage = 300;
+		selfDamageRange = 270;
 	}
 
+	@Override
 	public String getBaseName() {
-		return "Rocket launcher";
+		return "Grenade launcher";
 	}
-	
+
 	public String getVerb() {
-		return "rocketed";
+		return "bombed";
 	}
 
 	public int getDamage() {
 		clip--;
-		
+
 		if(ready) {
-			if(rand.getOdds(4, 5)) {
+			if(rand.getOdds(2, 3)) {
 				return weaponStatus.getDamage(damage);
 			}
 		} else {
-			if(rand.getOdds(2, 5)) {
+			if(rand.getOdds(2, 7)) {
 				return weaponStatus.getDamage(damage);
 			}
 		}
 		return 0;
 	}
-	
+
+	@Override
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
@@ -55,4 +57,5 @@ public class RocketLauncher extends BaseExplosive {
 		
 		return a;
 	}
+
 }

@@ -11,7 +11,7 @@ public class Hatchet extends BaseAxe {
 	public Hatchet() {
 		weaponStatus = getRandomStatus();
 		damage = 215;
-		range = 75;
+		range = 15;
 		fireTime = defaultFireTime;
 		readyTime = 550;
 	}

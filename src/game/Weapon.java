@@ -14,6 +14,7 @@ import status.weapon.RangeUp;
 public abstract class Weapon {
 	
 	protected RandGen rand = new RandGen();
+	protected int pointBlank = 60;
 
 	//TODO: should really be sets/lists
 	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
@@ -26,6 +27,9 @@ public abstract class Weapon {
 	protected int readyTime;
 	protected int fireTime;
 	protected int knockback = 0;
+	
+	protected int selfDamage = 0;
+	protected int selfDamageRange = 0;
 	
 	//shared methods
 	protected WeaponStatus getRandomStatus() {
@@ -46,13 +50,14 @@ public abstract class Weapon {
 	
 	public String toString() {
 		if(weaponStatus instanceof BlankWeaponStatus)
-			return this.getBaseName();
-		return weaponStatus + " " + this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1);
+			return this.getBaseName().trim();
+		
+		String s = weaponStatus + " ";
+		s += (this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1)).trim();
+		return s;
 	}
 	
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
+	public abstract int getRange();
 	
 	public int getReadyTime() {
 		return weaponStatus.getReadyTime(readyTime);
@@ -76,6 +81,14 @@ public abstract class Weapon {
 	
 	public int getKnockback() {
 		return knockback;
+	}
+	
+	public int getSelfDamage() {
+		return selfDamage;
+	}
+	
+	public int getSelfDamageRange() {
+		return selfDamageRange;
 	}
 	
 	//void methods; individual weapons can implement

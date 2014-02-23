@@ -4,11 +4,11 @@ public class Fists extends BaseFists {
 	
 	public Fists() {
 		damage = 100;
-		range = 60;
+		range = 0;
 		fireTime = 700;
-		readyTime = 550;
 	}
 	
+	@Override
 	public String getBaseName() {
 		return "Bare fists";
 	}

@@ -16,7 +16,7 @@ public class Manfighter {
 	private final int close = 60; //minimum distance apart, in cm
 	private final int forwardStep = 85; //how far you step forward
 	private final int backwardStep = 70; //how far you step backward
-	private final int timeStep = 500; //.5 seconds per step
+	private final int timeStep = 650; //seconds per step
 	private final int timeOther = 500; //place holder for "other" actions
 
 	public static void main(String[] args) {
@@ -50,6 +50,17 @@ public class Manfighter {
 			Enemy e = new EnemyBasic();
 			System.out.println("\n\n\nYour next opponent is " + e + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 			combat(p, e);
+			
+			if(p.getHealth() > 0) {
+				System.out.println("\nWould you like your dead enemy's weapon: " + e.getWeapon() + "? [y]es or [n]o?");
+				if(in.nextLine().charAt(0) == 'y') {
+					p.setWeapon(e.getWeapon());
+					System.out.println("Congratulations on your new " + p.getWeapon() + "!");
+				} else {
+					System.out.println("If you say so...");
+				}
+			}
+			
 		}
 
 		System.out.println("You finished with " + kills + " kills!");
@@ -58,7 +69,7 @@ public class Manfighter {
 
 	private void combat(Player p, Enemy e) {
 		p.setLocation(0);
-		e.setLocation(425);
+		e.setLocation(500);
 		System.out.println("You begin " + e.getLocation() + " cm apart.");
 
 		int playerClock = 0;
@@ -196,6 +207,11 @@ public class Manfighter {
 						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 					}
 					
+					if(wep.getSelfDamage() != 0 && getDistanceBetween(p, e) <= wep.getSelfDamageRange()) {
+						int selfdmg = p.applyDamage(wep.getSelfDamage());
+						System.out.println("You damaged yourself for " + selfdmg + " damage!");
+						System.out.println("Your new health is " + p.getHealth() + ".");
+					}
 					
 				} else {
 					System.out.println("You missed!");
@@ -336,6 +352,11 @@ public class Manfighter {
 						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
 					}
 					
+					if(wep.getSelfDamage() != 0 && getDistanceBetween(p, e) <= wep.getSelfDamageRange()) {
+						int selfdmg = e.applyDamage(wep.getSelfDamage());
+						System.out.println(e + " damaged himself for " + selfdmg + " damage!");
+						System.out.println(e + "'s new health is " + e.getHealth() + ".");
+					}
 					
 				} else {
 					System.out.println(e + " missed!");

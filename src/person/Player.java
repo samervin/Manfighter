@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public class Player extends Person {
 
-	private final int maxhealth = 750;
+	private final int maxhealth = 1000;
 
 	public Player(String n) {
 		name = n;

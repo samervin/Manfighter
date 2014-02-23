@@ -7,6 +7,10 @@ public abstract class WeaponMelee extends Weapon {
 	public int getDamage() {
 		return weaponStatus.getDamage(damage);
 	}
+	
+	public int getRange() {
+		return weaponStatus.getRange(range) + pointBlank;
+	}
 
 	//these don't matter: they are included here because Weapon demands it!
 	public boolean hasFullAmmo() {return true;}

@@ -12,7 +12,7 @@ public class Mace extends BaseClub {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Bruised();
 		damage = 200;
-		range = 100;
+		range = 40;
 		fireTime = 1500;
 		knockback = 50;
 		readyTime = 550;

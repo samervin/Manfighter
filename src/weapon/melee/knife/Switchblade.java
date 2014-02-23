@@ -8,7 +8,7 @@ public class Switchblade extends BaseKnife {
 		weaponStatus = getRandomStatus();
 		inflictingStatus = new Bleeding();
 		damage = 130;
-		range = 70;
+		range = 10;
 		fireTime = 760;
 		readyTime = 550;
 	}

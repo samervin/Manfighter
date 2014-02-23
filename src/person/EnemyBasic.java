@@ -9,7 +9,7 @@ public class EnemyBasic extends Enemy {
 	
 	public EnemyBasic() {
 		name = createRandomName();
-		health = 750;
+		health = 1000;
 		weapon = getRandomWeapon();
 	}
 
@@ -18,18 +18,18 @@ public class EnemyBasic extends Enemy {
 		HashSet<Character> valids = weapon.getWeaponActions();
 		
 		if(valids.contains('r')) {
-			for(int i = 0; i < 7; i++) {
+			for(int i = 0; i < 6; i++) {
 				a.add('r');
 			}
 		}
 		
 		if(distance <= 2 * weapon.getRange() / 3) {
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 2; i++)
 				a.add('e');
 		}
 		
 		if(distance <= weapon.getRange() && valids.contains('a')) {
-			for(int i = 0; i < 8; i++)
+			for(int i = 0; i < 10; i++)
 				a.add('a');
 		} else if (distance >= 2 * weapon.getRange()){
 			for(int i = 0; i < 6; i++) {
@@ -47,7 +47,7 @@ public class EnemyBasic extends Enemy {
 		}
 		
 		if(!weapon.hasFullAmmo() && valids.contains('o')) {
-			for(int i = 0; i < 2; i++)
+			for(int i = 0; i < 1; i++)
 				a.add('o');
 		}
 		

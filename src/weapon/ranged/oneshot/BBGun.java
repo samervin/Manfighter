@@ -1,58 +1,54 @@
-package weapon.ranged.explosive;
+package weapon.ranged.oneshot;
 
 import java.util.HashSet;
 
-public class RocketLauncher extends BaseExplosive {
+public class BBGun extends BaseOneshot {
 
-	public RocketLauncher() {
+	public BBGun(){
 		weaponStatus = getRandomStatus();
-		damage = 300;
+		damage = 50;
 		range = 1000;
-		maxClip = 4;
-		clip = 4;
-		fireTime = 2000;
-		knockback = 50;
-		readyTime = 550;
-		
-		selfDamage = 200;
-		selfDamageRange = 200;
+		maxClip = 50;
+		clip = 50;
+		fireTime = 800;
+		readyTime = 400;
 	}
 
+	@Override
 	public String getBaseName() {
-		return "Rocket launcher";
-	}
-	
-	public String getVerb() {
-		return "rocketed";
+		return " BB gun"; //intentional, prevents lowercase bB gun
 	}
 
+	@Override
 	public int getDamage() {
 		clip--;
-		
+
 		if(ready) {
-			if(rand.getOdds(4, 5)) {
+			if(rand.getOdds(99, 100)) {
 				return weaponStatus.getDamage(damage);
 			}
 		} else {
-			if(rand.getOdds(2, 5)) {
+			if(rand.getOdds(95, 100)) {
 				return weaponStatus.getDamage(damage);
 			}
 		}
 		return 0;
 	}
-	
+
+	@Override
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
-			a.add('a'); //attack
+			a.add('a');
 		if(!this.hasFullAmmo())
-			a.add('o'); //reload
-			
+			a.add('o');
+
 		if(ready)
 			a.add('l');
 		else
 			a.add('r');
-		
+
 		return a;
 	}
+
 }
