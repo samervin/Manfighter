@@ -50,17 +50,17 @@ public class Manfighter {
 			Enemy e = new EnemyBasic();
 			System.out.println("\n\n\nYour next opponent is " + e + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
 			combat(p, e);
-			
+
 			if(p.getHealth() > 0) {
 				System.out.println("\nWould you like your dead enemy's weapon: " + e.getWeapon() + "? [y]es or [n]o?");
 				if(in.nextLine().charAt(0) == 'y') {
 					p.setWeapon(e.getWeapon());
 					System.out.println("Congratulations on your new " + p.getWeapon() + "!");
 				} else {
-					System.out.println("If you say so...");
+					System.out.println("If you say so!");
 				}
 			}
-			
+
 		}
 
 		System.out.println("You finished with " + kills + " kills!");
@@ -77,45 +77,39 @@ public class Manfighter {
 		int totalClock = 0;
 
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
-			
-			if(p.getHealth() > 0) {
-				int statdmg = p.getStatus().getDamage();
+
+			if(p.getHealth() > 0 && e.getHealth() > 0) {
+				int statdmg = checkStatus(p);
 				if(statdmg != 0) {
-					statdmg = p.applyDamage(statdmg);
-					System.out.println("You lost " + statdmg + " health due to " + p.getStatus() + "!");
-					System.out.println("Your new health is " + p.getHealth() + ".");
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
 			}
-			if(e.getHealth() > 0) {
-				int statdmg = e.getStatus().getDamage();
+			if(p.getHealth() > 0 && e.getHealth() > 0) {
+				int statdmg = checkStatus(e);
 				if(statdmg != 0) {
-					statdmg = e.applyDamage(statdmg);
-					System.out.println(e + " lost " + statdmg + " health due to " + e.getStatus() + "!");
-					System.out.println(e + "'s new health is " + e.getHealth() + ".");
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
 			}
-			if(p.getHealth() > 0) {
+			if(p.getHealth() > 0 && e.getHealth() > 0) {
 				if(!p.getStatus().isActive()) {
 					System.out.println("You are no longer " + p.getStatus() + ".");
 					p.setStatus(new BlankPersonStatus());
-					
+
 				}
 			}
-			if(e.getHealth() > 0) {
+			if(p.getHealth() > 0 && e.getHealth() > 0) {
 				if(!e.getStatus().isActive()) {
 					System.out.println(e + " is no longer " + e.getStatus() + ".");
 					e.setStatus(new BlankPersonStatus());
-					
+
 				}
 			}
-			if(p.getHealth() > 0 && playerClock == 0) {
-				playerClock = playerTurn(p,e, totalClock);
+			if(p.getHealth() > 0 && e.getHealth() > 0 && playerClock == 0) {
+				playerClock = takeTurn(p,e, totalClock);
 				System.out.println("\t\t\t\t\t\t\tYou will waste: " + playerClock + "ms, current time: " + totalClock + " ms.");
 			}
-			if(e.getHealth() > 0 && enemyClock == 0) {
-				enemyClock = enemyTurn(p,e, totalClock);
+			if(p.getHealth() > 0 && e.getHealth() > 0 && enemyClock == 0) {
+				enemyClock = takeTurn(e,p, totalClock);
 				System.out.println("\t\t\t\t\t\t\tHe will waste: " + enemyClock + "ms, current time: " + totalClock + " ms.");
 			}
 			playerClock --;
@@ -132,126 +126,117 @@ public class Manfighter {
 			System.out.println("Congratulations, you defeated " + e + "!");
 			p.setStatus(new BlankPersonStatus());
 		}
-			
+
 	}
 
-	private int playerTurn(Player p, Enemy e, int currentTime) {
+	private int checkStatus(Person p) {
+		String[] names = getNames(p);
+		int statdmg = p.getStatus().getDamage();
+		if(statdmg != 0) {
+			statdmg = p.applyDamage(statdmg);
+			System.out.printf("%s lost %d health due to %s!%n", names[0], statdmg, p.getStatus());
+			System.out.printf("%s new health is %d.%n", names[1], p.getHealth());
+		}
+		
+		return statdmg;
+	}
+	
+	private int takeTurn(Person att, Person def, int currentTime) {
 		int actionTime;
-		Weapon wep = p.getWeapon();
+		Weapon wep = att.getWeapon();
 		boolean killedEnemy = false;
 		int damageDealt = 0;
-		
-		HashSet<Character> allactions = p.getActions();
-		System.out.print("Will you: ");
-		if(allactions.contains('a') && getDistanceBetween(p, e) <= wep.getRange())
-			System.out.print("attack[a], ");
-		if(allactions.contains('r'))
-			System.out.print("ready your weapon[r], ");
-		if(allactions.contains('l'))
-			System.out.print("lower your weapon[l], ");
-		if(allactions.contains('o'))
-			System.out.print("reload your weapon[o], ");
-		if(allactions.contains('i'))
-			System.out.print("aim your weapon[i], ");
-		if(allactions.contains('d') && canAdvance(p, e))
-			System.out.print("advance[d], ");
-		if(allactions.contains('e'))
-			System.out.print("retreat[e], ");
-		if(allactions.contains('e')) //temporary hack
-			System.out.print("move[m], ");
-		System.out.print("or wait[w]?\n");
 
-
-		String actionLine = in.nextLine().toLowerCase();
-		char action = '?';
+		HashSet<Character> validActions = att.getValidActions();
+		String actionLine = getPersonAction(att, def);
+		char action;
 		if(actionLine.length() > 0)
-			action = actionLine.charAt(0);
-		
-		if(action == 'r' && allactions.contains('r')) {
+			action = actionLine.toLowerCase().charAt(0);
+		else
+			action = '?';
+
+		String[] attNames = getNames(att);
+		String[] defNames = getNames(def);
+
+		if(action == 'r' && validActions.contains('r')) {
 			actionTime = wep.getReadyTime();
 			wep.setReadied(true);
-			System.out.println("You readied your " + wep + ". Movement speed lowered.");
-		} 
-		else if(action == 'l' && allactions.contains('l')) {
+			System.out.printf("%s readied %s %s. Movement speed lowered.%n", attNames[0], attNames[1], wep);
+		}
+		else if(action == 'l' && validActions.contains('l')) {
 			actionTime = timeOther;
 			wep.setReadied(false);
-			System.out.println("You lowered your " + wep + ". Movement speed increased.");
+			System.out.printf("%s readied %s %s. Movement speed increased.%n", attNames[0], attNames[1], wep);
 		} 
-		else if(action == 'o' && allactions.contains('o')) {
+		else if(action == 'o' && validActions.contains('o')) {
 			actionTime = timeOther;
 			wep.reload();
-			System.out.println("You reloaded your " + wep + ".");
+			System.out.printf("%s reloaded %s %s.%n", attNames[0], attNames[1], wep);
 		} 
-		else if(action == 'a' && allactions.contains('a')) {
-			if(wep.getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
-				actionTime = wep.getFireTime();
-				int dmg = wep.getDamage();
-				dmg = getCritDamage(p, dmg);
-				if(dmg > 0) {
-					dmg = e.applyDamage(dmg);
-					damageDealt = dmg;
-					System.out.println("You " + wep.getVerb() + " " + e + ", dealing " + dmg + " damage!");
-					System.out.println(e + "'s new health is " + e.getHealth() + ".");
-					
-					PersonStatus wepStat = wep.getInflictedStatus();
-					//TODO: this also blows
-					if(!(wepStat instanceof BlankPersonStatus) && !e.getStatus().getClass().equals(wepStat.getClass())) {
-						System.out.println("Your weapon inflicted " + wepStat + " on your enemy!");
-						wepStat.initialize(currentTime);
-						e.setStatus(wepStat);
-					}
-					
-					if(wep.getKnockback() != 0) {
-						int dis = move(p, e, 0, -wep.getKnockback());
-						System.out.println("You knocked " + e + " back " + dis + " cm.");
-						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-					}
-					
-					if(wep.getSelfDamage() != 0 && getDistanceBetween(p, e) <= wep.getSelfDamageRange()) {
-						int selfdmg = p.applyDamage(wep.getSelfDamage());
-						System.out.println("You damaged yourself for " + selfdmg + " damage!");
-						System.out.println("Your new health is " + p.getHealth() + ".");
-					}
-					
-				} else {
-					System.out.println("You missed!");
+		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
+			actionTime = wep.getFireTime();
+			int dmg = wep.getDamage();
+			dmg = getCritDamage(att, dmg);
+			if(dmg > 0) {
+				dmg = def.applyDamage(dmg);
+				damageDealt = dmg;
+				System.out.printf("%s %s %s, dealing %d damage!%n", attNames[0], wep.getVerb(), defNames[0], dmg);
+				System.out.printf("%s new health is %d.%n", defNames[1], def.getHealth());
+
+				PersonStatus wepStat = wep.getInflictedStatus();
+				//TODO: this also blows
+				if(!(wepStat instanceof BlankPersonStatus) && !def.getStatus().getClass().equals(wepStat.getClass())) {
+					System.out.printf("%s weapon inflicted %s on %s!%n", attNames[0], wepStat, defNames[0]);
+					wepStat.initialize(currentTime);
+					def.setStatus(wepStat);
 				}
-			}
-			else {
-				actionTime = timeOther;
-				System.out.println("You tried to attack, but you're not in range!");
-			}
-		} 
-		else if(action == 'd' && allactions.contains('d') && getDistanceBetween(p, e) > close) {
-			actionTime = timeStep;
-			if(wep.isReadied()) {
-				int dis = move(p, e, forwardStep-10, 0);
-				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+
+				if(wep.getKnockback() != 0) {
+					int dis = move(att, def, 0, -wep.getKnockback());
+					System.out.printf("%s knocked %s back %d cm.%n", attNames[0], defNames[0], dis);
+					System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
+				}
+
+				if(wep.getSelfDamage() != 0 && getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
+					int selfdmg = att.applyDamage(wep.getSelfDamage());
+					System.out.printf("%s damaged %s for %d damage!%n", attNames[0], attNames[2], selfdmg);
+					System.out.printf("%s new health is %d.%n", attNames[1], att.getHealth());
+				}
+
 			} else {
-				int dis = move(p, e, forwardStep, 0);
-				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				System.out.printf("%s missed!%n", attNames[0]);
+			}			
+		} 
+		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > close) {
+			actionTime = timeStep;
+			int dis;
+
+			if(wep.isReadied()) {
+				dis = move(att, def, forwardStep-10, 0);
+			} else {
+				dis = move(att, def, forwardStep, 0);	
 			}
 
+			System.out.printf("%s stepped forward %d cm.%n", attNames[0], dis);
+			System.out.printf("You're now %d cm apart.", getDistanceBetween(att, def));
 		} 
-		else if(action == 'e' && allactions.contains('e')) {
+		else if(action == 'e' && validActions.contains('e')) {
 			actionTime = timeStep;
+			int dis;
+
 			if(wep.isReadied()) {
-				int dis = move(p, e, -backwardStep+10, 0);
-				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				dis = move(att, def, -backwardStep+10, 0);
 			} else {
-				int dis = move(p, e, -backwardStep, 0);
-				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				dis = move(att, def, -backwardStep, 0);
 			}
 
+			System.out.printf("%s stepped backward %d cm.%n", attNames[0], dis);
+			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
-		else if(action == 'm' && allactions.contains('e')) { //HACKS
+		else if(action == 'm' && validActions.contains('e')) { //HACKS, also presently this only affects players
 			actionTime = timeStep;
 			int distance;
-			
+
 			if(actionLine.split(" ").length > 1) {
 				distance = Integer.parseInt(actionLine.split(" ")[1]);
 			} else {
@@ -261,21 +246,21 @@ public class Manfighter {
 
 			//TODO: better parsing
 			if(wep.isReadied() && distance >= -backwardStep+10 && distance <=0) {
-				int dis = move(p, e, distance, 0);
+				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(wep.isReadied() && distance <= forwardStep-10 && distance >=0) {
-				int dis = move(p, e, distance, 0);
+				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(!wep.isReadied() && distance >= -backwardStep && distance <=0) {
-				int dis = move(p, e, distance, 0);
+				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(!wep.isReadied() && distance <= forwardStep && distance >=0) {
-				int dis = move(p, e, distance, 0);
+				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else {
 				//TODO: also dumb
 				System.out.println("You can't move that far, you dummy.");
@@ -284,135 +269,72 @@ public class Manfighter {
 		} 
 		else if(action == 'w') {
 			actionTime = timeOther;
-			System.out.println("You're waiting a turn.");
+			System.out.printf("%s %s waiting a turn.%n", attNames[0], attNames[3]);
 		} 
 		else {
 			actionTime = 1;
-			System.out.println(action + " is not an option, sorry.");
+			System.out.println(action + " is not an option!");
 		}
 
-		if(e.getHealth() < 1) killedEnemy = true;
-		
+
+
+		if(def.getHealth() < 1) killedEnemy = true;
+
 		wep.lastActionTaken(action);
 		wep.lastEnemyKilled(killedEnemy);
 		wep.lastDamageDealt(damageDealt);
-		
-		e.getWeapon().lastEnemyActionTaken(action);
+
+		def.getWeapon().lastEnemyActionTaken(action);
 		System.out.println();
 		return actionTime;
 	}
 
-	
-	
-	
-	private int enemyTurn(Player p, Enemy e, int currentTime) {
-		int reactionTime;
-		char reaction = e.getAction(getDistanceBetween(p, e));
-		Weapon wep = e.getWeapon();
-		int damageDealt = 0;
+	private String getPersonAction(Person att, Person def) {
+		if(att instanceof Player && def instanceof Enemy) {
+			HashSet<Character> allActions = att.getValidActions();
+			System.out.print("Will you: ");
+			if(allActions.contains('a') && getDistanceBetween(att, def) <= att.getWeapon().getRange())
+				System.out.print("attack[a], ");
+			if(allActions.contains('r'))
+				System.out.print("ready your weapon[r], ");
+			if(allActions.contains('l'))
+				System.out.print("lower your weapon[l], ");
+			if(allActions.contains('o'))
+				System.out.print("reload your weapon[o], ");
+			if(allActions.contains('i'))
+				System.out.print("aim your weapon[i], ");
+			if(allActions.contains('d') && canAdvance(att, def))
+				System.out.print("advance[d], ");
+			if(allActions.contains('e'))
+				System.out.print("retreat[e], ");
+			if(allActions.contains('e')) //temporary hack
+				System.out.print("move[m], ");
+			System.out.print("or wait[w]?\n");
 
-		switch(reaction) {
-		case 'r':
-			reactionTime = wep.getReadyTime();
-			wep.setReadied(true);
-			System.out.println(e + " readied his " + wep + ". His movement speed is lowered.");
-			break;
-		case 'l':
-			reactionTime = timeOther;
-			wep.setReadied(false);
-			System.out.println(e + " lowered his " + wep + ". His movement speed is increased.");
-			break;
-		case 'o':
-			reactionTime = timeOther;
-			wep.reload();
-			System.out.println(e + " reloaded his " + wep + ".");
-			break;
-		case 'a':
-			if(wep.getRange() >= Math.abs(p.getLocation() - e.getLocation())) {
-				reactionTime = wep.getFireTime();
-				int dmg = wep.getDamage();
-				dmg = getCritDamage(e, dmg);
-				if(dmg > 0) {
-					dmg = p.applyDamage(dmg);
-					System.out.println(e + " " + wep.getVerb() + " you, dealing " + dmg + " damage!");
-					System.out.println(p + "'s new health is " + p.getHealth() + ".");
-					
-					damageDealt = dmg;
-					
-					PersonStatus wepStat = wep.getInflictedStatus();
-					if(!(wepStat instanceof BlankPersonStatus) && !p.getStatus().getClass().equals(wepStat.getClass())) {
-						System.out.println(e + "'s weapon inflicted " + wepStat + " on you!");
-						wepStat.initialize(currentTime);
-						p.setStatus(wepStat);
-					}
-					
-					if(wep.getKnockback() != 0) {
-						int dis = move(p, e, -wep.getKnockback(), 0);
-						System.out.println(e + " knocked you back " + dis + " cm.");
-						System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-					}
-					
-					if(wep.getSelfDamage() != 0 && getDistanceBetween(p, e) <= wep.getSelfDamageRange()) {
-						int selfdmg = e.applyDamage(wep.getSelfDamage());
-						System.out.println(e + " damaged himself for " + selfdmg + " damage!");
-						System.out.println(e + "'s new health is " + e.getHealth() + ".");
-					}
-					
-				} else {
-					System.out.println(e + " missed!");
-				}
-			}
-			else {
-				reactionTime = timeOther;
-				System.out.println(e + " tried to attack, but is not in range!");
-			}
-			
-			break;
-		case 'd':
-			reactionTime = timeStep;
-			if(wep.isReadied()) {
-				int dis = move(p, e, forwardStep-10, 0);
-				System.out.println(e + " stepped forward " + dis + " cm.");			
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-			} else {
-				int dis = move(p, e, forwardStep, 0);
-				System.out.println(e + " stepped forward " + dis + " cm.");			
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-			}
-
-			break;
-		case 'e':
-			reactionTime = timeStep;
-			if(wep.isReadied()) {
-				int dis = move(p, e, -backwardStep+10, 0);
-				System.out.println(e + " stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-			} else {
-				int dis = move(p, e, -backwardStep, 0);
-				System.out.println(e + " stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(p, e) + " cm apart.");
-			}
-
-			break;
-		case 'w':
-			reactionTime = timeOther;
-			System.out.println(e + " is waiting a turn.");
-			break;
-		default:
-			reactionTime = 1;
-			System.out.println("The computer accidentally did this: " + reaction);
+			String actionLine = in.nextLine().toLowerCase();
+			return actionLine;
+		} else if(att instanceof Enemy && def instanceof Player) {
+			String actionLine = att.getAction(getDistanceBetween(att, def));
+			return actionLine;
 		}
 
-		wep.lastActionTaken(reaction);
-		wep.lastDamageDealt(damageDealt);
-		p.getWeapon().lastEnemyActionTaken(reaction);
-		return reactionTime;
+		return "ERROR";
+	}
+
+	private String[] getNames(Person p) {
+		if(p instanceof Player) {
+			String[] names = {"you", "your", "yourself", "are"};
+			return names;
+		} else {
+			String[] names = {p.toString(), "his", "himself", "is"};
+			return names;
+		}
 	}
 
 	//positive value for newP or newE indicates that they are moving TOWARD their target
 	//negative value for newP or newE indicates that they are moving AWAY FROM their target
 	//returns centimeters moved
-	private int move(Player p, Enemy e, int pmove, int emove) {
+	private int move(Person p, Person e, int pmove, int emove) {
 		int ploc = p.getLocation();
 		int eloc = e.getLocation();
 
@@ -484,8 +406,8 @@ public class Manfighter {
 		return(Math.abs(p.getLocation() - e.getLocation()));
 	}
 
-	private boolean canAdvance(Player p, Enemy e) {
-		if(Math.abs(p.getLocation() - e.getLocation()) == close)
+	private boolean canAdvance(Person a, Person b) {
+		if(Math.abs(a.getLocation() - b.getLocation()) == close)
 			return false;
 		return true;
 	}

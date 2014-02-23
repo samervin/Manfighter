@@ -14,7 +14,8 @@ public class Player extends Person {
 		health = maxhealth;
 	}
 
-	public HashSet<Character> getActions() {
+	@Override
+	public HashSet<Character> getValidActions() {
 
 		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload
 		a.add('d'); //advance
@@ -32,6 +33,5 @@ public class Player extends Person {
 		}
 		
 		return a;
-	}	
-
+	}
 }

@@ -60,7 +60,8 @@ public abstract class Person {
 		return location;
 	}
 	
-	public abstract HashSet<Character> getActions();
+	public abstract HashSet<Character> getValidActions();
+	public String getAction(int distance) {	return "#";	}
 	
 	public void tick() {
 		personstatus.tick();

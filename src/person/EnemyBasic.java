@@ -13,7 +13,8 @@ public class EnemyBasic extends Enemy {
 		weapon = getRandomWeapon();
 	}
 
-	public char getAction(int distance) {
+	@Override
+	public String getAction(int distance) {
 		ArrayList<Character> a = new ArrayList<Character>();
 		HashSet<Character> valids = weapon.getWeaponActions();
 		
@@ -70,7 +71,7 @@ public class EnemyBasic extends Enemy {
 		
 		RandGen rand = new RandGen();
 		int x = rand.getRand(0, a.size() - 1);
-		return a.get(x);
+		return "" + a.get(x);
 		
 	}
 	

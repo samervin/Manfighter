@@ -12,16 +12,17 @@ public class EnemyTest extends Enemy{
 		weapon = new Fists();
 	}
 
-	public char getAction(int distance) {
+	@Override
+	public String getAction(int distance) {
 		turn++;
 		
 		switch(turn){		
-		case 1: return 'd';
-		case 2: return 'd'; 
-		case 3: return 'a';
-		case 4: return 'a';
-		case 5: return 'a';
-		default: return 'a';
+		case 1: return "d";
+		case 2: return "d"; 
+		case 3: return "a";
+		case 4: return "a";
+		case 5: return "a";
+		default: return "a";
 		}
 	}
 	

@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public abstract class Enemy extends Person {
 
-	public abstract char getAction(int distance);
+	public abstract String getAction(int distance);
 
-	public HashSet<Character> getActions() {
+	public HashSet<Character> getValidActions() {
 
 		HashSet<Character> a = weapon.getWeaponActions();
 		a.add('d'); //advance
