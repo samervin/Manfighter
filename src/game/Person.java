@@ -16,6 +16,7 @@ import weapon.ranged.explosive.GrenadeLauncher;
 import weapon.ranged.explosive.RocketLauncher;
 import weapon.ranged.longrange.SniperRifle;
 import weapon.ranged.oneshot.BBGun;
+import weapon.ranged.rapidfire.MiniSMG;
 import weapon.ranged.unpowered.Shortbow;
 
 public abstract class Person {
@@ -86,6 +87,7 @@ public abstract class Person {
 		allWeapons.add(new GrenadeLauncher()); allWeapons.add(new RocketLauncher());
 		allWeapons.add(new SniperRifle());
 		allWeapons.add(new BBGun());
+		allWeapons.add(new MiniSMG());
 		allWeapons.add(new Shortbow());
 		
 		RandGen rand = new RandGen();

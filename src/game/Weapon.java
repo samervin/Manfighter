@@ -91,6 +91,10 @@ public abstract class Weapon {
 		return selfDamageRange;
 	}
 	
+	public HashSet<Character> getRestrictedActions() {
+		return new HashSet<Character>();
+	}
+	
 	//void methods; individual weapons can implement
 	//TODO: these ought to be more general
 	public void lastDamageDealt(int damageDealt) {}

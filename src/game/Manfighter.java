@@ -225,7 +225,7 @@ public class Manfighter {
 			}
 
 			System.out.printf("%s stepped forward %d cm.%n", attNames[0], dis);
-			System.out.printf("You're now %d cm apart.", getDistanceBetween(att, def));
+			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
 		else if(action == 'e' && validActions.contains('e')) {
 			actionTime = timeStep;
@@ -274,7 +274,7 @@ public class Manfighter {
 				actionTime = 1;
 			}
 		} 
-		else if(action == 'w') {
+		else if(action == 'w' && validActions.contains('w')) {
 			actionTime = timeOther;
 			System.out.printf("%s %s waiting a turn.%n", attNames[0], attNames[3]);
 		} 
@@ -292,32 +292,38 @@ public class Manfighter {
 		wep.lastDamageDealt(damageDealt);
 
 		def.getWeapon().lastEnemyActionTaken(action);
-		System.out.println();
 		return actionTime;
 	}
 
 	private String getPersonAction(Person att, Person def) {
 		if(att instanceof Player && def instanceof Enemy) {
 			HashSet<Character> allActions = att.getValidActions();
-			System.out.print("Will you: ");
+			if(allActions.size() == 1) {
+				for(char c : allActions)
+					return "" + c; ///cannot get the only element because reasons
+			}
+			
+			System.out.print("Choose an action: ");
 			if(allActions.contains('a') && getDistanceBetween(att, def) <= att.getWeapon().getRange())
-				System.out.print("attack[a], ");
+				System.out.print("attack[a] ");
 			if(allActions.contains('r'))
-				System.out.print("ready your weapon[r], ");
+				System.out.print("ready your weapon[r] ");
 			if(allActions.contains('l'))
-				System.out.print("lower your weapon[l], ");
+				System.out.print("lower your weapon[l] ");
 			if(allActions.contains('o'))
-				System.out.print("reload your weapon[o], ");
+				System.out.print("reload your weapon[o] ");
 			if(allActions.contains('i'))
-				System.out.print("aim your weapon[i], ");
+				System.out.print("aim your weapon[i] ");
 			if(allActions.contains('d') && canAdvance(att, def))
-				System.out.print("advance[d], ");
+				System.out.print("advance[d] ");
 			if(allActions.contains('e'))
-				System.out.print("retreat[e], ");
-			if(allActions.contains('e')) //temporary hack
-				System.out.print("move[m], ");
-			System.out.print("or wait[w]?\n");
+				System.out.print("retreat[e] ");
+			if(allActions.contains('m'))
+				System.out.print("move[m] ");
+			if(allActions.contains('w'))
+				System.out.print("wait[w] ");
 
+			System.out.println();
 			String actionLine = in.nextLine().toLowerCase();
 			return actionLine;
 		} else if(att instanceof Enemy && def instanceof Player) {

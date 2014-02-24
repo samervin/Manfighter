@@ -65,6 +65,12 @@ public class EnemyBasic extends Enemy {
 				a.remove(c);
 			}
 		}
+		HashSet<Character> weaponRestrictions = weapon.getRestrictedActions(); //things your weapon won't let you do!
+		for(Character c : weaponRestrictions) {
+			if(a.contains(c)) {
+				a.remove(c);
+			}
+		}
 		
 		if(a.size() == 0)
 			a.add('w');

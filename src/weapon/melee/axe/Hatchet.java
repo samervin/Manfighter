@@ -42,14 +42,20 @@ public class Hatchet extends BaseAxe {
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		if(!stuck) {
-			a.add('a'); //attack
-
 			if(ready)
 				a.add('l');
 			else
 				a.add('r');
-		} else {
-			a.add('a');
+		}
+		a.add('a');
+		return a;
+	}
+	
+	public HashSet<Character> getRestrictedActions() {
+		HashSet<Character> a = new HashSet<Character>();
+		if(stuck) {
+			a.add('e');
+			a.add('m');
 		}
 		return a;
 	}
