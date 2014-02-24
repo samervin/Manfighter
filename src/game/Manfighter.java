@@ -76,47 +76,54 @@ public class Manfighter {
 		int enemyClock = 0;
 		int totalClock = 0;
 
+		int state = 1;
 		while(p.getHealth() > 0 && e.getHealth() > 0) {
-
-			if(p.getHealth() > 0 && e.getHealth() > 0) {
+			if(state == 1) {
+				state = 2;
 				int statdmg = checkStatus(p);
 				if(statdmg != 0) {
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
-			}
-			if(p.getHealth() > 0 && e.getHealth() > 0) {
+			} else if(state == 2) {
+				state = 3;
 				int statdmg = checkStatus(e);
 				if(statdmg != 0) {
 					System.out.println("\t\t\t\t\t\t\tCurrent time: " + totalClock);
 				}
-			}
-			if(p.getHealth() > 0 && e.getHealth() > 0) {
+			} else if(state == 3) {
+				state = 4;
 				if(!p.getStatus().isActive()) {
 					System.out.println("You are no longer " + p.getStatus() + ".");
 					p.setStatus(new BlankPersonStatus());
 
 				}
-			}
-			if(p.getHealth() > 0 && e.getHealth() > 0) {
+			} else if(state == 4) {
+				state = 5;
 				if(!e.getStatus().isActive()) {
 					System.out.println(e + " is no longer " + e.getStatus() + ".");
 					e.setStatus(new BlankPersonStatus());
-
 				}
+			} else if(state == 5) {
+				state = 6;
+				if(playerClock == 0) {
+					playerClock = takeTurn(p,e, totalClock);
+					System.out.println("\t\t\t\t\t\t\tYou will waste: " + playerClock + "ms, current time: " + totalClock + " ms.");
+				}				
+			} else if(state == 6) {
+				state = 7;
+				if(enemyClock == 0){
+					enemyClock = takeTurn(e,p, totalClock);
+					System.out.println("\t\t\t\t\t\t\tHe will waste: " + enemyClock + "ms, current time: " + totalClock + " ms.");
+				}
+			} else if(state == 7) {
+				state = 1;
+				playerClock --;
+				enemyClock --;
+				totalClock ++;
+				p.tick();
+				e.tick();
 			}
-			if(p.getHealth() > 0 && e.getHealth() > 0 && playerClock == 0) {
-				playerClock = takeTurn(p,e, totalClock);
-				System.out.println("\t\t\t\t\t\t\tYou will waste: " + playerClock + "ms, current time: " + totalClock + " ms.");
-			}
-			if(p.getHealth() > 0 && e.getHealth() > 0 && enemyClock == 0) {
-				enemyClock = takeTurn(e,p, totalClock);
-				System.out.println("\t\t\t\t\t\t\tHe will waste: " + enemyClock + "ms, current time: " + totalClock + " ms.");
-			}
-			playerClock --;
-			enemyClock --;
-			totalClock ++;
-			p.tick();
-			e.tick();
+
 		}
 
 		if(p.getHealth() < 1) {
@@ -137,10 +144,10 @@ public class Manfighter {
 			System.out.printf("%s lost %d health due to %s!%n", names[0], statdmg, p.getStatus());
 			System.out.printf("%s new health is %d.%n", names[1], p.getHealth());
 		}
-		
+
 		return statdmg;
 	}
-	
+
 	private int takeTurn(Person att, Person def, int currentTime) {
 		int actionTime;
 		Weapon wep = att.getWeapon();
@@ -166,7 +173,7 @@ public class Manfighter {
 		else if(action == 'l' && validActions.contains('l')) {
 			actionTime = timeOther;
 			wep.setReadied(false);
-			System.out.printf("%s readied %s %s. Movement speed increased.%n", attNames[0], attNames[1], wep);
+			System.out.printf("%s lowered %s %s. Movement speed increased.%n", attNames[0], attNames[1], wep);
 		} 
 		else if(action == 'o' && validActions.contains('o')) {
 			actionTime = timeOther;
@@ -186,7 +193,7 @@ public class Manfighter {
 				PersonStatus wepStat = wep.getInflictedStatus();
 				//TODO: this also blows
 				if(!(wepStat instanceof BlankPersonStatus) && !def.getStatus().getClass().equals(wepStat.getClass())) {
-					System.out.printf("%s weapon inflicted %s on %s!%n", attNames[0], wepStat, defNames[0]);
+					System.out.printf("%s's weapon inflicted %s on %s!%n", attNames[0], wepStat, defNames[0]);
 					wepStat.initialize(currentTime);
 					def.setStatus(wepStat);
 				}
