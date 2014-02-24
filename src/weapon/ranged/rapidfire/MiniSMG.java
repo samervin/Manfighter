@@ -5,7 +5,7 @@ import java.util.HashSet;
 public class MiniSMG extends BaseRapidFire {
 
 	public final int bulletsPerTriggerPull = 5;
-	public int bulletsLeft = 5; //per trigger pull
+	public int bulletsLeft = 0; //per trigger pull
 	public boolean rambo = true; //if you miss in a trigger pull, you automatically miss the rest
 	
 	public MiniSMG() {
