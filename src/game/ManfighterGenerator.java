@@ -13,6 +13,7 @@ import status.weapon.DamageUp;
 import status.weapon.FireRateUp;
 import status.weapon.RangeUp;
 import weapon.melee.axe.Hatchet;
+import weapon.melee.club.CardboardTube;
 import weapon.melee.club.Mace;
 import weapon.melee.fists.BoxingGloves;
 import weapon.melee.fists.BrassKnuckles;
@@ -168,6 +169,7 @@ public class ManfighterGenerator {
 	private void seedEggs() {
 		if(eggs.size() == 0) {
 			eggs.put("Cassandra", new Shortbow());
+			eggs.put("Pribs", new CardboardTube());
 		}
 	}
 	

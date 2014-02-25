@@ -1,29 +1,27 @@
 package weapon.melee.club;
 
 import game.ManfighterGenerator;
-import game.PersonStatus;
 
 import java.util.HashSet;
 
 import status.person.Bruised;
 
-public class Mace extends BaseClub {
-	
-	public Mace() {
+public class CardboardTube extends BaseClub {
+
+	public CardboardTube() {
 		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		inflictingStatus = new Bruised();
-		damage = 200;
-		range = 40;
-		fireTime = 1500;
-		knockback = 50;
-		readyTime = 550;
+		damage = 10;
+		range = 100;
+		fireTime = 600;
+		readyTime = 300;
 	}
-
+	
 	@Override
 	public String getBaseName() {
-		return "Mace";
+		return "Cardboard tube";
 	}
-
+	
 	@Override
 	public int getDamage(int distance) {
 		if(ready) {
@@ -34,6 +32,7 @@ public class Mace extends BaseClub {
 		return 0;
 	}
 
+	@Override
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		
@@ -46,12 +45,4 @@ public class Mace extends BaseClub {
 		
 		return a;
 	}
-
-	public PersonStatus getInflictedStatus() {
-		if(rand.getOdds(7, 10))
-			return inflictingStatus;
-		else
-			return blankInflictingStatus;
-	}
-
 }
