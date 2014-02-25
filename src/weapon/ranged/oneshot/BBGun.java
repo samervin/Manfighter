@@ -1,17 +1,20 @@
 package weapon.ranged.oneshot;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class BBGun extends BaseOneshot {
 
 	public BBGun(){
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 50;
 		range = 1000;
 		maxClip = 50;
 		clip = 50;
-		fireTime = 800;
+		fireTime = 600;
 		readyTime = 400;
+		reloadTime = 2500;
 	}
 
 	@Override
@@ -20,7 +23,7 @@ public class BBGun extends BaseOneshot {
 	}
 
 	@Override
-	public int getDamage() {
+	public int getDamage(int distance) {
 		clip--;
 
 		if(ready) {

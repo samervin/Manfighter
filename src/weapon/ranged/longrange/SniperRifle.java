@@ -1,5 +1,7 @@
 package weapon.ranged.longrange;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class SniperRifle extends BaseLongrange {
@@ -7,7 +9,7 @@ public class SniperRifle extends BaseLongrange {
 	private int readyState = 0; //0 = from the hip, 1-4 = tracking, 5+ = headshot
 
 	public SniperRifle() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 80;
 		range = 1000;
 		maxClip = 2;
@@ -15,13 +17,14 @@ public class SniperRifle extends BaseLongrange {
 		fireTime = 1250;
 		knockback = 60;
 		readyTime = 550;
+		reloadTime = 2000;
 	}
 	
 	public String getBaseName() {
 		return "Sniper rifle";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		clip--;
 		
 		if(readyState == 0) {
@@ -31,7 +34,7 @@ public class SniperRifle extends BaseLongrange {
 				return 0;
 		} else if(readyState <= 4) {
 			if(rand.getOdds(2, 3)) {
-				return (readyState * 40) + weaponStatus.getDamage(damage);
+				return (readyState * 60) + weaponStatus.getDamage(damage);
 			} else
 				return 0;
 		}

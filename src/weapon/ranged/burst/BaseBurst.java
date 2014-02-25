@@ -1,15 +1,17 @@
-package weapon.ranged.explosive;
+package weapon.ranged.burst;
 
 import weapon.WeaponRanged;
 
-public abstract class BaseExplosive extends WeaponRanged {
+public abstract class BaseBurst extends WeaponRanged {
 
 	@Override
 	public boolean isCrit() {
 		return ((rand.getOdds(1,50)) || weaponStatus.getCritChance());
 	}
-	
+
+	@Override
 	public String getVerb() {
-		return "shot";
+		return "blasted";
 	}
+
 }

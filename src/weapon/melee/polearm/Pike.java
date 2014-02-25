@@ -1,11 +1,13 @@
 package weapon.melee.polearm;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class Pike extends BasePolearm {
 
 	public Pike() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 130;
 		range = 300;
 		fireTime = 800;
@@ -17,7 +19,7 @@ public class Pike extends BasePolearm {
 		return "Pike";
 	}
 	
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(ready) {
 			return weaponStatus.getDamage(damage);
 		}

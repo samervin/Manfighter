@@ -1,5 +1,6 @@
 package person;
 
+import game.ManfighterGenerator;
 import game.Person;
 
 import java.util.HashSet;
@@ -10,7 +11,7 @@ public class Player extends Person {
 
 	public Player(String n) {
 		name = n;
-		weapon = getRandomWeapon();
+		weapon = new ManfighterGenerator().getRandomWeapon(name);
 		health = maxhealth;
 	}
 

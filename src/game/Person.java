@@ -1,23 +1,8 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
-import weapon.melee.axe.Hatchet;
-import weapon.melee.club.Mace;
-import weapon.melee.fists.BrassKnuckles;
-import weapon.melee.fists.Fists;
-import weapon.melee.hammer.WarHammer;
-import weapon.melee.knife.Switchblade;
-import weapon.melee.saw.HandSaw;
-import weapon.melee.sword.Dagger;
-import weapon.ranged.explosive.GrenadeLauncher;
-import weapon.ranged.explosive.RocketLauncher;
-import weapon.ranged.longrange.SniperRifle;
-import weapon.ranged.oneshot.BBGun;
-import weapon.ranged.rapidfire.MiniSMG;
-import weapon.ranged.unpowered.Shortbow;
 
 public abstract class Person {
 	
@@ -43,8 +28,8 @@ public abstract class Person {
 		weapon = w;
 	}
 	
-	public int getDamage() {
-		return weapon.getDamage();
+	public int getDamage(int distance) {
+		return weapon.getDamage(distance);
 	}
 	
 	public int applyDamage(int dmg)  {//return value is ACTUAL damage done
@@ -73,25 +58,5 @@ public abstract class Person {
 	}
 	public void setStatus(PersonStatus ps) {
 		personstatus = ps;
-	}
-	
-	public Weapon getRandomWeapon() {
-		ArrayList<Weapon> allWeapons = new ArrayList<Weapon>();
-		allWeapons.add(new Hatchet());
-		allWeapons.add(new Mace());
-		allWeapons.add(new BrassKnuckles()); allWeapons.add(new Fists());
-		allWeapons.add(new WarHammer());
-		allWeapons.add(new Switchblade());
-		allWeapons.add(new HandSaw());
-		allWeapons.add(new Dagger());
-		allWeapons.add(new GrenadeLauncher()); allWeapons.add(new RocketLauncher());
-		allWeapons.add(new SniperRifle());
-		allWeapons.add(new BBGun());
-		allWeapons.add(new MiniSMG());
-		allWeapons.add(new Shortbow());
-		
-		RandGen rand = new RandGen();
-		int x = rand.getRand(0, allWeapons.size() - 1);
-		return allWeapons.get(x);
 	}
 }

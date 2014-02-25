@@ -1,5 +1,6 @@
 package weapon.melee.club;
 
+import game.ManfighterGenerator;
 import game.PersonStatus;
 
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import status.person.Bruised;
 public class Mace extends BaseClub {
 	
 	public Mace() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		inflictingStatus = new Bruised();
 		damage = 200;
 		range = 40;
@@ -22,7 +23,7 @@ public class Mace extends BaseClub {
 		return "Mace";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(ready) {
 			ready = false;
 			return weaponStatus.getDamage(damage);

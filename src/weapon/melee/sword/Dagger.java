@@ -1,11 +1,13 @@
 package weapon.melee.sword;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class Dagger extends BaseSword {
 
 	public Dagger() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 200;
 		range = 15;
 		fireTime = 1000;
@@ -16,7 +18,7 @@ public class Dagger extends BaseSword {
 		return "Dagger";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(ready) {
 			ready = false;
 			int d = weaponStatus.getDamage(damage);

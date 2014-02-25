@@ -10,6 +10,10 @@ public class Stunned extends PersonStatus {
 		totalTime = 3000;
 	}
 	
+	public Stunned(int time) {
+		totalTime = time;
+	}
+	
 	public String toString() {
 		return "stunned";
 	}

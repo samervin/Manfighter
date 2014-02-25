@@ -10,6 +10,10 @@ public class Rooted extends PersonStatus {
 		totalTime = 4000;
 	}
 	
+	public Rooted(int time) {
+		totalTime = time;
+	}
+	
 	public String toString() {
 		return "rooted";
 	}

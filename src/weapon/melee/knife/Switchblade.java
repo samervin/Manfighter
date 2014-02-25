@@ -1,11 +1,12 @@
 package weapon.melee.knife;
 
+import game.ManfighterGenerator;
 import status.person.Bleeding;
 
 public class Switchblade extends BaseKnife {
 	
 	public Switchblade() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		inflictingStatus = new Bleeding();
 		damage = 130;
 		range = 10;

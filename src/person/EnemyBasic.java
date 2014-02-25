@@ -1,5 +1,6 @@
 package person;
 
+import game.ManfighterGenerator;
 import game.RandGen;
 
 import java.util.ArrayList;
@@ -8,9 +9,10 @@ import java.util.HashSet;
 public class EnemyBasic extends Enemy {
 	
 	public EnemyBasic() {
-		name = createRandomName();
+		ManfighterGenerator mfg = new ManfighterGenerator();
+		name = mfg.createRandomName();
 		health = 1000;
-		weapon = getRandomWeapon();
+		weapon = mfg.getRandomWeapon();
 	}
 
 	@Override
@@ -44,10 +46,9 @@ public class EnemyBasic extends Enemy {
 			for(int i = 0; i < 4; i++) {
 				a.add('d');
 			}
-			//a.add('w');
 		}
 		
-		if(!weapon.hasFullAmmo() && valids.contains('o')) {
+		if(!weapon.hasFullAmmo() && valids.contains('o') && !a.contains('a')) {
 			for(int i = 0; i < 1; i++)
 				a.add('o');
 		}
@@ -56,9 +57,7 @@ public class EnemyBasic extends Enemy {
 			for(int i = 0; i < 10; i++)
 				a.add('o');
 		}
-		
-		
-		
+				
 		HashSet<Character> restrictions = personstatus.getRestrictedActions();
 		for(Character c : restrictions) {
 			while(a.contains(c)) {

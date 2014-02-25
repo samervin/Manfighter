@@ -1,15 +1,9 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
-import status.weapon.AccuracyDown;
 import status.weapon.BlankWeaponStatus;
-import status.weapon.CritUp;
-import status.weapon.DamageUp;
-import status.weapon.FireRateUp;
-import status.weapon.RangeUp;
 
 public abstract class Weapon {
 	
@@ -32,22 +26,6 @@ public abstract class Weapon {
 	protected int selfDamageRange = 0;
 	
 	//shared methods
-	protected WeaponStatus getRandomStatus() {
-		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
-		allStati.add(new DamageUp());
-		allStati.add(new CritUp());
-		allStati.add(new RangeUp());
-		allStati.add(new AccuracyDown());
-		allStati.add(new FireRateUp());
-		
-		int size = allStati.size();
-		for(int i = 0; i < size; i++)
-			allStati.add(new BlankWeaponStatus());
-		
-		int x = rand.getRand(0, allStati.size()-1);
-		return allStati.get(x);
-	}
-	
 	public String toString() {
 		if(weaponStatus instanceof BlankWeaponStatus)
 			return this.getBaseName().trim();
@@ -66,6 +44,8 @@ public abstract class Weapon {
 	public int getFireTime() {
 		return weaponStatus.getFireTime(fireTime);
 	}
+	
+	public abstract int getReloadTime();
 	
 	public PersonStatus getInflictedStatus() {
 		return inflictingStatus;
@@ -104,7 +84,7 @@ public abstract class Weapon {
 	
 	// these apply to every weapon
 	public abstract String getBaseName();
-	public abstract int getDamage();
+	public abstract int getDamage(int distance);
 	public abstract HashSet<Character> getWeaponActions();
 	public abstract boolean isCrit();
 	public abstract String getVerb();

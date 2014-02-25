@@ -7,8 +7,13 @@ public class Bleeding extends PersonStatus {
 	private int timeBetween = 1000;
 	
 	public Bleeding() {
-		dmg = 30;
+		dmg = 35;
 		totalTime = 5000;
+	}
+	
+	public Bleeding(int time) {
+		dmg = 30;
+		totalTime = time;
 	}
 	
 	public String toString() {

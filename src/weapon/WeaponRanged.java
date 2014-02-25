@@ -6,8 +6,9 @@ public abstract class WeaponRanged extends Weapon {
 
 	protected int maxClip;
 	protected int clip;
+	protected int reloadTime;
 	
-	public int getDamage() {
+	public int getDamage(int distance) {
 		clip--;
 		return weaponStatus.getDamage(damage);
 	}
@@ -18,6 +19,10 @@ public abstract class WeaponRanged extends Weapon {
 
 	public int getFireTime() {
 		return weaponStatus.getFireTime(fireTime);
+	}
+	
+	public int getReloadTime() {
+		return reloadTime;
 	}
 
 	public boolean hasFullAmmo() {

@@ -1,28 +1,34 @@
 package weapon.ranged.unpowered;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class Shortbow extends BaseUnpowered {
 	
 	public Shortbow() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 170;
 		range = 400;
-		fireTime = 975;
+		maxClip = 1;
+		clip = 1;
+		fireTime = 700;
 		knockback = 15;
-		readyTime = 550;
+		readyTime = 800;
+		reloadTime = 1500;
 	}
 
 	public String getBaseName() {
 		return "Short bow";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
+		clip--;
 		ready = false;
 		if(rand.getOdds(9, 10))
 			return weaponStatus.getDamage(damage);
-		else
-			return 0;
+		
+		return 0;
 	}
 
 	public HashSet<Character> getWeaponActions() {

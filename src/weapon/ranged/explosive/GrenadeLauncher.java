@@ -1,18 +1,21 @@
 package weapon.ranged.explosive;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class GrenadeLauncher extends BaseExplosive {
 
 	public GrenadeLauncher() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 350;
 		range = 1000;
 		maxClip = 6;
 		clip = 6;
-		fireTime = 2450;
+		fireTime = 1000;
 		knockback = 75;
 		readyTime = 700;
+		reloadTime = 4700;
 
 		selfDamage = 300;
 		selfDamageRange = 270;
@@ -27,7 +30,7 @@ public class GrenadeLauncher extends BaseExplosive {
 		return "bombed";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		clip--;
 
 		if(ready) {

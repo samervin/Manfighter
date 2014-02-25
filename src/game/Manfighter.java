@@ -13,6 +13,7 @@ public class Manfighter {
 	private int TEST = 0; //1 for quicker testing, 0 for general play
 
 	private Scanner in = new Scanner(System.in);
+	private ManfighterGenerator mfg = new ManfighterGenerator();
 	private final int close = 60; //minimum distance apart, in cm
 	private final int forwardStep = 85; //how far you step forward
 	private final int backwardStep = 70; //how far you step backward
@@ -28,8 +29,8 @@ public class Manfighter {
 		if(TEST == 0) {
 			System.out.println("Welcome to Manfighter! What's your name?");
 			stemp = in.nextLine().trim();
-			if(stringDivisibleBy(stemp, 3)) {
-				while(stringDivisibleBy(stemp, 3)) {
+			if(!mfg.isValidName(stemp)) {
+				while(!mfg.isValidName(stemp)) {
 					System.out.println("That name sucks. Try again.");
 					stemp = in.nextLine().trim();
 				}
@@ -164,54 +165,56 @@ public class Manfighter {
 
 		String[] attNames = getNames(att);
 		String[] defNames = getNames(def);
+		String sentenceStarter = attNames[0].toUpperCase().charAt(0) + attNames[0].substring(1);
 
 		if(action == 'r' && validActions.contains('r')) {
 			actionTime = wep.getReadyTime();
 			wep.setReadied(true);
-			System.out.printf("%s readied %s %s. Movement speed lowered.%n", attNames[0], attNames[1], wep);
+			System.out.printf("%s readied %s %s. Movement speed lowered.%n", sentenceStarter, attNames[1], wep);
 		}
 		else if(action == 'l' && validActions.contains('l')) {
 			actionTime = timeOther;
 			wep.setReadied(false);
-			System.out.printf("%s lowered %s %s. Movement speed increased.%n", attNames[0], attNames[1], wep);
+			System.out.printf("%s lowered %s %s. Movement speed increased.%n", sentenceStarter, attNames[1], wep);
 		} 
 		else if(action == 'o' && validActions.contains('o')) {
-			actionTime = timeOther;
+			actionTime = wep.getReloadTime();
 			wep.reload();
-			System.out.printf("%s reloaded %s %s.%n", attNames[0], attNames[1], wep);
+			System.out.printf("%s reloaded %s %s.%n", sentenceStarter, attNames[1], wep);
 		} 
 		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
 			actionTime = wep.getFireTime();
-			int dmg = wep.getDamage();
+			int dmg = wep.getDamage(getDistanceBetween(att, def));
 			dmg = getCritDamage(att, dmg);
 			if(dmg > 0) {
 				dmg = def.applyDamage(dmg);
 				damageDealt = dmg;
-				System.out.printf("%s %s %s, dealing %d damage!%n", attNames[0], wep.getVerb(), defNames[0], dmg);
-				System.out.printf("%s new health is %d.%n", defNames[1], def.getHealth());
+				System.out.printf("%s %s %s, dealing %d damage!%n", sentenceStarter, wep.getVerb(), defNames[0], dmg);
+				System.out.printf("%s new health is %d.%n", (defNames[1].toUpperCase().charAt(0) + defNames[1].substring(1)), def.getHealth());
 
 				PersonStatus wepStat = wep.getInflictedStatus();
 				//TODO: this also blows
 				if(!(wepStat instanceof BlankPersonStatus) && !def.getStatus().getClass().equals(wepStat.getClass())) {
-					System.out.printf("%s's weapon inflicted %s on %s!%n", attNames[0], wepStat, defNames[0]);
+					System.out.printf("%s's weapon inflicted %s on %s!%n", sentenceStarter, wepStat, defNames[0]);
 					wepStat.initialize(currentTime);
 					def.setStatus(wepStat);
 				}
 
-				if(wep.getKnockback() != 0) {
-					int dis = move(att, def, 0, -wep.getKnockback());
-					System.out.printf("%s knocked %s back %d cm.%n", attNames[0], defNames[0], dis);
+				int knockback = wep.getKnockback();
+				if(knockback != 0) {
+					int dis = move(att, def, 0, -knockback);
+					System.out.printf("%s knocked %s back %d cm.%n", sentenceStarter, defNames[0], dis);
 					System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 				}
 
 				if(wep.getSelfDamage() != 0 && getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
 					int selfdmg = att.applyDamage(wep.getSelfDamage());
-					System.out.printf("%s damaged %s for %d damage!%n", attNames[0], attNames[2], selfdmg);
+					System.out.printf("%s damaged %s for %d damage!%n", sentenceStarter, attNames[2], selfdmg);
 					System.out.printf("%s new health is %d.%n", attNames[1], att.getHealth());
 				}
 
 			} else {
-				System.out.printf("%s missed!%n", attNames[0]);
+				System.out.printf("%s missed!%n", sentenceStarter);
 			}			
 		} 
 		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > close) {
@@ -224,7 +227,7 @@ public class Manfighter {
 				dis = move(att, def, forwardStep, 0);	
 			}
 
-			System.out.printf("%s stepped forward %d cm.%n", attNames[0], dis);
+			System.out.printf("%s stepped forward %d cm.%n", sentenceStarter, dis);
 			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
 		else if(action == 'e' && validActions.contains('e')) {
@@ -237,7 +240,7 @@ public class Manfighter {
 				dis = move(att, def, -backwardStep, 0);
 			}
 
-			System.out.printf("%s stepped backward %d cm.%n", attNames[0], dis);
+			System.out.printf("%s stepped backward %d cm.%n", sentenceStarter, dis);
 			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
 		else if(action == 'm' && validActions.contains('e')) { //HACKS, also presently this only affects players
@@ -276,7 +279,7 @@ public class Manfighter {
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
 			actionTime = timeOther;
-			System.out.printf("%s %s waiting a turn.%n", attNames[0], attNames[3]);
+			System.out.printf("%s %s waiting a turn.%n", sentenceStarter, attNames[3]);
 		} 
 		else {
 			actionTime = 1;
@@ -432,15 +435,5 @@ public class Manfighter {
 		}
 
 		return damage;
-	}
-
-	private boolean stringDivisibleBy(String str, int num) {
-		char[] a = str.toCharArray();
-		int in = 0;
-		for(int k = 0; k < a.length; k++) {
-			in += a[k]; //47
-		}
-
-		return (in % num == 0);
 	}
 }

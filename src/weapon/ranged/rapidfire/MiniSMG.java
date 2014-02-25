@@ -1,5 +1,7 @@
 package weapon.ranged.rapidfire;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class MiniSMG extends BaseRapidFire {
@@ -9,14 +11,14 @@ public class MiniSMG extends BaseRapidFire {
 	public boolean rambo = true; //if you miss in a trigger pull, you automatically miss the rest
 	
 	public MiniSMG() {
-		weaponStatus = getRandomStatus();
-		damage = 15;
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		damage = 20;
 		range = 1000;
 		maxClip = 25;
 		clip = 25;
 		fireTime = 200;
 		readyTime = 750;
-		knockback = 2;
+		reloadTime = 1900;
 	}
 	
 	@Override
@@ -33,7 +35,15 @@ public class MiniSMG extends BaseRapidFire {
 	}
 	
 	@Override
-	public int getDamage() {		
+	public void reload() {
+		clip = maxClip;
+		ready = false;
+		bulletsLeft = 0;
+		rambo = true;
+	}
+	
+	@Override
+	public int getDamage(int distance) {		
 		if(bulletsLeft > 0) {
 			bulletsLeft--;
 			clip--;
@@ -51,10 +61,16 @@ public class MiniSMG extends BaseRapidFire {
 		} else {
 			bulletsLeft = bulletsPerTriggerPull;
 			rambo = true;
-			return getDamage();
+			return getDamage(distance);
 		}
 		
 		return 0;
+	}
+	
+	@Override
+	public void lastDamageDealt(int damage) {
+		if(damage == 0)
+			rambo = false;
 	}
 
 	@Override

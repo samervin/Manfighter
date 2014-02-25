@@ -1,5 +1,7 @@
 package weapon.melee.axe;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class Hatchet extends BaseAxe {
@@ -9,7 +11,7 @@ public class Hatchet extends BaseAxe {
 	private int stuckFireTime = 1400;
 
 	public Hatchet() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 215;
 		range = 15;
 		fireTime = defaultFireTime;
@@ -20,7 +22,7 @@ public class Hatchet extends BaseAxe {
 		return "Hatchet";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(!stuck) {
 			if(ready) {
 				ready = false;

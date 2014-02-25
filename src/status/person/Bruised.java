@@ -8,6 +8,10 @@ public class Bruised extends PersonStatus {
 		totalTime = 10000;
 	}
 	
+	public Bruised(int time) {
+		totalTime = time;
+	}
+	
 	public String toString() {
 		return "bruised";
 	}

@@ -4,7 +4,7 @@ import game.Weapon;
 
 public abstract class WeaponMelee extends Weapon {
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		return weaponStatus.getDamage(damage);
 	}
 	
@@ -16,5 +16,6 @@ public abstract class WeaponMelee extends Weapon {
 	public boolean hasFullAmmo() {return true;}
 	public boolean hasLoadedAmmo() {return true;}
 	public void reload() {}
+	public int getReloadTime() {return 1;}
 
 }

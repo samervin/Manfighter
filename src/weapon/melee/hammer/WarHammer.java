@@ -1,5 +1,6 @@
 package weapon.melee.hammer;
 
+import game.ManfighterGenerator;
 import game.PersonStatus;
 
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import status.person.Stunned;
 public class WarHammer extends BaseHammer {
 
 	public WarHammer() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		inflictingStatus = new Stunned();
 		damage = 500;
 		range = 100;
@@ -21,7 +22,7 @@ public class WarHammer extends BaseHammer {
 		return "War hammer";
 	}
 
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(ready) {
 			ready = false;
 			return weaponStatus.getDamage(damage);

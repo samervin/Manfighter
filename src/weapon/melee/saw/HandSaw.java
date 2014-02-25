@@ -1,5 +1,7 @@
 package weapon.melee.saw;
 
+import game.ManfighterGenerator;
+
 import java.util.HashSet;
 
 public class HandSaw extends BaseSaw {
@@ -7,7 +9,7 @@ public class HandSaw extends BaseSaw {
 	private int consecutives = 1;
 	
 	public HandSaw() {
-		weaponStatus = getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		damage = 120;
 		range = 30;
 		fireTime = 1100;
@@ -18,7 +20,7 @@ public class HandSaw extends BaseSaw {
 		return "Hand saw";
 	}
 	
-	public int getDamage() {
+	public int getDamage(int distance) {
 		if(ready) {
 			int d = weaponStatus.getDamage(damage);
 			d *= consecutives;
