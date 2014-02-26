@@ -44,12 +44,14 @@ public class Manfighter {
 
 		System.out.println("\nStep into the battleground, " + p + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
+		System.out.println(">>Your head armor is: " + p.getHeadArmor());
 
 		int kills = -1;
 		while(p.getHealth() > 0) {
 			kills++;
 			Enemy e = new EnemyBasic();
 			System.out.println("\n\n\nYour next opponent is " + e + "! \nHis weapon is: " + e.getWeapon() + "! \nGood luck!");
+			System.out.println("He has: " + e.getHeadArmor());
 			combat(p, e);
 
 			if(p.getHealth() > 0) {
@@ -309,12 +311,12 @@ public class Manfighter {
 			System.out.print("Choose an action: ");
 			if(allActions.contains('a') && getDistanceBetween(att, def) <= att.getWeapon().getRange())
 				System.out.print("attack[a] ");
+			if(allActions.contains('o'))
+				System.out.print("reload your weapon[o] ");
 			if(allActions.contains('r'))
 				System.out.print("ready your weapon[r] ");
 			if(allActions.contains('l'))
 				System.out.print("lower your weapon[l] ");
-			if(allActions.contains('o'))
-				System.out.print("reload your weapon[o] ");
 			if(allActions.contains('i'))
 				System.out.print("aim your weapon[i] ");
 			if(allActions.contains('d') && canAdvance(att, def))

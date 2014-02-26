@@ -20,4 +20,8 @@ public abstract class BaseFists extends WeaponMelee {
 	public String getVerb() {
 		return "punched";
 	}
+	
+	public String getDamageType() {
+		return "crushing";
+	}
 }

@@ -12,4 +12,8 @@ public abstract class BaseClub extends WeaponMelee {
 		return "smashed";
 	}
 	
+	public String getDamageType() {
+		return "crushing";
+	}
+	
 }

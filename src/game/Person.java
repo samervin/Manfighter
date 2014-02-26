@@ -3,11 +3,13 @@ package game;
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
+import armor.HeadArmor;
 
 public abstract class Person {
 	
 	protected PersonStatus personstatus = new BlankPersonStatus();
 	protected Weapon weapon;
+	protected HeadArmor headArmor = new ManfighterGenerator().getRandomHeadArmor();
 	protected int health;
 	protected int location;
 	protected String name;
@@ -28,12 +30,26 @@ public abstract class Person {
 		weapon = w;
 	}
 	
+	public HeadArmor getHeadArmor() {
+		return headArmor;
+	}
+	
+	public void setHeadArmor(HeadArmor ha) {
+		headArmor = ha;
+	}
+	
 	public int getDamage(int distance) {
 		return weapon.getDamage(distance);
 	}
 	
 	public int applyDamage(int dmg)  {//return value is ACTUAL damage done
+		System.out.println("/t/tinitial damage is " + dmg);
+		dmg -= headArmor.getDamageReduction();
+		System.out.println("/t/tdamage reduction is: " + dmg);
+		dmg = headArmor.getDamageProtection(dmg);
+		System.out.println("/t/tdamage protection is: " + dmg);
 		dmg = personstatus.getDamageChange(dmg);
+		
 		health -= dmg;
 		return dmg;
 	}

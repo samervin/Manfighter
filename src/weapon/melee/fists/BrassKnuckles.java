@@ -12,5 +12,10 @@ public class BrassKnuckles extends BaseFists {
 	public String getBaseName() {
 		return "Brass knuckles";
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "piercing";
+	}
 
 }

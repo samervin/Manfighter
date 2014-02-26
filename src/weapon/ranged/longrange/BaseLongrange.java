@@ -12,4 +12,8 @@ public abstract class BaseLongrange extends WeaponRanged {
 		return "sniped";
 	}
 	
+	public String getDamageType() {
+		return "penetrating";
+	}
+	
 }

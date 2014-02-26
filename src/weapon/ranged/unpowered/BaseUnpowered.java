@@ -11,4 +11,8 @@ public abstract class BaseUnpowered extends WeaponRanged {
 	public String getVerb() {
 		return "arrowed";
 	}
+	
+	public String getDamageType() {
+		return "crushing";
+	}
 }

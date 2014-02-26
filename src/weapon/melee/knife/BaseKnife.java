@@ -20,4 +20,8 @@ public abstract class BaseKnife extends WeaponMelee {
 	public String getVerb() {
 		return "stabbed";
 	}
+	
+	public String getDamageType() {
+		return "cutting";
+	}
 }

@@ -30,16 +30,24 @@ public class Shortbow extends BaseUnpowered {
 		
 		return 0;
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "piercing";
+	}
 
-	public HashSet<Character> getWeaponActions() {
+	public HashSet<Character> getWeaponActions() {		
 		HashSet<Character> a = new HashSet<Character>();
-		if(ready) {
-			a.add('a');
+		if(this.hasLoadedAmmo() && ready)
+			a.add('a'); //attack
+		if(!this.hasFullAmmo())
+			a.add('o'); //reload
+
+		if(ready)
 			a.add('l');
-		}
 		else
 			a.add('r');
-		
+
 		return a;
 	}
 	

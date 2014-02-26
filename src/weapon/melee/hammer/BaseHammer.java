@@ -12,4 +12,7 @@ public abstract class BaseHammer extends WeaponMelee {
 		return "smashed";
 	}
 
+	public String getDamageType() {
+		return "crushing";
+	}
 }

@@ -37,6 +37,11 @@ public class BBGun extends BaseOneshot {
 		}
 		return 0;
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "crushing";
+	}
 
 	@Override
 	public HashSet<Character> getWeaponActions() {

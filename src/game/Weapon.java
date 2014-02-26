@@ -88,6 +88,8 @@ public abstract class Weapon {
 	public abstract HashSet<Character> getWeaponActions();
 	public abstract boolean isCrit();
 	public abstract String getVerb();
+	public abstract String getDamageType();
+	//public abstract String getDamageLocation();
 	
 	// these don't apply to melee types, which have no ammo (usually)
 	public abstract boolean hasFullAmmo();

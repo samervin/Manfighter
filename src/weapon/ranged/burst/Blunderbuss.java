@@ -62,6 +62,11 @@ public class Blunderbuss extends BaseBurst {
 
 		return weaponStatus.getDamage(totalDamage);
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "crushing";
+	}
 
 	@Override
 	public int getKnockback() {

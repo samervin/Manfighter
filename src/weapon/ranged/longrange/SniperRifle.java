@@ -60,13 +60,6 @@ public class SniperRifle extends BaseLongrange {
 		clip = maxClip;
 		readyState = 0;
 	}
-	
-	public int getFireTime() {
-		if(readyState > 7)
-			return weaponStatus.getFireTime(fireTime);
-		else
-			return weaponStatus.getFireTime(fireTime * 2);
-	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();

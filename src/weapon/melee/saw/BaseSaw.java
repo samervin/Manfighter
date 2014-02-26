@@ -11,5 +11,9 @@ public abstract class BaseSaw extends WeaponMelee {
 	public String getVerb() {
 		return "sawed";
 	}
+	
+	public String getDamageType() {
+		return "cutting";
+	}
 
 }

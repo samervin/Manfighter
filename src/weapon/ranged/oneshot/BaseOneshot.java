@@ -13,5 +13,10 @@ public abstract class BaseOneshot extends WeaponRanged {
 	public String getVerb() {
 		return "shot";
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "piercing";
+	}
 
 }

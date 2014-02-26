@@ -29,10 +29,14 @@ import weapon.ranged.longrange.SniperRifle;
 import weapon.ranged.oneshot.BBGun;
 import weapon.ranged.rapidfire.MiniSMG;
 import weapon.ranged.unpowered.Shortbow;
+import armor.HeadArmor;
+import armor.head.BlankHeadArmor;
+import armor.head.Helmet;
 
 public class ManfighterGenerator {
 	
 	HashMap<String, Weapon> eggs = new HashMap<String, Weapon>();
+	RandGen rand = new RandGen();
 
 	public boolean isValidName(String name) {
 		return (!stringDivisibleBy(name, 3)) || isEgg(name);
@@ -61,9 +65,17 @@ public class ManfighterGenerator {
 		allWeapons.add(new MiniSMG());
 		allWeapons.add(new Shortbow());
 		
-		RandGen rand = new RandGen();
 		int x = rand.getRand(0, allWeapons.size() - 1);
 		return allWeapons.get(x);
+	}
+	
+	public HeadArmor getRandomHeadArmor() {
+		ArrayList<HeadArmor> allHeads = new ArrayList<HeadArmor>();
+		allHeads.add(new BlankHeadArmor());
+		allHeads.add(new Helmet());
+		
+		int x = rand.getRand(0, allHeads.size() -1);
+		return allHeads.get(x);
 	}
 	
 	public String createRandomName() {

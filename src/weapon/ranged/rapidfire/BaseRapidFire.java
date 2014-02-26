@@ -13,5 +13,10 @@ public abstract class BaseRapidFire extends WeaponRanged {
 	public String getVerb() {
 		return "shot";
 	}
+	
+	@Override
+	public String getDamageType() {
+		return "piercing";
+	}
 
 }

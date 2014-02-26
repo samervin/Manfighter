@@ -40,6 +40,13 @@ public class Hatchet extends BaseAxe {
 			return d;
 		}
 	}
+	
+	public String getDamageType() {
+		if(stuck)
+			return "penetrating";
+		else
+			return "slashing";
+	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
