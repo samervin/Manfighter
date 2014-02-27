@@ -46,7 +46,7 @@ public abstract class Person {
 		System.out.println("/t/tinitial damage is " + dmg);
 		dmg -= headArmor.getDamageReduction();
 		System.out.println("/t/tdamage reduction is: " + dmg);
-		dmg = headArmor.getDamageProtection(dmg);
+		dmg = headArmor.getDamageResistance(dmg);
 		System.out.println("/t/tdamage protection is: " + dmg);
 		dmg = personstatus.getDamageChange(dmg);
 		

@@ -7,7 +7,7 @@ public abstract class Armor {
 	
 	protected int weight;
 	protected int damageReduction; //flat -x damage from damage dealt
-	protected int damageProtection; //%protection from remaining damage
+	protected int damageResistance; //%protection from remaining damage
 	
 	public abstract String toString();
 	
@@ -15,8 +15,8 @@ public abstract class Armor {
 		return damageReduction;
 	}
 	
-	public int getDamageProtection(int dmg) {
-		return (100 - damageProtection) * dmg / 100;
+	public int getDamageResistance(int dmg) {
+		return (100 - damageResistance) * dmg / 100;
 	}
 	
 }

@@ -7,7 +7,7 @@ public class Helmet extends HeadArmor {
 	public Helmet() {
 		weight = 100; //arbitrary
 		damageReduction = 15;
-		damageProtection = 5;
+		damageResistance = 5;
 		headshotProtection = 1;
 	}
 
