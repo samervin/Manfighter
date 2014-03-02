@@ -22,13 +22,13 @@ public class Dagger extends BaseSword {
 		if(ready) {
 			ready = false;
 			int d = weaponStatus.getDamage(damage);
-			return d;
+			return getLocationDamage(d);
 		}
 		else {
 			ready = true;
 			System.out.println(getBaseName() + " is on the backswing, less damage.");
 			int d = weaponStatus.getDamage(damage / 2);
-			return d;
+			return getLocationDamage(d);
 		}
 	}
 	
@@ -43,8 +43,10 @@ public class Dagger extends BaseSword {
 		HashSet<Character> a = new HashSet<Character>();
 		a.add('a'); //attack
 		
-		if(ready)
+		if(ready) {
 			a.add('l');
+			a.add('i');
+		}
 		else
 			a.add('r');
 		

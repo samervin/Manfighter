@@ -32,14 +32,17 @@ public class GrenadeLauncher extends BaseExplosive {
 
 	public int getDamage(int distance) {
 		clip--;
-
+		int d;
+		
 		if(ready) {
 			if(rand.getOdds(2, 3)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		} else {
 			if(rand.getOdds(2, 7)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		}
 		return 0;
@@ -53,8 +56,10 @@ public class GrenadeLauncher extends BaseExplosive {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
-		if(ready)
+		if(ready) {
+			a.add('i');
 			a.add('l');
+		}
 		else
 			a.add('r');
 		

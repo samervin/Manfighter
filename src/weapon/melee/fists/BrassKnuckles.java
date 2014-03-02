@@ -3,7 +3,7 @@ package weapon.melee.fists;
 public class BrassKnuckles extends BaseFists {
 
 	public BrassKnuckles(){
-		damage = 130;
+		damage = 100;
 		range = 2;
 		fireTime = 715;
 	}

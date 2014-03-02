@@ -20,8 +20,10 @@ public class Pike extends BasePolearm {
 	}
 	
 	public int getDamage(int distance) {
+		int d;
 		if(ready) {
-			return weaponStatus.getDamage(damage);
+			d = weaponStatus.getDamage(damage);
+			return getLocationDamage(d);
 		}
 		return 0;
 	}
@@ -32,6 +34,7 @@ public class Pike extends BasePolearm {
 		if(ready) {
 			a.add('a'); //attack
 			a.add('l');
+			a.add('i');
 		}	
 		else
 			a.add('r');

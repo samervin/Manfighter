@@ -29,7 +29,6 @@ public class Blunderbuss extends BaseBurst {
 	@Override
 	public int getDamage(int distance) {
 		clip--;
-
 		int odds; //percentage changes of each pellet hitting, lower odds if not readied
 
 		if(distance == range) {
@@ -60,12 +59,8 @@ public class Blunderbuss extends BaseBurst {
 			}
 		}
 
-		return weaponStatus.getDamage(totalDamage);
-	}
-	
-	@Override
-	public String getDamageType() {
-		return "crushing";
+		totalDamage = weaponStatus.getDamage(totalDamage);
+		return getLocationDamage(totalDamage);
 	}
 
 	@Override
@@ -83,8 +78,10 @@ public class Blunderbuss extends BaseBurst {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 
-		if(ready)
+		if(ready) {
 			a.add('l');
+			a.add('i');
+		}
 		else
 			a.add('r');
 

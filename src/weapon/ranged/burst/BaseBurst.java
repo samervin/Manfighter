@@ -14,4 +14,9 @@ public abstract class BaseBurst extends WeaponRanged {
 		return "blasted";
 	}
 
+	@Override
+	public String getDamageType() {
+		return "shrapnel";
+	}
+	
 }

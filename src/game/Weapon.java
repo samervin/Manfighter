@@ -24,6 +24,8 @@ public abstract class Weapon {
 	
 	protected int selfDamage = 0;
 	protected int selfDamageRange = 0;
+
+	protected String damageLocation = "legs";
 	
 	//shared methods
 	public String toString() {
@@ -33,6 +35,15 @@ public abstract class Weapon {
 		String s = weaponStatus + " ";
 		s += (this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1)).trim();
 		return s;
+	}
+	
+	public int getLocationDamage(int damage) {
+		if(damageLocation.equals("head")) {
+			System.out.println("Headshot!");
+			return damage * 4 / 3;
+		}
+		
+		return damage;
 	}
 	
 	public abstract int getRange();
@@ -81,6 +92,9 @@ public abstract class Weapon {
 	public void lastEnemyKilled(boolean enemyKilled) {}
 	public void lastActionTaken(char action) {}
 	public void lastEnemyActionTaken(char action) {}
+	public void aim(String location) {
+		damageLocation = location;
+	}
 	
 	// these apply to every weapon
 	public abstract String getBaseName();
@@ -89,7 +103,9 @@ public abstract class Weapon {
 	public abstract boolean isCrit();
 	public abstract String getVerb();
 	public abstract String getDamageType();
-	//public abstract String getDamageLocation();
+	public String getDamageLocation() {
+		return damageLocation;
+	}
 	
 	// these don't apply to melee types, which have no ammo (usually)
 	public abstract boolean hasFullAmmo();

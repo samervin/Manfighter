@@ -31,14 +31,16 @@ public class RocketLauncher extends BaseExplosive {
 
 	public int getDamage(int distance) {
 		clip--;
-		
+		int d;
 		if(ready) {
 			if(rand.getOdds(4, 5)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		} else {
 			if(rand.getOdds(2, 5)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		}
 		return 0;
@@ -51,8 +53,10 @@ public class RocketLauncher extends BaseExplosive {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
-		if(ready)
+		if(ready) {
+			a.add('i');
 			a.add('l');
+		}
 		else
 			a.add('r');
 		

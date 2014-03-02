@@ -25,14 +25,16 @@ public class BBGun extends BaseOneshot {
 	@Override
 	public int getDamage(int distance) {
 		clip--;
-
+		int d;
 		if(ready) {
 			if(rand.getOdds(99, 100)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		} else {
 			if(rand.getOdds(95, 100)) {
-				return weaponStatus.getDamage(damage);
+				d = weaponStatus.getDamage(damage);
+				return getLocationDamage(d);
 			}
 		}
 		return 0;
@@ -51,8 +53,10 @@ public class BBGun extends BaseOneshot {
 		if(!this.hasFullAmmo())
 			a.add('o');
 
-		if(ready)
+		if(ready) {
+			a.add('i');
 			a.add('l');
+		}
 		else
 			a.add('r');
 

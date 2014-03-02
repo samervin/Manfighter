@@ -9,6 +9,7 @@ public abstract class BaseKnife extends WeaponMelee {
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		a.add('a'); //attack
+		a.add('i');
 		
 		return a;
 	}
@@ -22,6 +23,11 @@ public abstract class BaseKnife extends WeaponMelee {
 	}
 	
 	public String getDamageType() {
-		return "cutting";
+		return "slicing";
+	}
+	
+	@Override
+	public int getDamage(int distance) {
+		return getLocationDamage(damage);
 	}
 }

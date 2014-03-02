@@ -16,7 +16,7 @@ public abstract class BaseSword extends WeaponMelee {
 	
 	@Override
 	public String getDamageType() {
-		return "slashing";
+		return "slicing";
 	}
 	
 }

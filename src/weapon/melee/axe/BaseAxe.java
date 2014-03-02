@@ -11,5 +11,4 @@ public abstract class BaseAxe extends WeaponMelee {
 	public String getVerb() {
 		return "axed";
 	}
-
 }

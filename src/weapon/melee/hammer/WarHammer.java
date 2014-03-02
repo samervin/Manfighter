@@ -22,12 +22,15 @@ public class WarHammer extends BaseHammer {
 		return "War hammer";
 	}
 
+	@Override
 	public int getDamage(int distance) {
+		int d;
 		if(ready) {
 			ready = false;
-			return weaponStatus.getDamage(damage);
+			d = weaponStatus.getDamage(damage);
+			return getLocationDamage(d);
 		}
-
+		
 		return 0;
 	}
 
@@ -37,6 +40,7 @@ public class WarHammer extends BaseHammer {
 		if(ready) {
 			a.add('a'); //attack
 			a.add('l');
+			a.add('i');
 		}	
 		else
 			a.add('r');

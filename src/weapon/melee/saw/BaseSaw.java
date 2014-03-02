@@ -13,7 +13,7 @@ public abstract class BaseSaw extends WeaponMelee {
 	}
 	
 	public String getDamageType() {
-		return "cutting";
+		return "slicing";
 	}
 
 }

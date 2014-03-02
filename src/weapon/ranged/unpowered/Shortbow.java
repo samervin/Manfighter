@@ -25,10 +25,15 @@ public class Shortbow extends BaseUnpowered {
 	public int getDamage(int distance) {
 		clip--;
 		ready = false;
-		if(rand.getOdds(9, 10))
-			return weaponStatus.getDamage(damage);
+		int d = 0;
 		
-		return 0;
+		if(rand.getOdds(9, 10)) {
+			d = weaponStatus.getDamage(damage);
+			d = getLocationDamage(d);
+		}
+			
+		
+		return d;
 	}
 	
 	@Override
@@ -43,8 +48,10 @@ public class Shortbow extends BaseUnpowered {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 
-		if(ready)
+		if(ready) {
+			a.add('i');
 			a.add('l');
+		}
 		else
 			a.add('r');
 

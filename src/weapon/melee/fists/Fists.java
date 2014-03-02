@@ -3,7 +3,7 @@ package weapon.melee.fists;
 public class Fists extends BaseFists {
 	
 	public Fists() {
-		damage = 100;
+		damage = 75;
 		range = 0;
 		fireTime = 700;
 	}

@@ -44,7 +44,7 @@ public class Manfighter {
 
 		System.out.println("\nStep into the battleground, " + p + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
-		System.out.println(">>Your head armor is: " + p.getHeadArmor());
+		System.out.println("Your head armor is: " + p.getHeadArmor());
 
 		int kills = -1;
 		while(p.getHealth() > 0) {
@@ -127,6 +127,13 @@ public class Manfighter {
 				e.tick();
 			}
 
+			
+			if(playerClock < 0){
+				playerClock = 0; totalClock--;
+			}
+			if(enemyClock < 0){
+				enemyClock = 0; totalClock--;
+			}
 		}
 
 		if(p.getHealth() < 1) {
@@ -143,7 +150,7 @@ public class Manfighter {
 		String[] names = getNames(p);
 		int statdmg = p.getStatus().getDamage();
 		if(statdmg != 0) {
-			statdmg = p.applyDamage(statdmg);
+			statdmg = p.applyDamage(statdmg, "torso");
 			System.out.printf("%s lost %d health due to %s!%n", names[0], statdmg, p.getStatus());
 			System.out.printf("%s new health is %d.%n", names[1], p.getHealth());
 		}
@@ -184,20 +191,34 @@ public class Manfighter {
 			wep.reload();
 			System.out.printf("%s reloaded %s %s.%n", sentenceStarter, attNames[1], wep);
 		} 
+		else if(action == 'i' && validActions.contains('i')) {
+			actionTime = 0;
+			String location;
+			
+			if(actionLine.split(" ").length > 1) {
+				location = actionLine.split(" ")[1];
+			} else {
+				System.out.print("Enter the body part [head, torso, arms, legs] you wish to aim for: ");
+				location = in.nextLine();
+			}
+
+			System.out.println("Now aiming for: " + location);
+			wep.aim(location);
+		}
 		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
 			actionTime = wep.getFireTime();
 			int dmg = wep.getDamage(getDistanceBetween(att, def));
 			dmg = getCritDamage(att, dmg);
 			if(dmg > 0) {
-				dmg = def.applyDamage(dmg);
+				dmg = def.applyDamage(dmg, wep.getDamageLocation());
 				damageDealt = dmg;
-				System.out.printf("%s %s %s, dealing %d damage!%n", sentenceStarter, wep.getVerb(), defNames[0], dmg);
+				System.out.printf("%s %s %s, dealing %d %s damage!%n", sentenceStarter, wep.getVerb(), defNames[0], dmg, wep.getDamageType());
 				System.out.printf("%s new health is %d.%n", (defNames[1].toUpperCase().charAt(0) + defNames[1].substring(1)), def.getHealth());
 
 				PersonStatus wepStat = wep.getInflictedStatus();
 				//TODO: this also blows
 				if(!(wepStat instanceof BlankPersonStatus) && !def.getStatus().getClass().equals(wepStat.getClass())) {
-					System.out.printf("%s's weapon inflicted %s on %s!%n", sentenceStarter, wepStat, defNames[0]);
+					System.out.printf("%s weapon inflicted %s on %s!%n", (attNames[1].toUpperCase().charAt(0) + attNames[1].substring(1)), wepStat, defNames[0]);
 					wepStat.initialize(currentTime);
 					def.setStatus(wepStat);
 				}
@@ -210,7 +231,7 @@ public class Manfighter {
 				}
 
 				if(wep.getSelfDamage() != 0 && getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
-					int selfdmg = att.applyDamage(wep.getSelfDamage());
+					int selfdmg = att.applyDamage(wep.getSelfDamage(), "torso");
 					System.out.printf("%s damaged %s for %d damage!%n", sentenceStarter, attNames[2], selfdmg);
 					System.out.printf("%s new health is %d.%n", attNames[1], att.getHealth());
 				}
@@ -276,7 +297,7 @@ public class Manfighter {
 			} else {
 				//TODO: also dumb
 				System.out.println("You can't move that far, you dummy.");
-				actionTime = 1;
+				actionTime = 0;
 			}
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
@@ -284,7 +305,7 @@ public class Manfighter {
 			System.out.printf("%s %s waiting a turn.%n", sentenceStarter, attNames[3]);
 		} 
 		else {
-			actionTime = 1;
+			actionTime = 0;
 			System.out.println(action + " is not an option!");
 		}
 

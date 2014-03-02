@@ -26,21 +26,23 @@ public class SniperRifle extends BaseLongrange {
 
 	public int getDamage(int distance) {
 		clip--;
+		int d = 0;
 		
 		if(readyState == 0) {
-			if(rand.getOdds(1, 4))
-				return weaponStatus.getDamage(damage);
-			else
-				return 0;
+			if(rand.getOdds(1, 4)) {
+				d = weaponStatus.getDamage(damage);
+			}
 		} else if(readyState <= 4) {
 			if(rand.getOdds(2, 3)) {
-				return (readyState * 60) + weaponStatus.getDamage(damage);
-			} else
-				return 0;
+				d = (readyState * 60) + weaponStatus.getDamage(damage);
+			}
+		} else {
+			d = (readyState*100) + weaponStatus.getDamage(damage);
 		}
 
-		System.out.println("A headshot!");
-		return (readyState*100) + weaponStatus.getDamage(damage);
+		if(d > 0)
+			d = getLocationDamage(d);
+		return d;
 	}
 
 	public boolean isReadied() {
@@ -70,8 +72,10 @@ public class SniperRifle extends BaseLongrange {
 		if(!this.hasFullAmmo())
 			a.add('o'); //reload
 			
-		if(readyState > 0)
+		if(readyState > 0) {
+			a.add('i');
 			a.add('l');
+		}
 		
 		return a;
 	}

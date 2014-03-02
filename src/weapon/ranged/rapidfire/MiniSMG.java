@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public class MiniSMG extends BaseRapidFire {
 
-	public final int bulletsPerTriggerPull = 5;
+	public final int bulletsPerTriggerPull = 5; //you fire 5 rounds at a time
 	public int bulletsLeft = 0; //per trigger pull
 	public boolean rambo = true; //if you miss in a trigger pull, you automatically miss the rest
 	
@@ -43,28 +43,32 @@ public class MiniSMG extends BaseRapidFire {
 	}
 	
 	@Override
-	public int getDamage(int distance) {		
+	public int getDamage(int distance) {
+		int d = 0;
+		
 		if(bulletsLeft > 0) {
 			bulletsLeft--;
 			clip--;
 			if(ready && rambo) {
 				if(rand.getOdds(9,10)) {
-					return weaponStatus.getDamage(damage);
+					d = weaponStatus.getDamage(damage);
 				} else
 					rambo = false;
 			} else if(!ready && rambo) {
 				if(rand.getOdds(8,10)) {
-					return weaponStatus.getDamage(damage);
+					d = weaponStatus.getDamage(damage);
 				} else
 					rambo = false;
 			}
 		} else {
 			bulletsLeft = bulletsPerTriggerPull;
 			rambo = true;
-			return getDamage(distance);
+			d = getDamage(distance);
 		}
 		
-		return 0;
+		if(d > 0)
+			d = getLocationDamage(d);
+		return d;
 	}
 	
 	@Override
@@ -81,8 +85,10 @@ public class MiniSMG extends BaseRapidFire {
 		if(bulletsLeft % 5 == 0) {
 			if(!this.hasFullAmmo())
 				a.add('o');
-			if(ready)
+			if(ready) {
+				a.add('i');
 				a.add('l');
+			}
 			else
 				a.add('r');
 		}

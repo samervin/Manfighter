@@ -23,43 +23,46 @@ public class Hatchet extends BaseAxe {
 	}
 
 	public int getDamage(int distance) {
+		int d;
 		if(!stuck) {
 			if(ready) {
 				ready = false;
-				int d = weaponStatus.getDamage(damage);
-				return d;
+				d = weaponStatus.getDamage(damage);
 			} else {
 				ready = true;
 				System.out.println(getBaseName() + " is on the backswing, less damage.");
-				int d = weaponStatus.getDamage(damage / 2);
-				return d;
+				d = weaponStatus.getDamage(damage / 2);
 			}
 		} else {
 			System.out.println(getBaseName() + " is stuck!");
-			int d = weaponStatus.getDamage(damage * 2);
-			return d;
+			d = weaponStatus.getDamage(damage * 2);
 		}
+		
+		return getLocationDamage(d);
 	}
-	
+
+	@Override
 	public String getDamageType() {
 		if(stuck)
 			return "penetrating";
 		else
-			return "slashing";
+			return "slicing";
 	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		if(!stuck) {
-			if(ready)
+			if(ready) {
 				a.add('l');
+				a.add('i'); //aim
+			}
 			else
 				a.add('r');
 		}
 		a.add('a');
 		return a;
 	}
-	
+
 	public HashSet<Character> getRestrictedActions() {
 		HashSet<Character> a = new HashSet<Character>();
 		if(stuck) {
@@ -90,18 +93,13 @@ public class Hatchet extends BaseAxe {
 		}
 	}
 
-	public void lastActionTaken(char action) {
+	public void lastEnemyActionTaken(char action) {
 		if(stuck) {
 			switch(action) {
-			case 'd': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
 			case 'e': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
-			case 'm': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break;
+			case 'm': System.out.println(getBaseName() + " got unstuck!"); stuck = false; break; //enemies currently don't move
 			}
 		}
-	}
-	
-	public void lastEnemyActionTaken(char action) {
-		lastActionTaken(action);
 	}
 
 	private boolean stuckOdds() {
@@ -117,4 +115,6 @@ public class Hatchet extends BaseAxe {
 		}
 		return false;
 	}
+
+
 }

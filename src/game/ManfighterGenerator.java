@@ -78,6 +78,17 @@ public class ManfighterGenerator {
 		return allHeads.get(x);
 	}
 	
+	public String getRandomLocation() {
+		ArrayList<String> bodyParts = new ArrayList<String>();
+		bodyParts.add("head");
+		bodyParts.add("torso");
+		bodyParts.add("arms");
+		bodyParts.add("legs");
+		
+		int x = rand.getRand(0, bodyParts.size() - 1);
+		return bodyParts.get(x);
+	}
+	
 	public String createRandomName() {
 		RandGen rand = new RandGen();
 		String n = "";

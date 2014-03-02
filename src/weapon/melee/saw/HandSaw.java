@@ -24,12 +24,12 @@ public class HandSaw extends BaseSaw {
 		if(ready) {
 			int d = weaponStatus.getDamage(damage);
 			d *= consecutives;
-			return d;
+			return getLocationDamage(d);
 		} else {
 			int d = weaponStatus.getDamage(damage);
 			d *= consecutives;
 			d /= 2;
-			return d;
+			return getLocationDamage(d);
 		}
 	}
 	
@@ -42,8 +42,10 @@ public class HandSaw extends BaseSaw {
 		HashSet<Character> a = new HashSet<Character>();
 		a.add('a');
 		
-		if(ready)
+		if(ready) {
 			a.add('l');
+			a.add('i');
+		}
 		else
 			a.add('r');
 		

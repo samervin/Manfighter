@@ -16,6 +16,6 @@ public abstract class BasePolearm extends WeaponMelee {
 
 	@Override
 	public String getDamageType() {
-		return "piercing";
+		return "penetrating";
 	}
 }

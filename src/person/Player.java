@@ -18,7 +18,7 @@ public class Player extends Person {
 	@Override
 	public HashSet<Character> getValidActions() {
 
-		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload
+		HashSet<Character> a = weapon.getWeaponActions(); //covers attack, ready, lower, reload, aim
 		a.add('d'); //advance
 		a.add('e'); //retreat
 		
