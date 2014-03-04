@@ -1,8 +1,12 @@
-package game;
+package person;
+
+import game.ManfighterGenerator;
 
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
+import status.person.PersonStatus;
+import weapon.Weapon;
 import armor.HeadArmor;
 
 public abstract class Person {

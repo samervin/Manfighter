@@ -16,6 +16,7 @@ public class RocketLauncher extends BaseExplosive {
 		knockback = 50;
 		readyTime = 550;
 		reloadTime = 4000;
+		reloadOneTime = 1100; //speculation
 		
 		selfDamage = 200;
 		selfDamageRange = 200;
@@ -50,9 +51,11 @@ public class RocketLauncher extends BaseExplosive {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
 			a.add('a'); //attack
-		if(!this.hasFullAmmo())
+		if(!this.hasFullAmmo()) {
 			a.add('o'); //reload
-			
+			a.add('p'); //reload one
+		}
+		
 		if(ready) {
 			a.add('i');
 			a.add('l');

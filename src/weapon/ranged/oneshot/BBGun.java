@@ -15,6 +15,7 @@ public class BBGun extends BaseOneshot {
 		fireTime = 600;
 		readyTime = 400;
 		reloadTime = 2500;
+		reloadOneTime = 2200;
 	}
 
 	@Override
@@ -50,9 +51,11 @@ public class BBGun extends BaseOneshot {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
 			a.add('a');
-		if(!this.hasFullAmmo())
+		if(!this.hasFullAmmo()) {
 			a.add('o');
-
+			a.add('p');
+		}
+			
 		if(ready) {
 			a.add('i');
 			a.add('l');

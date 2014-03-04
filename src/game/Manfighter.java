@@ -5,8 +5,11 @@ import java.util.Scanner;
 
 import person.Enemy;
 import person.EnemyBasic;
+import person.Person;
 import person.Player;
 import status.person.BlankPersonStatus;
+import status.person.PersonStatus;
+import weapon.Weapon;
 
 public class Manfighter {
 
@@ -190,7 +193,12 @@ public class Manfighter {
 			actionTime = wep.getReloadTime();
 			wep.reload();
 			System.out.printf("%s reloaded %s %s.%n", sentenceStarter, attNames[1], wep);
-		} 
+		}
+		else if(action == 'p' && validActions.contains('p')) {
+			actionTime = wep.getReloadOneTime();
+			wep.reloadOne();
+			System.out.printf("%s single-reloaded %s %s.%n", sentenceStarter, attNames[1], wep);
+		}
 		else if(action == 'i' && validActions.contains('i')) {
 			actionTime = 0;
 			String location;
@@ -334,6 +342,8 @@ public class Manfighter {
 				System.out.print("attack[a] ");
 			if(allActions.contains('o'))
 				System.out.print("reload your weapon[o] ");
+			if(allActions.contains('p'))
+				System.out.print("single-reload your weapon[p] ");
 			if(allActions.contains('r'))
 				System.out.print("ready your weapon[r] ");
 			if(allActions.contains('l'))

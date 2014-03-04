@@ -12,6 +12,8 @@ import status.weapon.CritUp;
 import status.weapon.DamageUp;
 import status.weapon.FireRateUp;
 import status.weapon.RangeUp;
+import status.weapon.WeaponStatus;
+import weapon.Weapon;
 import weapon.melee.axe.Hatchet;
 import weapon.melee.club.CardboardTube;
 import weapon.melee.club.Mace;

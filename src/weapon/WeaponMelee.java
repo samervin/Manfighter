@@ -1,6 +1,5 @@
 package weapon;
 
-import game.Weapon;
 
 public abstract class WeaponMelee extends Weapon {
 
@@ -16,6 +15,8 @@ public abstract class WeaponMelee extends Weapon {
 	public boolean hasFullAmmo() {return true;}
 	public boolean hasLoadedAmmo() {return true;}
 	public void reload() {}
+	public void reloadOne() {}
 	public int getReloadTime() {return 1;}
+	public int getReloadOneTime() {return 1;}
 
 }

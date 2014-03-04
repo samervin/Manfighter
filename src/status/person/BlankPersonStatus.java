@@ -1,6 +1,5 @@
 package status.person;
 
-import game.PersonStatus;
 
 public class BlankPersonStatus extends PersonStatus {
 	

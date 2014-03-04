@@ -1,6 +1,6 @@
 package weapon.melee.fists;
 
-import game.PersonStatus;
+import status.person.PersonStatus;
 import status.person.Stunned;
 
 public class BoxingGloves extends BaseFists {

@@ -1,6 +1,5 @@
 package status.person;
 
-import game.PersonStatus;
 
 import java.util.HashSet;
 

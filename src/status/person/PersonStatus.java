@@ -1,4 +1,4 @@
-package game;
+package status.person;
 
 import java.util.HashSet;
 

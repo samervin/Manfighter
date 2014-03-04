@@ -1,4 +1,4 @@
-package game;
+package status.weapon;
 
 public abstract class WeaponStatus {
 

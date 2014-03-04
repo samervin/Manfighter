@@ -1,7 +1,6 @@
 package person;
 
 import game.ManfighterGenerator;
-import game.Person;
 
 import java.util.HashSet;
 

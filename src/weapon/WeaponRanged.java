@@ -1,12 +1,12 @@
 package weapon;
 
-import game.Weapon;
 
 public abstract class WeaponRanged extends Weapon {
 
 	protected int maxClip;
 	protected int clip;
 	protected int reloadTime;
+	protected int reloadOneTime;
 	
 	public abstract int getDamage(int distance);
 	
@@ -21,6 +21,10 @@ public abstract class WeaponRanged extends Weapon {
 	public int getReloadTime() {
 		return reloadTime;
 	}
+	
+	public int getReloadOneTime() {
+		return reloadOneTime;
+	}
 
 	public boolean hasFullAmmo() {
 		return (clip == maxClip);
@@ -32,6 +36,11 @@ public abstract class WeaponRanged extends Weapon {
 
 	public void reload() {
 		clip = maxClip;
+		ready = false;
+	}
+	
+	public void reloadOne() {
+		clip++;
 		ready = false;
 	}
 

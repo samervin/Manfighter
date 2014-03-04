@@ -1,11 +1,11 @@
 package weapon.melee.club;
 
 import game.ManfighterGenerator;
-import game.PersonStatus;
 
 import java.util.HashSet;
 
 import status.person.Bruised;
+import status.person.PersonStatus;
 
 public class Mace extends BaseClub {
 	

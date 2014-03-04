@@ -1,6 +1,5 @@
 package armor;
 
-import game.Armor;
 
 public abstract class HeadArmor extends Armor {
 

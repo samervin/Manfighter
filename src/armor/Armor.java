@@ -1,4 +1,6 @@
-package game;
+package armor;
+
+import game.RandGen;
 
 public abstract class Armor {
 

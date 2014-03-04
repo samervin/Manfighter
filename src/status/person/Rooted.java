@@ -2,7 +2,6 @@ package status.person;
 
 import java.util.HashSet;
 
-import game.PersonStatus;
 
 public class Rooted extends PersonStatus {
 	

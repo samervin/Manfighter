@@ -1,6 +1,5 @@
 package status.weapon;
 
-import game.WeaponStatus;
 
 public class RangeUp extends WeaponStatus {
 

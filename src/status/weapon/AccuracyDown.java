@@ -1,7 +1,6 @@
 package status.weapon;
 
 import game.RandGen;
-import game.WeaponStatus;
 
 public class AccuracyDown extends WeaponStatus {
 

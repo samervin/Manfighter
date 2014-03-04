@@ -1,10 +1,10 @@
 package weapon.melee.hammer;
 
 import game.ManfighterGenerator;
-import game.PersonStatus;
 
 import java.util.HashSet;
 
+import status.person.PersonStatus;
 import status.person.Stunned;
 
 public class WarHammer extends BaseHammer {

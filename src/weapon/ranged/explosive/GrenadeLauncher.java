@@ -16,6 +16,7 @@ public class GrenadeLauncher extends BaseExplosive {
 		knockback = 75;
 		readyTime = 700;
 		reloadTime = 4700;
+		reloadOneTime = 900; //speculation
 
 		selfDamage = 300;
 		selfDamageRange = 270;
@@ -53,8 +54,11 @@ public class GrenadeLauncher extends BaseExplosive {
 		HashSet<Character> a = new HashSet<Character>();
 		if(this.hasLoadedAmmo())
 			a.add('a'); //attack
-		if(!this.hasFullAmmo())
+		if(!this.hasFullAmmo()) {
 			a.add('o'); //reload
+			a.add('p'); //reload one
+		}
+			
 			
 		if(ready) {
 			a.add('i');

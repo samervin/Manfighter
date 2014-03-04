@@ -1,6 +1,5 @@
 package person;
 
-import game.Person;
 
 import java.util.HashSet;
 

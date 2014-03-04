@@ -1,9 +1,13 @@
-package game;
+package weapon;
+
+import game.RandGen;
 
 import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
+import status.person.PersonStatus;
 import status.weapon.BlankWeaponStatus;
+import status.weapon.WeaponStatus;
 
 public abstract class Weapon {
 	
@@ -57,6 +61,7 @@ public abstract class Weapon {
 	}
 	
 	public abstract int getReloadTime();
+	public abstract int getReloadOneTime();
 	
 	public PersonStatus getInflictedStatus() {
 		return inflictingStatus;
@@ -111,4 +116,5 @@ public abstract class Weapon {
 	public abstract boolean hasFullAmmo();
 	public abstract boolean hasLoadedAmmo();
 	public abstract void reload();
+	public abstract void reloadOne();
 }
