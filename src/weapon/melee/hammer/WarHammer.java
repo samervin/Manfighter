@@ -28,7 +28,7 @@ public class WarHammer extends BaseHammer {
 		if(ready) {
 			ready = false;
 			d = weaponStatus.getDamage(damage);
-			return getLocationDamage(d);
+			return d;
 		}
 		
 		return 0;

@@ -38,7 +38,7 @@ public class Hatchet extends BaseAxe {
 			d = weaponStatus.getDamage(damage * 2);
 		}
 		
-		return getLocationDamage(d);
+		return d;
 	}
 
 	@Override

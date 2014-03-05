@@ -12,7 +12,7 @@ import status.weapon.WeaponStatus;
 public abstract class Weapon {
 	
 	protected RandGen rand = new RandGen();
-	protected int pointBlank = 60;
+	protected final int pointBlank = 60;
 
 	//TODO: should really be sets/lists
 	protected WeaponStatus weaponStatus = new BlankWeaponStatus();
@@ -39,15 +39,6 @@ public abstract class Weapon {
 		String s = weaponStatus + " ";
 		s += (this.getBaseName().substring(0,1).toLowerCase() + this.getBaseName().substring(1)).trim();
 		return s;
-	}
-	
-	public int getLocationDamage(int damage) {
-		if(damageLocation.equals("head")) {
-			System.out.println("Headshot!");
-			return damage * 4 / 3;
-		}
-		
-		return damage;
 	}
 	
 	public abstract int getRange();

@@ -60,7 +60,7 @@ public class Blunderbuss extends BaseBurst {
 		}
 
 		totalDamage = weaponStatus.getDamage(totalDamage);
-		return getLocationDamage(totalDamage);
+		return totalDamage;
 	}
 
 	@Override

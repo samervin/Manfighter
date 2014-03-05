@@ -30,12 +30,12 @@ public class BBGun extends BaseOneshot {
 		if(ready) {
 			if(rand.getOdds(99, 100)) {
 				d = weaponStatus.getDamage(damage);
-				return getLocationDamage(d);
+				return d;
 			}
 		} else {
 			if(rand.getOdds(95, 100)) {
 				d = weaponStatus.getDamage(damage);
-				return getLocationDamage(d);
+				return d;
 			}
 		}
 		return 0;

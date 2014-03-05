@@ -65,9 +65,7 @@ public class MiniSMG extends BaseRapidFire {
 			rambo = true;
 			d = getDamage(distance);
 		}
-		
-		if(d > 0)
-			d = getLocationDamage(d);
+
 		return d;
 	}
 	

@@ -46,20 +46,18 @@ public abstract class Person {
 		return weapon.getDamage(distance);
 	}
 	
-	public int applyDamage(int dmg, String location)  {//return value is ACTUAL damage done
-		if(headArmor.headshotProtected(location)) {
-			System.out.println("Headshot blocked!");
-			dmg = 0;
-		} else {
-			System.out.println("\t\tinitial damage is " + dmg);
-			dmg -= headArmor.getDamageReduction();
-			System.out.println("\t\tdamage reduction is: " + dmg);
-			dmg = headArmor.getDamageResistance(dmg);
-			System.out.println("\t\tdamage protection is: " + dmg);
-			dmg = personstatus.getDamageChange(dmg);
-			System.out.println("\t\tstatus change is: " + dmg);
+	public int applyDamage(int dmg, String location)  {//return value is ACTUAL damage done		
+		if(location.equals("head")) {
+			if(!headArmor.headshotProtected()) {
+				System.out.println("Headshot!");
+				dmg = dmg * 4;
+				dmg = dmg / 3;
+			}
 		}
 		
+		dmg -= headArmor.getDamageReduction();
+		dmg = headArmor.getDamageResistance(dmg);
+		dmg = personstatus.getDamageChange(dmg);
 		health -= dmg;
 		return dmg;
 	}

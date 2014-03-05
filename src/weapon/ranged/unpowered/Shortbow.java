@@ -29,7 +29,6 @@ public class Shortbow extends BaseUnpowered {
 		
 		if(rand.getOdds(9, 10)) {
 			d = weaponStatus.getDamage(damage);
-			d = getLocationDamage(d);
 		}
 			
 		

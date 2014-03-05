@@ -13,14 +13,16 @@ import weapon.Weapon;
 
 public class Manfighter {
 
-	private int TEST = 0; //1 for quicker testing, 0 for general play
+	private int TEST = 1; //1 for quicker testing, 0 for general play
 
 	private Scanner in = new Scanner(System.in);
 	private ManfighterGenerator mfg = new ManfighterGenerator();
 	private final int close = 60; //minimum distance apart, in cm
 	private final int forwardStep = 85; //how far you step forward
-	private final int backwardStep = 70; //how far you step backward
-	private final int timeStep = 650; //seconds per step
+	private final int forwardReadyStep = 70;
+	private final int backwardStep = -70; //how far you step backward
+	private final int backwardReadyStep = -55;
+	private final int timeStep = 8; //ms per cm moved
 	private final int timeOther = 500; //place holder for "other" actions
 
 	public static void main(String[] args) {
@@ -249,28 +251,26 @@ public class Manfighter {
 			}			
 		} 
 		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > close) {
-			actionTime = timeStep;
 			int dis;
-
 			if(wep.isReadied()) {
-				dis = move(att, def, forwardStep-10, 0);
+				dis = move(att, def, forwardReadyStep, 0);
 			} else {
 				dis = move(att, def, forwardStep, 0);	
 			}
-
+			
+			actionTime = timeStep * dis;
 			System.out.printf("%s stepped forward %d cm.%n", sentenceStarter, dis);
 			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
 		else if(action == 'e' && validActions.contains('e')) {
-			actionTime = timeStep;
 			int dis;
-
 			if(wep.isReadied()) {
-				dis = move(att, def, -backwardStep+10, 0);
+				dis = move(att, def, backwardReadyStep, 0);
 			} else {
-				dis = move(att, def, -backwardStep, 0);
+				dis = move(att, def, backwardStep, 0);
 			}
 
+			actionTime = timeStep * dis;
 			System.out.printf("%s stepped backward %d cm.%n", sentenceStarter, dis);
 			System.out.printf("You're now %d cm apart.%n", getDistanceBetween(att, def));
 		} 
@@ -286,15 +286,15 @@ public class Manfighter {
 			}
 
 			//TODO: better parsing
-			if(wep.isReadied() && distance >= -backwardStep+10 && distance <=0) {
+			if(wep.isReadied() && distance >= backwardReadyStep && distance <=0) {
 				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
 				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
-			} else if(wep.isReadied() && distance <= forwardStep-10 && distance >=0) {
+			} else if(wep.isReadied() && distance <= forwardReadyStep && distance >=0) {
 				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped forward " + dis + " cm.");
 				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
-			} else if(!wep.isReadied() && distance >= -backwardStep && distance <=0) {
+			} else if(!wep.isReadied() && distance >= backwardStep && distance <=0) {
 				int dis = move(att, def, distance, 0);
 				System.out.println("You stepped backward " + dis + " cm.");
 				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");

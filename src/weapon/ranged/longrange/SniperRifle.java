@@ -40,8 +40,6 @@ public class SniperRifle extends BaseLongrange {
 			d = (readyState*100) + weaponStatus.getDamage(damage);
 		}
 
-		if(d > 0)
-			d = getLocationDamage(d);
 		return d;
 	}
 

@@ -23,7 +23,7 @@ public class Pike extends BasePolearm {
 		int d;
 		if(ready) {
 			d = weaponStatus.getDamage(damage);
-			return getLocationDamage(d);
+			return d;
 		}
 		return 0;
 	}

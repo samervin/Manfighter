@@ -38,12 +38,12 @@ public class GrenadeLauncher extends BaseExplosive {
 		if(ready) {
 			if(rand.getOdds(2, 3)) {
 				d = weaponStatus.getDamage(damage);
-				return getLocationDamage(d);
+				return d;
 			}
 		} else {
 			if(rand.getOdds(2, 7)) {
 				d = weaponStatus.getDamage(damage);
-				return getLocationDamage(d);
+				return d;
 			}
 		}
 		return 0;

@@ -28,6 +28,6 @@ public abstract class BaseFists extends WeaponMelee {
 	
 	@Override
 	public int getDamage(int distance) {
-		return getLocationDamage(damage);
+		return damage;
 	}
 }

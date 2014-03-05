@@ -30,7 +30,7 @@ public class Mace extends BaseClub {
 		if(ready) {
 			ready = false;
 			d = weaponStatus.getDamage(damage);
-			return getLocationDamage(d);
+			return d;
 		}
 		
 		return 0;
