@@ -23,22 +23,19 @@ public class Hatchet extends BaseAxe {
 	}
 
 	public int getDamage(int distance) {
-		int d;
 		if(!stuck) {
 			if(ready) {
 				ready = false;
-				d = weaponStatus.getDamage(damage);
+				return damage;
 			} else {
 				ready = true;
 				System.out.println(getBaseName() + " is on the backswing, less damage.");
-				d = weaponStatus.getDamage(damage / 2);
+				return (damage / 2);
 			}
 		} else {
 			System.out.println(getBaseName() + " is stuck!");
-			d = weaponStatus.getDamage(damage * 2);
+			return (damage * 2);
 		}
-		
-		return d;
 	}
 
 	@Override

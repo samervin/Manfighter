@@ -26,16 +26,14 @@ public class BBGun extends BaseOneshot {
 	@Override
 	public int getDamage(int distance) {
 		clip--;
-		int d;
+		
 		if(ready) {
 			if(rand.getOdds(99, 100)) {
-				d = weaponStatus.getDamage(damage);
-				return d;
+				return damage;
 			}
 		} else {
 			if(rand.getOdds(95, 100)) {
-				d = weaponStatus.getDamage(damage);
-				return d;
+				return damage;
 			}
 		}
 		return 0;

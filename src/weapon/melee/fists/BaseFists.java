@@ -25,9 +25,4 @@ public abstract class BaseFists extends WeaponMelee {
 	public String getDamageType() {
 		return "crushing";
 	}
-	
-	@Override
-	public int getDamage(int distance) {
-		return damage;
-	}
 }

@@ -33,17 +33,14 @@ public class GrenadeLauncher extends BaseExplosive {
 
 	public int getDamage(int distance) {
 		clip--;
-		int d;
 		
 		if(ready) {
 			if(rand.getOdds(2, 3)) {
-				d = weaponStatus.getDamage(damage);
-				return d;
+				return damage;
 			}
 		} else {
 			if(rand.getOdds(2, 7)) {
-				d = weaponStatus.getDamage(damage);
-				return d;
+				return damage;
 			}
 		}
 		return 0;

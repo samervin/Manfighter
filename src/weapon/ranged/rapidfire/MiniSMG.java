@@ -44,29 +44,28 @@ public class MiniSMG extends BaseRapidFire {
 	
 	@Override
 	public int getDamage(int distance) {
-		int d = 0;
 		
 		if(bulletsLeft > 0) {
 			bulletsLeft--;
 			clip--;
 			if(ready && rambo) {
 				if(rand.getOdds(9,10)) {
-					d = weaponStatus.getDamage(damage);
+					return damage;
 				} else
 					rambo = false;
 			} else if(!ready && rambo) {
 				if(rand.getOdds(8,10)) {
-					d = weaponStatus.getDamage(damage);
+					return damage;
 				} else
 					rambo = false;
 			}
 		} else {
 			bulletsLeft = bulletsPerTriggerPull;
 			rambo = true;
-			d = getDamage(distance);
+			return this.getDamage(distance);
 		}
 
-		return d;
+		return 0; //miss
 	}
 	
 	@Override

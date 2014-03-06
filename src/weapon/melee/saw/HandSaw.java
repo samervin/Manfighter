@@ -22,14 +22,10 @@ public class HandSaw extends BaseSaw {
 	
 	public int getDamage(int distance) {
 		if(ready) {
-			int d = weaponStatus.getDamage(damage);
-			d *= consecutives;
-			return d;
+			return (damage * consecutives);
 		} else {
-			int d = weaponStatus.getDamage(damage);
-			d *= consecutives;
-			d /= 2;
-			return d;
+			int d = damage * consecutives;
+			return (d / 2);
 		}
 	}
 	

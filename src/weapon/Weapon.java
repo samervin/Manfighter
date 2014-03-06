@@ -41,6 +41,10 @@ public abstract class Weapon {
 		return s;
 	}
 	
+	public WeaponStatus getWeaponStatus() {
+		return weaponStatus;
+	}
+	
 	public abstract int getRange();
 	
 	public int getReadyTime() {

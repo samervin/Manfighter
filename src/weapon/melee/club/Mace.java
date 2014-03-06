@@ -8,7 +8,7 @@ import status.person.Bruised;
 import status.person.PersonStatus;
 
 public class Mace extends BaseClub {
-	
+
 	public Mace() {
 		weaponStatus = new ManfighterGenerator().getRandomStatus();
 		inflictingStatus = new Bruised();
@@ -26,20 +26,14 @@ public class Mace extends BaseClub {
 
 	@Override
 	public int getDamage(int distance) {
-		int d;
-		if(ready) {
-			ready = false;
-			d = weaponStatus.getDamage(damage);
-			return d;
-		}
-		
-		return 0;
+		ready = false;
+		return damage;
 	}
 
 	@Override
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();
-		
+
 		if(ready) {
 			a.add('a');
 			a.add('l');
@@ -47,7 +41,7 @@ public class Mace extends BaseClub {
 		}	
 		else
 			a.add('r');
-		
+
 		return a;
 	}
 

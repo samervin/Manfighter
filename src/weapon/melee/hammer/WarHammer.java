@@ -24,14 +24,8 @@ public class WarHammer extends BaseHammer {
 
 	@Override
 	public int getDamage(int distance) {
-		int d;
-		if(ready) {
 			ready = false;
-			d = weaponStatus.getDamage(damage);
-			return d;
-		}
-		
-		return 0;
+			return damage;
 	}
 
 	public HashSet<Character> getWeaponActions() {

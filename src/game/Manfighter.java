@@ -217,7 +217,7 @@ public class Manfighter {
 		}
 		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
 			actionTime = wep.getFireTime();
-			int dmg = wep.getDamage(getDistanceBetween(att, def));
+			int dmg = att.getDamage(getDistanceBetween(att, def));
 			dmg = getCritDamage(att, dmg);
 			if(dmg > 0) {
 				dmg = def.applyDamage(dmg, wep.getDamageLocation());

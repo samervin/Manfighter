@@ -21,14 +21,12 @@ public class Dagger extends BaseSword {
 	public int getDamage(int distance) {
 		if(ready) {
 			ready = false;
-			int d = weaponStatus.getDamage(damage);
-			return d;
+			return damage;
 		}
 		else {
 			ready = true;
 			System.out.println(getBaseName() + " is on the backswing, less damage.");
-			int d = weaponStatus.getDamage(damage / 2);
-			return d;
+			return (damage / 2);
 		}
 	}
 	

@@ -18,15 +18,6 @@ public class Pike extends BasePolearm {
 	public String getBaseName() {
 		return "Pike";
 	}
-	
-	public int getDamage(int distance) {
-		int d;
-		if(ready) {
-			d = weaponStatus.getDamage(damage);
-			return d;
-		}
-		return 0;
-	}
 
 	public HashSet<Character> getWeaponActions() {
 		HashSet<Character> a = new HashSet<Character>();

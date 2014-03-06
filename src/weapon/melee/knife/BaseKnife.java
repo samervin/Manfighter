@@ -28,6 +28,6 @@ public abstract class BaseKnife extends WeaponMelee {
 	
 	@Override
 	public int getDamage(int distance) {
-		return weaponStatus.getDamage(damage);
+		return damage;
 	}
 }

@@ -43,7 +43,7 @@ public abstract class Person {
 	}
 	
 	public int getDamage(int distance) {
-		return weapon.getDamage(distance);
+		return weapon.getWeaponStatus().getDamage(weapon.getDamage(distance));
 	}
 	
 	public int applyDamage(int dmg, String location)  {//return value is ACTUAL damage done		

@@ -4,7 +4,7 @@ package weapon;
 public abstract class WeaponMelee extends Weapon {
 
 	public int getDamage(int distance) {
-		return weaponStatus.getDamage(damage);
+		return damage;
 	}
 	
 	public int getRange() {

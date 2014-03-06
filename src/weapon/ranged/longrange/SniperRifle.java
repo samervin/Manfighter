@@ -30,14 +30,14 @@ public class SniperRifle extends BaseLongrange {
 		
 		if(readyState == 0) {
 			if(rand.getOdds(1, 4)) {
-				d = weaponStatus.getDamage(damage);
+				d = damage;
 			}
 		} else if(readyState <= 4) {
 			if(rand.getOdds(2, 3)) {
-				d = (readyState * 60) + weaponStatus.getDamage(damage);
+				d = (readyState * 60) + damage;
 			}
 		} else {
-			d = (readyState*100) + weaponStatus.getDamage(damage);
+			d = readyState*100 + damage;
 		}
 
 		return d;
