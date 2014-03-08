@@ -41,6 +41,11 @@ public abstract class Weapon {
 		return s;
 	}
 	
+	public String getFullInfo() {
+		String s = String.format("%s \n    Damage: %d\n    Range: %d\n    Ready: %b\n", toString(), damage, range, ready);
+		return s;
+	}
+	
 	public WeaponStatus getWeaponStatus() {
 		return weaponStatus;
 	}

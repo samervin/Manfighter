@@ -142,7 +142,7 @@ public class ManfighterGenerator {
 				n = "name_first.txt not found";
 			}
 			
-			if(x < 45) {
+			if(x < 44) {
 				Scanner last;
 				try {
 					last = new Scanner(new File("data/name_last.txt"));
