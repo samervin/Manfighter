@@ -42,6 +42,12 @@ public abstract class Person {
 		headArmor = ha;
 	}
 	
+	public String getFullInfo() {
+		String s = String.format("%s\n\tHealth: %d\n\tStatus: %s\n\tHead armor: %s\n\tLocation: %d\n\n", 
+				name, health, personstatus.toString(), headArmor.toString(), location);
+		return (s + weapon.getFullInfo());
+	}
+	
 	public int getDamage(int distance) {
 		return weapon.getWeaponStatus().getDamage(weapon.getDamage(distance));
 	}

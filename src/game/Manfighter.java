@@ -1,21 +1,7 @@
 package game;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.Console;
 import java.util.HashSet;
 import java.util.Scanner;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.text.DefaultCaret;
 
 import person.Enemy;
 import person.EnemyBasic;
@@ -38,49 +24,16 @@ public class Manfighter {
 	private final int backwardReadyStep = -55;
 	private final int timeStep = 8; //ms per cm moved
 	private final int timeOther = 500; //place holder for "other" actions
-
-
-	
-	private static final long serialVersionUID = 1L;
-
-	private JFrame frame;
-	private JPanel panel;
-	private JTextField input;
-	private JTextArea outputMain;
-	private JTextArea outputWeaponPlayer;
-	private JTextArea outputWeaponEnemy;
-	private JButton enter;
 	
 	public static void main(String[] args) {
 		new Manfighter();
 	}
 
-	public Manfighter() {
-		Console cs = System.console();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		createGUI();
-		
+	public Manfighter() {		
 		String stemp;
 		if(TEST == 0) {
 			System.out.println("Welcome to Manfighter! What's your name?");
-			//stemp = in.nextLine().trim();
-			stemp = userInput;
-			while(stemp == "") {
-				stemp = userInput;
-			}
+			stemp = in.nextLine().trim();
 			if(!mfg.isValidName(stemp)) {
 				while(!mfg.isValidName(stemp)) {
 					System.out.println("That name sucks. Try again.");
@@ -97,8 +50,6 @@ public class Manfighter {
 		System.out.println("\nStep into the battleground, " + p + "!");
 		System.out.println("You found a new weapon: " + p.getWeapon() + "!");
 		System.out.println("Your head armor is: " + p.getHeadArmor());
-		
-		outputWeaponPlayer.append(p.getWeapon().getFullInfo());
 
 		int kills = -1;
 		while(p.getHealth() > 0) {
@@ -135,10 +86,7 @@ public class Manfighter {
 		int totalClock = 0;
 
 		int state = 1;
-		while(p.getHealth() > 0 && e.getHealth() > 0) {
-			outputWeaponPlayer.setText(p.getWeapon().getFullInfo());
-			outputWeaponEnemy.setText(e.getWeapon().getFullInfo());
-			
+		while(p.getHealth() > 0 && e.getHealth() > 0) {			
 			if(state == 1) {
 				state = 2;
 				int statdmg = checkStatus(p);
@@ -522,100 +470,5 @@ public class Manfighter {
 
 		return damage;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//here be GUI bullshit, do not mind it
-	public void createGUI() {
-		frame = new JFrame("Manfighter");
-		frame.setDefaultCloseOperation(3); //EXIT_ON_CLOSE
-		
-		panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setOpaque(true);
-		ButtonListener butlis = new ButtonListener();
-		outputMain = new JTextArea(15, 40);
-        outputMain.setWrapStyleWord(true);
-        outputMain.setEditable(false);
-        JScrollPane scrollMain = new JScrollPane(outputMain);
-        scrollMain.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollMain.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        DefaultCaret caretMain = (DefaultCaret) outputMain.getCaret();
-        caretMain.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        panel.add(scrollMain, BorderLayout.CENTER);
-        
-        outputWeaponPlayer = new JTextArea(10, 20);
-        outputWeaponPlayer.setWrapStyleWord(true);
-        outputWeaponPlayer.setEditable(false);
-        JScrollPane scrollWeaponPlayer = new JScrollPane(outputWeaponPlayer);
-        scrollWeaponPlayer.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollWeaponPlayer.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        DefaultCaret caretWeaponPlayer = (DefaultCaret) outputWeaponPlayer.getCaret();
-        caretWeaponPlayer.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        panel.add(scrollWeaponPlayer, BorderLayout.WEST);
-        
-        outputWeaponEnemy = new JTextArea(10, 20);
-        outputWeaponEnemy.setWrapStyleWord(true);
-        outputWeaponEnemy.setEditable(false);
-        JScrollPane scrollWeaponEnemy = new JScrollPane(outputWeaponEnemy);
-        scrollWeaponEnemy.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollWeaponEnemy.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        DefaultCaret caretWeaponEnemy = (DefaultCaret) outputWeaponEnemy.getCaret();
-        caretWeaponEnemy.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        panel.add(scrollWeaponEnemy, BorderLayout.EAST);
-        
-        JPanel inputpanel = new JPanel();
-        inputpanel.setLayout(new FlowLayout());
-        input = new JTextField(10);
-        enter = new JButton("Enter");
-        enter.setActionCommand("Enter");
-        enter.addActionListener(butlis);
-        input.setActionCommand("Enter");
-        input.addActionListener(butlis);
-        inputpanel.add(input);
-        inputpanel.add(enter);
-        panel.add(inputpanel, BorderLayout.SOUTH);
-        frame.getContentPane().add(BorderLayout.CENTER, panel);
-        frame.pack();
-        frame.setLocationByPlatform(true);
-        //center of screen
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setResizable(false);
-        input.requestFocus();
-	}
-	
-	String userInput = "";
-	
-	public class ButtonListener implements ActionListener {
-		
-		public void actionPerformed(ActionEvent e) {
-			String inputLine = input.getText().trim();
-			if(inputLine.length() > 0) {
-				outputMain.append(inputLine);
-				userInput = inputLine;
-				input.setText("");
-			}
-			
-			input.requestFocus();
-		}
-		
-	}
+
 }

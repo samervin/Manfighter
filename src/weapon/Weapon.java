@@ -42,7 +42,7 @@ public abstract class Weapon {
 	}
 	
 	public String getFullInfo() {
-		String s = String.format("%s \n    Damage: %d\n    Range: %d\n    Ready: %b\n", toString(), damage, range, ready);
+		String s = String.format("%s \n\tDamage: %d\n\tRange: %d\n\tReady: %b\n", toString(), damage, range, ready);
 		return s;
 	}
 	

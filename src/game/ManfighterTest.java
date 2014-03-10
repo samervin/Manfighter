@@ -1,0 +1,550 @@
+package game;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.text.DefaultCaret;
+
+import person.Enemy;
+import person.EnemyBasic;
+import person.Person;
+import person.Player;
+import status.person.BlankPersonStatus;
+import status.person.PersonStatus;
+import weapon.Weapon;
+
+public class ManfighterTest {
+	private int TEST = 0; //1 for quicker testing, 0 for general play
+
+	private Scanner in = new Scanner(System.in);
+	private ManfighterGenerator mfg = new ManfighterGenerator();
+	private final int close = 60; //minimum distance apart, in cm
+	private final int forwardStep = 85; //how far you step forward
+	private final int forwardReadyStep = 70;
+	private final int backwardStep = -70; //how far you step backward
+	private final int backwardReadyStep = -55;
+	private final int timeStep = 8; //ms per cm moved
+	private final int timeOther = 500; //place holder for "other" actions
+
+
+
+
+	private static final long serialVersionUID = 1L;
+
+	private JTextField input;
+	private JTextArea output;
+	private JTextArea outputPlayer;
+	private JTextArea outputEnemy;
+
+	private final int WAIT = 0;
+	private final int GET_NAME = 1;
+	private final int GET_INPUT = 2;
+	private int state = WAIT;
+
+
+	private Player p;
+	private Enemy e;
+	
+	private int pclock = 0;
+	private int eclock = 0;
+	private int clock = 0;
+
+
+	public static void main(String[] args) {
+		new ManfighterTest();
+	}
+
+	public ManfighterTest() {
+		createGUI();
+		if(TEST == 0) {
+			output.append("Welcome to Manfighter, what's your name?\n");
+			state = GET_NAME;
+		}
+	}
+
+	public void setup(String playername) {
+		p = new Player(playername);
+		outputPlayer.setText(p.getFullInfo());
+		e = new EnemyBasic();
+		outputEnemy.setText(e.getFullInfo());
+		p.setLocation(0);
+		e.setLocation(500);
+		checkPlayerStatus();
+	}
+
+	public void checkPlayerStatus() {
+		outputPlayer.setText(p.getFullInfo());
+		outputEnemy.setText(e.getFullInfo());
+		if(p.getHealth() > 0 && e.getHealth() > 0) {
+			int statdmg = checkStatus(p);
+			if(statdmg != 0) {
+				output.append("\tCurrent time: " + clock + "\n");
+			}
+			
+			if(!p.getStatus().isActive()) {
+				output.append("You are no longer " + p.getStatus() + ".\n");
+				p.setStatus(new BlankPersonStatus());
+			}
+		}
+		checkEnemyStatus();
+	}
+	
+	public void checkEnemyStatus() {
+		outputPlayer.setText(p.getFullInfo());
+		outputEnemy.setText(e.getFullInfo());
+		if(p.getHealth() > 0 && e.getHealth() > 0) {
+			int statdmg = checkStatus(e);
+			if(statdmg != 0) {
+				output.append("\tCurrent time: " + clock + "\n");
+			}
+			
+			if(!e.getStatus().isActive()) {
+				output.append("You are no longer " + e.getStatus() + ".\n");
+				e.setStatus(new BlankPersonStatus());
+			}
+		}
+		if(pclock == 0) {
+			state = GET_INPUT;
+			printPlayerActions();
+		} else if(eclock == 0) {
+			takeTurn(e, p, e.getAction(getDistanceBetween(p, e)));
+		}
+	}
+	
+	public void printPlayerActions() {
+		HashSet<Character> allActions = p.getValidActions();
+		
+		output.append("Choose an action: ");
+		if(allActions.contains('a') && getDistanceBetween(p, e) <= p.getWeapon().getRange())
+			output.append("attack[a] ");
+		if(allActions.contains('o'))
+			output.append("reload your weapon[o] ");
+		if(allActions.contains('p'))
+			output.append("single-reload your weapon[p] ");
+		if(allActions.contains('r'))
+			output.append("ready your weapon[r] ");
+		if(allActions.contains('l'))
+			output.append("lower your weapon[l] ");
+		if(allActions.contains('i'))
+			output.append("aim your weapon[i] ");
+		if(allActions.contains('d') && canAdvance(p, e))
+			output.append("advance[d] ");
+		if(allActions.contains('e'))
+			output.append("retreat[e] ");
+		if(allActions.contains('m'))
+			output.append("move[m] ");
+		if(allActions.contains('w'))
+			output.append("wait[w] ");
+		output.append("\n");
+	}
+	
+	private int takeTurn(Person att, Person def, String actionLine) {
+		int actionTime;
+		Weapon wep = att.getWeapon();
+		boolean killedEnemy = false;
+		int damageDealt = 0;
+
+		HashSet<Character> validActions = att.getValidActions();
+		char action;
+		if(actionLine.length() > 0)
+			action = actionLine.toLowerCase().charAt(0);
+		else
+			action = '?';
+
+		String[] attNames = getNames(att);
+		String[] defNames = getNames(def);
+		String sentenceStarter = attNames[0].toUpperCase().charAt(0) + attNames[0].substring(1);
+
+		if(action == 'r' && validActions.contains('r')) {
+			actionTime = wep.getReadyTime();
+			wep.setReadied(true);
+			output.append(String.format("%s readied %s %s. Movement speed lowered.%n", sentenceStarter, attNames[1], wep));
+		}
+		else if(action == 'l' && validActions.contains('l')) {
+			actionTime = timeOther;
+			wep.setReadied(false);
+			output.append(String.format("%s lowered %s %s. Movement speed increased.%n", sentenceStarter, attNames[1], wep));
+		} 
+		else if(action == 'o' && validActions.contains('o')) {
+			actionTime = wep.getReloadTime();
+			wep.reload();
+			output.append(String.format("%s reloaded %s %s.%n", sentenceStarter, attNames[1], wep));
+		}
+		else if(action == 'p' && validActions.contains('p')) {
+			actionTime = wep.getReloadOneTime();
+			wep.reloadOne();
+			output.append(String.format("%s single-reloaded %s %s.%n", sentenceStarter, attNames[1], wep));
+		}
+		else if(action == 'i' && validActions.contains('i')) {
+			actionTime = 0;
+			String location;
+			
+			if(actionLine.split(" ").length > 1) {
+				location = actionLine.split(" ")[1];
+			} else {
+				System.out.print("Enter the body part [head, torso, arms, legs] you wish to aim for: ");
+				location = in.nextLine();
+			}
+
+			output.append("Now aiming for: " + location);
+			wep.aim(location);
+		}
+		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
+			actionTime = wep.getFireTime();
+			int dmg = att.getDamage(getDistanceBetween(att, def));
+			dmg = getCritDamage(att, dmg);
+			if(dmg > 0) {
+				dmg = def.applyDamage(dmg, wep.getDamageLocation());
+				damageDealt = dmg;
+				output.append(String.format("%s %s %s, dealing %d %s damage!%n", sentenceStarter, wep.getVerb(), defNames[0], dmg, wep.getDamageType()));
+				output.append(String.format("%s new health is %d.%n", (defNames[1].toUpperCase().charAt(0) + defNames[1].substring(1)), def.getHealth()));
+
+				PersonStatus wepStat = wep.getInflictedStatus();
+				//TODO: this also blows
+				if(!(wepStat instanceof BlankPersonStatus) && !def.getStatus().getClass().equals(wepStat.getClass())) {
+					output.append(String.format("%s weapon inflicted %s on %s!%n", 
+							(attNames[1].toUpperCase().charAt(0) + attNames[1].substring(1)), wepStat, defNames[0]));
+					wepStat.initialize(clock);
+					def.setStatus(wepStat);
+				}
+
+				int knockback = wep.getKnockback();
+				if(knockback != 0) {
+					int dis = move(att, def, 0, -knockback);
+					output.append(String.format("%s knocked %s back %d cm.%n", sentenceStarter, defNames[0], dis));
+					output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+				}
+
+				if(wep.getSelfDamage() != 0 && getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
+					int selfdmg = att.applyDamage(wep.getSelfDamage(), "torso");
+					output.append(String.format("%s damaged %s for %d damage!%n", sentenceStarter, attNames[2], selfdmg));
+					output.append(String.format("%s new health is %d.%n", attNames[1], att.getHealth()));
+				}
+
+			} else {
+				output.append(String.format("%s missed!%n", sentenceStarter));
+			}			
+		} 
+		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > close) {
+			int dis;
+			if(wep.isReadied()) {
+				dis = move(att, def, forwardReadyStep, 0);
+			} else {
+				dis = move(att, def, forwardStep, 0);	
+			}
+			
+			actionTime = timeStep * dis;
+			output.append(String.format("%s stepped forward %d cm.%n", sentenceStarter, dis));
+			output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+		} 
+		else if(action == 'e' && validActions.contains('e')) {
+			int dis;
+			if(wep.isReadied()) {
+				dis = move(att, def, backwardReadyStep, 0);
+			} else {
+				dis = move(att, def, backwardStep, 0);
+			}
+
+			actionTime = timeStep * dis;
+			output.append(String.format("%s stepped backward %d cm.%n", sentenceStarter, dis));
+			output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+		} 
+		else if(action == 'm' && validActions.contains('e')) { //HACKS, also presently this only affects players
+			actionTime = timeStep;
+			int distance;
+
+			if(actionLine.split(" ").length > 1) {
+				distance = Integer.parseInt(actionLine.split(" ")[1]);
+			} else {
+				System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
+				distance = Integer.parseInt(in.nextLine());
+			}
+
+			//TODO: better parsing
+			if(wep.isReadied() && distance >= backwardReadyStep && distance <=0) {
+				int dis = move(att, def, distance, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+			} else if(wep.isReadied() && distance <= forwardReadyStep && distance >=0) {
+				int dis = move(att, def, distance, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+			} else if(!wep.isReadied() && distance >= backwardStep && distance <=0) {
+				int dis = move(att, def, distance, 0);
+				System.out.println("You stepped backward " + dis + " cm.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+			} else if(!wep.isReadied() && distance <= forwardStep && distance >=0) {
+				int dis = move(att, def, distance, 0);
+				System.out.println("You stepped forward " + dis + " cm.");
+				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+			} else {
+				//TODO: also dumb
+				System.out.println("You can't move that far, you dummy.");
+				actionTime = 0;
+			}
+		} 
+		else if(action == 'w' && validActions.contains('w')) {
+			actionTime = timeOther;
+			output.append(String.format("%s %s waiting a turn.%n", sentenceStarter, attNames[3]));
+		} 
+		else {
+			actionTime = 0;
+			output.append(String.format(action + " is not an option!"));
+		}
+
+
+
+		if(def.getHealth() < 1) killedEnemy = true;
+
+		wep.lastActionTaken(action);
+		wep.lastEnemyKilled(killedEnemy);
+		wep.lastDamageDealt(damageDealt);
+
+		def.getWeapon().lastEnemyActionTaken(action);
+		return actionTime;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	private int checkStatus(Person p) {
+		String[] names = getNames(p);
+		int statdmg = p.getStatus().getDamage();
+		if(statdmg != 0) {
+			statdmg = p.applyDamage(statdmg, "torso");
+			System.out.printf("%s lost %d health due to %s!%n", names[0], statdmg, p.getStatus());
+			System.out.printf("%s new health is %d.%n", names[1], p.getHealth());
+		}
+
+		return statdmg;
+	}
+
+	private String[] getNames(Person p) {
+		if(p instanceof Player) {
+			String[] names = {"you", "your", "yourself", "are"};
+			return names;
+		} else {
+			String[] names = {p.toString(), "his", "himself", "is"};
+			return names;
+		}
+	}
+
+	//positive value for newP or newE indicates that they are moving TOWARD their target
+	//negative value for newP or newE indicates that they are moving AWAY FROM their target
+	//returns centimeters moved
+	private int move(Person p, Person e, int pmove, int emove) {
+		int ploc = p.getLocation();
+		int eloc = e.getLocation();
+
+		if(ploc < eloc) { //player is left of enemy
+			if(pmove > 0) { //player is attempting to advance
+				if(eloc - ploc > pmove + close) { //if player has space to move (cannot move through people)
+					p.setLocation(ploc + pmove);
+					return pmove;
+				}
+				else { //get as close as possible
+					p.setLocation(eloc - close);
+					return eloc - ploc - close;
+				}
+			}
+			else if(pmove < 0) { //player is attempting to retreat
+				p.setLocation(ploc + pmove);
+				return -pmove;
+			}
+			else if(emove > 0) { //enemy is attempting to advance
+				if(eloc - ploc > emove + close) { //if enemy has space to move
+					e.setLocation(eloc - emove);
+					return emove;
+				}
+				else { //get as close as possible
+					e.setLocation(ploc + close);
+					return eloc - ploc - close;
+				}
+			}
+			else if(emove < 0) { //enemy is attempting to retreat
+				e.setLocation(eloc - emove);
+				return -emove;
+			}
+		}
+		else { //player is right of enemy (signs flip)
+			if(pmove > 0) { //player is attempting to advance
+				if(ploc - eloc > pmove + close) { //if player has space to move (cannot move through people)
+					p.setLocation(ploc - pmove);
+					return pmove;
+				}
+				else { //get as close as possible
+					p.setLocation(eloc + close);
+					return ploc - eloc - close;
+				}
+			}
+			else if(pmove < 0) { //player is attempting to retreat
+				p.setLocation(ploc - pmove);
+				return -pmove;
+			}
+			else if(emove > 0) { //enemy is attempting to advance
+				if(ploc - eloc > emove + close) { //if enemy has space to move
+					e.setLocation(eloc + emove);
+					return emove;
+				}
+				else { //get as close as possible
+					e.setLocation(ploc - close);
+					return ploc - eloc - close;
+				}
+			}
+			else if(emove < 0) { //enemy is attempting to retreat
+				e.setLocation(eloc + emove);
+				return -emove;
+			}
+		}
+
+		return 0;
+	}
+
+	private int getDistanceBetween(Person p, Person e) {
+		return(Math.abs(p.getLocation() - e.getLocation()));
+	}
+
+	private boolean canAdvance(Person a, Person b) {
+		if(Math.abs(a.getLocation() - b.getLocation()) == close)
+			return false;
+		return true;
+	}
+
+	private int getCritDamage(Person y, int damage) {
+		if(y.getWeapon().isCrit()) {
+			System.out.println("A critical hit!");
+			damage*= 2;
+		}
+
+		return damage;
+	}
+
+	public void endGame() {
+		output.append("You lost, sucker!\n");
+		state = WAIT;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//here be GUI bullshit, do not mind it
+	public void createGUI() {
+		JFrame frame = new JFrame("Manfighter");
+		frame.setDefaultCloseOperation(3); //EXIT_ON_CLOSE
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setOpaque(true);
+		ButtonListener butlis = new ButtonListener();
+		output = new JTextArea(15, 40);
+		output.setWrapStyleWord(true);
+		output.setEditable(false);
+		JScrollPane scrollMain = new JScrollPane(output);
+		scrollMain.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollMain.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		DefaultCaret caretMain = (DefaultCaret) output.getCaret();
+		caretMain.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		panel.add(scrollMain, BorderLayout.CENTER);
+
+		outputPlayer = new JTextArea(10, 20);
+		outputPlayer.setWrapStyleWord(true);
+		outputPlayer.setEditable(false);
+		JScrollPane scrollWeaponPlayer = new JScrollPane(outputPlayer);
+		scrollWeaponPlayer.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollWeaponPlayer.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		DefaultCaret caretWeaponPlayer = (DefaultCaret) outputPlayer.getCaret();
+		caretWeaponPlayer.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		panel.add(scrollWeaponPlayer, BorderLayout.WEST);
+
+		outputEnemy = new JTextArea(10, 20);
+		outputEnemy.setWrapStyleWord(true);
+		outputEnemy.setEditable(false);
+		JScrollPane scrollWeaponEnemy = new JScrollPane(outputEnemy);
+		scrollWeaponEnemy.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollWeaponEnemy.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		DefaultCaret caretWeaponEnemy = (DefaultCaret) outputEnemy.getCaret();
+		caretWeaponEnemy.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		panel.add(scrollWeaponEnemy, BorderLayout.EAST);
+
+		JPanel inputpanel = new JPanel();
+		inputpanel.setLayout(new FlowLayout());
+		input = new JTextField(10);
+		JButton enter = new JButton("Enter");
+		enter.setActionCommand("Enter");
+		enter.addActionListener(butlis);
+		input.setActionCommand("Enter");
+		input.addActionListener(butlis);
+		inputpanel.add(input);
+		inputpanel.add(enter);
+		panel.add(inputpanel, BorderLayout.SOUTH);
+		frame.getContentPane().add(BorderLayout.CENTER, panel);
+		frame.pack();
+		frame.setLocationByPlatform(true);
+		//center of screen
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.setResizable(false);
+		input.requestFocus();
+	}
+
+	public class ButtonListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent ae) {
+			String inputLine = input.getText().trim();
+			if(inputLine.length() > 0) {
+				if(state == GET_NAME) {
+					if(mfg.isValidName(inputLine)) {
+						output.append("Works for me!");
+						state = WAIT;
+						setup(inputLine);
+					} else {
+						output.append("Nope, try again!");
+					}
+				} else if(state == GET_INPUT) {
+					if(p.getValidActions().contains(inputLine.charAt(0))) {
+						takeTurn(p, e, inputLine);
+					}
+				}
+
+				output.append("\n");
+				input.setText("");
+			}
+
+			input.requestFocus();
+		}
+
+	}
+}
