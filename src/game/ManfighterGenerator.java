@@ -93,13 +93,14 @@ public class ManfighterGenerator {
 	
 	public String createRandomName() {
 		RandGen rand = new RandGen();
+		String folder = "data/names/";
 		String n = "";
 		
 		int x = rand.getRand(1, 50);
 		if(x == 50) {
 			Scanner special;
 			try {
-				special = new Scanner(new File("data/name_special.txt"));
+				special = new Scanner(new File(folder + "name_special.txt"));
 				ArrayList<String> specialNames = new ArrayList<String>();
 				while(special.hasNextLine())
 					specialNames.add(special.nextLine());
@@ -115,7 +116,7 @@ public class ManfighterGenerator {
 			if(x % 4 == 0) {
 				Scanner prefix;
 				try {
-					prefix = new Scanner(new File("data/name_prefix.txt"));
+					prefix = new Scanner(new File(folder + "name_prefix.txt"));
 					ArrayList<String> prefixNames = new ArrayList<String>();
 					while(prefix.hasNextLine())
 						prefixNames.add(prefix.nextLine());
@@ -130,7 +131,7 @@ public class ManfighterGenerator {
 			
 			Scanner first;
 			try {
-				first = new Scanner(new File("data/name_first.txt"));
+				first = new Scanner(new File(folder + "name_first.txt"));
 				ArrayList<String> firstNames = new ArrayList<String>();
 				while(first.hasNextLine())
 					firstNames.add(first.nextLine());
@@ -145,7 +146,7 @@ public class ManfighterGenerator {
 			if(x < 44) {
 				Scanner last;
 				try {
-					last = new Scanner(new File("data/name_last.txt"));
+					last = new Scanner(new File(folder + "name_last.txt"));
 					ArrayList<String> lastNames = new ArrayList<String>();
 					while(last.hasNextLine())
 						lastNames.add(last.nextLine());
@@ -193,7 +194,7 @@ public class ManfighterGenerator {
 	
 	private void seedEggs() {
 		if(eggs.size() == 0) {
-			eggs.put("Cassandra", new Shortbow());
+			eggs.put("Cassandra", new Blunderbuss());
 			eggs.put("Pribs", new CardboardTube());
 		}
 	}

@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -30,17 +32,10 @@ import weapon.Weapon;
 
 public class Manfighter {
 
-	private int TEST = 1; //1 for quicker testing, 0 for general play
+	private int TEST = 0; //1 for quicker testing, 0 for general play
 
-	private Scanner in = new Scanner(System.in);
 	private ManfighterGenerator mfg = new ManfighterGenerator();
-	private final int close = 60; //minimum distance apart, in cm
-	private final int forwardStep = 85; //how far you step forward
-	private final int forwardReadyStep = 70;
-	private final int backwardStep = -70; //how far you step backward
-	private final int backwardReadyStep = -55;
-	private final int timeStep = 8; //ms per cm moved
-	private final int timeOther = 500; //place holder for "other" actions
+	private int mindist, forwardStep, forwardReadyStep, backwardStep, backwardReadyStep, timeStep;
 
 	private JFrame frame;
 	private JTextField input;
@@ -68,7 +63,8 @@ public class Manfighter {
 				createGUI();
 			}
 		});
-
+		setGlobalData();
+		
 		String name;
 		if(TEST == 0) {
 			name = JOptionPane.showInputDialog("Welcome to Manfighter! What's your name?");
@@ -83,6 +79,30 @@ public class Manfighter {
 		
 		p = new Player(name);
 		setup();
+	}
+	
+	public void setGlobalData() {
+		try {
+			Scanner in = new Scanner(new File("data/global/global_stats.txt"));
+			while(in.hasNextLine()) {
+				String[] line = in.nextLine().split(" ");
+				if(line[0].equals("minimum-distance-apart"))
+					mindist = Integer.parseInt(line[1]);
+				else if(line[0].equals("forward-step"))
+					forwardStep = Integer.parseInt(line[1]);
+				else if(line[0].equals("forward-short-step"))
+					forwardReadyStep = Integer.parseInt(line[1]);
+				else if(line[0].equals("backward-step"))
+					backwardStep = -Integer.parseInt(line[1]);
+				else if(line[0].equals("backward-short-step"))
+					backwardReadyStep = -Integer.parseInt(line[1]);
+				else if(line[0].equals("time-per-cm-stepped"))
+					timeStep = Integer.parseInt(line[1]);
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setup() {
@@ -158,6 +178,7 @@ public class Manfighter {
 			return;
 		} else {
 			otherCombat();
+			return;
 		}
 	}
 
@@ -181,6 +202,7 @@ public class Manfighter {
 			return;
 		} else {
 			otherCombat();
+			return;
 		}
 	}
 
@@ -247,13 +269,13 @@ public class Manfighter {
 
 		if(ploc < eloc) { //player is left of enemy
 			if(pmove > 0) { //player is attempting to advance
-				if(eloc - ploc > pmove + close) { //if player has space to move (cannot move through people)
+				if(eloc - ploc > pmove + mindist) { //if player has space to move (cannot move through people)
 					p.setLocation(ploc + pmove);
 					return pmove;
 				}
 				else { //get as close as possible
-					p.setLocation(eloc - close);
-					return eloc - ploc - close;
+					p.setLocation(eloc - mindist);
+					return eloc - ploc - mindist;
 				}
 			}
 			else if(pmove < 0) { //player is attempting to retreat
@@ -261,13 +283,13 @@ public class Manfighter {
 				return -pmove;
 			}
 			else if(emove > 0) { //enemy is attempting to advance
-				if(eloc - ploc > emove + close) { //if enemy has space to move
+				if(eloc - ploc > emove + mindist) { //if enemy has space to move
 					e.setLocation(eloc - emove);
 					return emove;
 				}
 				else { //get as close as possible
-					e.setLocation(ploc + close);
-					return eloc - ploc - close;
+					e.setLocation(ploc + mindist);
+					return eloc - ploc - mindist;
 				}
 			}
 			else if(emove < 0) { //enemy is attempting to retreat
@@ -277,13 +299,13 @@ public class Manfighter {
 		}
 		else { //player is right of enemy (signs flip)
 			if(pmove > 0) { //player is attempting to advance
-				if(ploc - eloc > pmove + close) { //if player has space to move (cannot move through people)
+				if(ploc - eloc > pmove + mindist) { //if player has space to move (cannot move through people)
 					p.setLocation(ploc - pmove);
 					return pmove;
 				}
 				else { //get as close as possible
-					p.setLocation(eloc + close);
-					return ploc - eloc - close;
+					p.setLocation(eloc + mindist);
+					return ploc - eloc - mindist;
 				}
 			}
 			else if(pmove < 0) { //player is attempting to retreat
@@ -291,13 +313,13 @@ public class Manfighter {
 				return -pmove;
 			}
 			else if(emove > 0) { //enemy is attempting to advance
-				if(ploc - eloc > emove + close) { //if enemy has space to move
+				if(ploc - eloc > emove + mindist) { //if enemy has space to move
 					e.setLocation(eloc + emove);
 					return emove;
 				}
 				else { //get as close as possible
-					e.setLocation(ploc - close);
-					return ploc - eloc - close;
+					e.setLocation(ploc - mindist);
+					return ploc - eloc - mindist;
 				}
 			}
 			else if(emove < 0) { //enemy is attempting to retreat
@@ -314,7 +336,7 @@ public class Manfighter {
 	}
 
 	private boolean canAdvance(Person a, Person b) {
-		if(Math.abs(a.getLocation() - b.getLocation()) == close)
+		if(Math.abs(a.getLocation() - b.getLocation()) == mindist)
 			return false;
 		return true;
 	}
@@ -378,7 +400,7 @@ public class Manfighter {
 			output.append(String.format("%s readied %s %s. Movement speed lowered.%n", sentenceStarter, attNames[1], wep));
 		}
 		else if(action == 'l' && validActions.contains('l')) {
-			actionTime = timeOther;
+			actionTime = wep.getReadyTime();
 			wep.setReadied(false);
 			output.append(String.format("%s lowered %s %s. Movement speed increased.%n", sentenceStarter, attNames[1], wep));
 		} 
@@ -399,8 +421,9 @@ public class Manfighter {
 			if(actionLine.split(" ").length > 1) {
 				location = actionLine.split(" ")[1];
 			} else {
-				System.out.print("Enter the body part [head, torso, arms, legs] you wish to aim for: ");
-				location = in.nextLine();
+				location = JOptionPane.showInputDialog("Enter the body part [head, torso, arms, legs] you wish to aim for:");
+				while(location == null)
+					location = JOptionPane.showInputDialog("Enter the body part [head, torso, arms, legs] you wish to aim for:");
 			}
 
 			write("Now aiming for: " + location);
@@ -442,7 +465,7 @@ public class Manfighter {
 				output.append(String.format("%s missed!%n", sentenceStarter));
 			}			
 		} 
-		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > close) {
+		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > mindist) {
 			int dis;
 			if(wep.isReadied()) {
 				dis = move(att, def, forwardReadyStep, 0);
@@ -467,41 +490,49 @@ public class Manfighter {
 			output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
 		} 
 		else if(action == 'm' && validActions.contains('e')) { //HACKS, also presently this only affects players
-			actionTime = timeStep;
-			int distance;
+			int distance, dis;
 
 			if(actionLine.split(" ").length > 1) {
 				distance = Integer.parseInt(actionLine.split(" ")[1]);
 			} else {
-				System.out.print("Enter the number of cm you wish to move towards your enemy (negative values retreat): ");
-				distance = Integer.parseInt(in.nextLine());
+				distance = Integer.parseInt(JOptionPane.showInputDialog
+						("Enter the number of cm you wish to move towards your enemy (negative values retreat):"));
+				while(distance == 0)
+					distance = Integer.parseInt(JOptionPane.showInputDialog
+							("Enter the number of cm you wish to move towards your enemy (negative values retreat):"));
+					
 			}
 
 			//TODO: better parsing
 			if(wep.isReadied() && distance >= backwardReadyStep && distance <=0) {
-				int dis = move(att, def, distance, 0);
-				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+				dis = move(att, def, distance, 0);
+				write("You stepped backward " + dis + " cm.");
+				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(wep.isReadied() && distance <= forwardReadyStep && distance >=0) {
-				int dis = move(att, def, distance, 0);
-				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+				dis = move(att, def, distance, 0);
+				write("You stepped forward " + dis + " cm.");
+				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(!wep.isReadied() && distance >= backwardStep && distance <=0) {
-				int dis = move(att, def, distance, 0);
-				System.out.println("You stepped backward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+				dis = move(att, def, distance, 0);
+				write("You stepped backward " + dis + " cm.");
+				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else if(!wep.isReadied() && distance <= forwardStep && distance >=0) {
-				int dis = move(att, def, distance, 0);
-				System.out.println("You stepped forward " + dis + " cm.");
-				System.out.println("You're now " + getDistanceBetween(att, def) + " cm apart.");
+				dis = move(att, def, distance, 0);
+				write("You stepped forward " + dis + " cm.");
+				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
 			} else {
 				//TODO: also dumb
-				System.out.println("You can't move that far, you dummy.");
-				actionTime = 0;
+				write("You can't move that far, you dummy.");
+				dis = 0;
 			}
+			actionTime = timeStep * dis;
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
-			actionTime = timeOther;
+			actionTime = Integer.parseInt(JOptionPane.showInputDialog
+					("Enter the number of ms you wish to wait:"));
+			while(actionTime <= 0)
+				actionTime = Integer.parseInt(JOptionPane.showInputDialog
+						("Enter the number of ms you wish to wait:"));
 			output.append(String.format("%s %s waiting a turn.%n", sentenceStarter, attNames[3]));
 		} 
 		else {
@@ -575,7 +606,7 @@ public class Manfighter {
 			String inputLine = input.getText().trim();
 			if(inputLine.length() > 0 && readyforinput) {
 				readyforinput = false;
-				write(inputLine);
+				//write(inputLine);
 				playerCombat(inputLine);
 			}
 			input.setText("");

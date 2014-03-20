@@ -1,0 +1,6 @@
+minimum-distance-apart 60
+forward-step 85
+forward-short-step 70
+backward-step 70
+backward-short-step 55
+time-per-cm-stepped 1
