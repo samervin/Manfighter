@@ -2,8 +2,6 @@ package game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,11 +14,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.text.DefaultCaret;
 
 import person.Enemy;
 import person.EnemyBasic;
@@ -39,9 +34,7 @@ public class Manfighter {
 
 	private JFrame frame;
 	private JTextField input;
-	private JTextArea output;
-	private JTextArea pL;
-	private JTextArea eL;
+	private JTextArea output, pL, eL;
 
 	private boolean readyforinput = false;
 
@@ -58,13 +51,9 @@ public class Manfighter {
 	}
 
 	public Manfighter() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				createGUI();
-			}
-		});
+		createGUI();
 		setGlobalData();
-		
+
 		String name;
 		if(TEST == 0) {
 			name = JOptionPane.showInputDialog("Welcome to Manfighter! What's your name?");
@@ -76,11 +65,11 @@ public class Manfighter {
 		} else {
 			name = "Sam";
 		}
-		
+
 		p = new Player(name);
 		setup();
 	}
-	
+
 	public void setGlobalData() {
 		try {
 			Scanner in = new Scanner(new File("data/global/global_stats.txt"));
@@ -109,43 +98,43 @@ public class Manfighter {
 		e = new EnemyBasic();
 		p.setLocation(0);
 		e.setLocation(500);
-		
+
 		final JDialog pD = new JDialog(frame, "Player");
 		pL = new JTextArea(p.getFullInfo());
 		JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                pD.setVisible(false);
-                pD.dispose();
-            }
-        });
-        JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.add(pL, BorderLayout.NORTH);
-        contentPane.add(closeButton, BorderLayout.SOUTH);
-        contentPane.setOpaque(true);
-        pD.setContentPane(contentPane);
-        pD.setSize(new Dimension(300, 250));
-        pD.setLocationRelativeTo(frame);
-        pD.setVisible(true);
-     
-        final JDialog eD = new JDialog(frame, "Enemy");
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pD.setVisible(false);
+				pD.dispose();
+			}
+		});
+		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.add(pL, BorderLayout.NORTH);
+		contentPane.add(closeButton, BorderLayout.SOUTH);
+		contentPane.setOpaque(true);
+		pD.setContentPane(contentPane);
+		pD.setSize(new Dimension(300, 250));
+		pD.setLocationRelativeTo(frame);
+		pD.setVisible(true);
+
+		final JDialog eD = new JDialog(frame, "Enemy");
 		eL = new JTextArea(e.getFullInfo());
 		JButton closeButton2 = new JButton("Close");
-        closeButton2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                eD.setVisible(false);
-                eD.dispose();
-            }
-        });
-        JPanel contentPane2 = new JPanel(new BorderLayout());
-        contentPane2.add(eL, BorderLayout.NORTH);
-        contentPane2.add(closeButton2, BorderLayout.SOUTH);
-        contentPane2.setOpaque(true);
-        eD.setContentPane(contentPane2);
-        eD.setSize(new Dimension(300, 250));
-        eD.setLocationRelativeTo(frame);
-        eD.setVisible(true);
-        
+		closeButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eD.setVisible(false);
+				eD.dispose();
+			}
+		});
+		JPanel contentPane2 = new JPanel(new BorderLayout());
+		contentPane2.add(eL, BorderLayout.NORTH);
+		contentPane2.add(closeButton2, BorderLayout.SOUTH);
+		contentPane2.setOpaque(true);
+		eD.setContentPane(contentPane2);
+		eD.setSize(new Dimension(300, 250));
+		eD.setLocationRelativeTo(frame);
+		eD.setVisible(true);
+
 		startCombat();
 	}
 
@@ -169,17 +158,13 @@ public class Manfighter {
 		p.tick();
 		e.tick();
 
-		checkPlayerStatus();
-		checkEnemyStatus();
-		if(pclock <= 0) {
-			printPlayerActions();
-			readyforinput = true;
-			updateLabels();
-			return;
-		} else {
+		while(pclock > 0) {
 			otherCombat();
-			return;
 		}
+
+		printPlayerActions();
+		readyforinput = true;
+		updateLabels();
 	}
 
 	public void otherCombat() {
@@ -195,15 +180,6 @@ public class Manfighter {
 
 		checkPlayerStatus();
 		checkEnemyStatus();
-		if(pclock <= 0) {
-			printPlayerActions();
-			readyforinput = true;
-			updateLabels();
-			return;
-		} else {
-			otherCombat();
-			return;
-		}
 	}
 
 	public void checkPlayerStatus() {
@@ -246,7 +222,7 @@ public class Manfighter {
 
 		return statdmg;
 	}
-	
+
 	private void updateLabels() {
 		pL.setText(p.getFullInfo());
 		eL.setText(e.getFullInfo());
@@ -500,7 +476,7 @@ public class Manfighter {
 				while(distance == 0)
 					distance = Integer.parseInt(JOptionPane.showInputDialog
 							("Enter the number of cm you wish to move towards your enemy (negative values retreat):"));
-					
+
 			}
 
 			//TODO: better parsing
@@ -562,56 +538,21 @@ public class Manfighter {
 	}
 
 	public void createGUI() {
-		frame = new JFrame("Manfighter");
-		frame.setDefaultCloseOperation(3);
-
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setOpaque(true);
-		ButtonListener butlis = new ButtonListener();
-		output = new JTextArea(15, 80);
-		output.setWrapStyleWord(true);
-		output.setEditable(false);
-		JScrollPane scrollMain = new JScrollPane(output);
-		scrollMain.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollMain.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		DefaultCaret caretMain = (DefaultCaret) output.getCaret();
-		caretMain.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		panel.add(scrollMain, BorderLayout.CENTER);
-
-		JPanel inputpanel = new JPanel();
-		inputpanel.setLayout(new FlowLayout());
-		input = new JTextField(10);
-		JButton enter = new JButton("Enter");
-		enter.setActionCommand("Enter");
-		enter.addActionListener(butlis);
-		input.setActionCommand("Enter");
-		input.addActionListener(butlis);
-		inputpanel.add(input);
-		inputpanel.add(enter);
-		panel.add(inputpanel, BorderLayout.SOUTH);
-		frame.getContentPane().add(BorderLayout.CENTER, panel);
-		frame.pack();
-		frame.setLocationByPlatform(true);
-		//center of screen
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.setResizable(false);
-		input.requestFocus();
+		ManfighterGUI gui = new ManfighterGUI(new ButtonListener());
+		frame = gui.getFrame();
+		input = gui.getInput();
+		output = gui.getOutput();
 	}
 
 	public class ButtonListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent e) {
 			String inputLine = input.getText().trim();
 			if(inputLine.length() > 0 && readyforinput) {
 				readyforinput = false;
-				//write(inputLine);
 				playerCombat(inputLine);
 			}
 			input.setText("");
 			input.requestFocus();
 		}
-
 	}
 }

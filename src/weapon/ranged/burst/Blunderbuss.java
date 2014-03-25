@@ -18,7 +18,7 @@ public class Blunderbuss extends BaseBurst {
 		fireTime = 900;
 		knockback = 20; //per pellet
 		readyTime = 700;
-		reloadTime = 10000; //this is ridiculous
+		reloadTime = 10000;
 	}
 
 	@Override
