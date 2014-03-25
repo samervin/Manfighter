@@ -152,6 +152,8 @@ public class Manfighter {
 			eclock = takeTurn(e, p, e.getAction(getDistanceBetween(p, e)));
 			write("\tHe will waste: " + eclock + "ms, current time: " + clock + " ms.");
 		}
+		if(pclock == 0) pclock = 1; //prevents 0-time actions from taking 1 ms
+		if(eclock == 0) eclock = 1;
 		pclock--;
 		eclock--;
 		clock++;
