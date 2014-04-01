@@ -2,6 +2,8 @@ package game;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GraphicsConfiguration;
+import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -62,9 +64,11 @@ public class ManfighterGUI extends JFrame {
 		panel.add(inputpanel, BorderLayout.SOUTH);
 		frame.getContentPane().add(BorderLayout.CENTER, panel);
 		frame.pack();
-		frame.setLocationByPlatform(true);
-		//center of screen
-		frame.setLocationRelativeTo(null);
+
+		GraphicsConfiguration gc = frame.getGraphicsConfiguration();  
+		Rectangle bounds = gc.getBounds();
+		frame.setLocation((bounds.width/2) - (frame.getWidth()/2), (3*bounds.height/4) - (frame.getHeight()/2));
+
 		frame.setVisible(true);
 		frame.setResizable(false);
 		input.requestFocus();

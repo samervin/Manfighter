@@ -2,6 +2,8 @@ package game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -35,6 +36,8 @@ public class Manfighter {
 	private JFrame frame;
 	private JTextField input;
 	private JTextArea output, pL, eL;
+	final JDialog pD = new JDialog(frame, "Player");
+	final JDialog eD = new JDialog(frame, "Enemy");
 
 	private boolean readyforinput = false;
 
@@ -99,40 +102,30 @@ public class Manfighter {
 		p.setLocation(0);
 		e.setLocation(500);
 
-		final JDialog pD = new JDialog(frame, "Player");
+		pD.dispose();
+		eD.dispose();
+
+		GraphicsConfiguration gc = frame.getGraphicsConfiguration();  
+		Rectangle bounds = gc.getBounds();
+
 		pL = new JTextArea(p.getFullInfo());
-		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pD.setVisible(false);
-				pD.dispose();
-			}
-		});
 		JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.add(pL, BorderLayout.NORTH);
-		contentPane.add(closeButton, BorderLayout.SOUTH);
 		contentPane.setOpaque(true);
 		pD.setContentPane(contentPane);
-		pD.setSize(new Dimension(300, 250));
-		pD.setLocationRelativeTo(frame);
+		pD.setSize(new Dimension(300, 200));
+		pD.setLocation((bounds.width / 4) - (pD.getWidth()/2), (bounds.height / 3) - (pD.getHeight()/2));
+		pD.setResizable(false);
 		pD.setVisible(true);
 
-		final JDialog eD = new JDialog(frame, "Enemy");
 		eL = new JTextArea(e.getFullInfo());
-		JButton closeButton2 = new JButton("Close");
-		closeButton2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				eD.setVisible(false);
-				eD.dispose();
-			}
-		});
 		JPanel contentPane2 = new JPanel(new BorderLayout());
 		contentPane2.add(eL, BorderLayout.NORTH);
-		contentPane2.add(closeButton2, BorderLayout.SOUTH);
 		contentPane2.setOpaque(true);
 		eD.setContentPane(contentPane2);
-		eD.setSize(new Dimension(300, 250));
-		eD.setLocationRelativeTo(frame);
+		eD.setSize(new Dimension(300, 200));
+		eD.setLocation((3 * bounds.width / 4) - (eD.getWidth()/2), (bounds.height / 3) - (eD.getHeight()/2));
+		eD.setResizable(false);
 		eD.setVisible(true);
 
 		startCombat();
@@ -142,6 +135,9 @@ public class Manfighter {
 		checkPlayerStatus();
 		checkEnemyStatus();
 		printPlayerActions();
+		clock = 0;
+		pclock = 0;
+		eclock = 0;
 		readyforinput = true;
 	}
 
@@ -152,21 +148,31 @@ public class Manfighter {
 			eclock = takeTurn(e, p, e.getAction(getDistanceBetween(p, e)));
 			write("\tHe will waste: " + eclock + "ms, current time: " + clock + " ms.");
 		}
-		if(pclock == 0) pclock = 1; //prevents 0-time actions from taking 1 ms
-		if(eclock == 0) eclock = 1;
-		pclock--;
-		eclock--;
-		clock++;
-		p.tick();
-		e.tick();
-
-		while(pclock > 0) {
-			otherCombat();
+		if(pclock > 0 && eclock > 0) {
+			pclock--;
+			eclock--;
+			clock++;
+			p.tick();
+			e.tick();
 		}
 
-		printPlayerActions();
-		readyforinput = true;
-		updateLabels();
+		boolean gameon = true;
+		while(pclock > 0) {
+			otherCombat();
+			if(p.getHealth() < 1 || e.getHealth() < 1) {
+				pclock = -1;
+				eclock = -1;
+				gameon = false;
+				endCombat();
+			}
+		}
+
+		if(gameon) {
+			printPlayerActions();
+			readyforinput = true;
+			updateLabels();
+		}
+
 	}
 
 	public void otherCombat() {
@@ -182,6 +188,24 @@ public class Manfighter {
 
 		checkPlayerStatus();
 		checkEnemyStatus();
+	}
+
+	public void endCombat() {
+		if(p.getHealth() < 1) {
+			write("\nYou lost, better luck next time!");
+			int n = JOptionPane.showConfirmDialog(frame, "You lost, would you like to continue?", "Game Over", JOptionPane.YES_NO_OPTION);
+			if(n == JOptionPane.YES_OPTION) {
+				p = new Player(p.toString());
+				setup();
+			}
+			else {
+				write("Thanks for playing!");
+				readyforinput = false;
+			}
+		} else {
+			write("\nEnemy defeated!");
+			setup();
+		}
 	}
 
 	public void checkPlayerStatus() {
@@ -218,8 +242,8 @@ public class Manfighter {
 		int statdmg = p.getStatus().getDamage();
 		if(statdmg != 0) {
 			statdmg = p.applyDamage(statdmg, "torso");
-			write(String.format("%s lost %d health due to %s!%n", names[0], statdmg, p.getStatus()));
-			write(String.format("%s new health is %d.%n", names[1], p.getHealth()));
+			write(String.format("%s lost %d health due to %s!", names[0].toUpperCase().charAt(0) + names[0].substring(1), statdmg, p.getStatus()));
+			write(String.format("%s new health is %d.", names[1].toUpperCase().charAt(0) + names[1].substring(1), p.getHealth()));
 		}
 
 		return statdmg;
@@ -353,6 +377,19 @@ public class Manfighter {
 		if(allActions.contains('w'))
 			output.append("wait[w] ");
 		output.append("\n");
+	}
+
+	private int getWaitTime(Person per) {
+		if(per instanceof Player) {
+			int wait = Integer.parseInt(JOptionPane.showInputDialog
+					("Enter the number of ms you wish to wait:"));
+			while(wait < 0)
+				wait = Integer.parseInt(JOptionPane.showInputDialog
+						("Enter the number of ms you wish to wait:"));
+			return wait;
+		} else {
+			return 100; //TODO: this should probably be deterministic!
+		}
 	}
 
 	private int takeTurn(Person att, Person def, String actionLine) {
@@ -506,11 +543,7 @@ public class Manfighter {
 			actionTime = timeStep * dis;
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
-			actionTime = Integer.parseInt(JOptionPane.showInputDialog
-					("Enter the number of ms you wish to wait:"));
-			while(actionTime <= 0)
-				actionTime = Integer.parseInt(JOptionPane.showInputDialog
-						("Enter the number of ms you wish to wait:"));
+			actionTime = getWaitTime(att);
 			output.append(String.format("%s %s waiting a turn.%n", sentenceStarter, attNames[3]));
 		} 
 		else {
