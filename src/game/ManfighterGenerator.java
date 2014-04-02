@@ -39,6 +39,29 @@ public class ManfighterGenerator {
 	
 	HashMap<String, Weapon> eggs = new HashMap<String, Weapon>();
 	RandGen rand = new RandGen();
+	
+	public int[] getGlobalData() {
+		int[] data = new int[4];
+		try {
+			Scanner in = new Scanner(new File("data/global/global_stats.txt"));
+			while(in.hasNextLine()) {
+				String[] line = in.nextLine().split(" ");
+				if(line[0].equals("minimum-distance-apart"))
+					data[0] = Integer.parseInt(line[1]);
+				else if(line[0].equals("default-step"))
+					data[1] = Integer.parseInt(line[1]);
+				else if(line[0].equals("time-per-cm-stepped"))
+					data[2] = Integer.parseInt(line[1]);
+				else if(line[0].equals("slow-time-per-cm-stepped"))
+					data[3] = Integer.parseInt(line[1]);
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return data;
+	}
 
 	public boolean isValidName(String name) {
 		return (!stringDivisibleBy(name, 3)) || isEgg(name);

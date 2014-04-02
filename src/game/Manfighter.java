@@ -6,10 +6,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.Scanner;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -30,8 +27,9 @@ public class Manfighter {
 
 	private int TEST = 0; //1 for quicker testing, 0 for general play
 
-	private ManfighterGenerator mfg = new ManfighterGenerator();
-	private int mindist, forwardStep, forwardReadyStep, backwardStep, backwardReadyStep, timeStep;
+	private ManfighterGenerator mfg;
+	private ManfighterBoilerplate mfb;
+	private int mindist, defaultStep, timeStep, readyTimeStep;
 
 	private JFrame frame;
 	private JTextField input;
@@ -55,6 +53,8 @@ public class Manfighter {
 
 	public Manfighter() {
 		createGUI();
+		mfg = new ManfighterGenerator();
+		mfb = new ManfighterBoilerplate(mindist);
 		setGlobalData();
 
 		String name;
@@ -72,29 +72,20 @@ public class Manfighter {
 		p = new Player(name);
 		setup();
 	}
-
-	public void setGlobalData() {
-		try {
-			Scanner in = new Scanner(new File("data/global/global_stats.txt"));
-			while(in.hasNextLine()) {
-				String[] line = in.nextLine().split(" ");
-				if(line[0].equals("minimum-distance-apart"))
-					mindist = Integer.parseInt(line[1]);
-				else if(line[0].equals("forward-step"))
-					forwardStep = Integer.parseInt(line[1]);
-				else if(line[0].equals("forward-short-step"))
-					forwardReadyStep = Integer.parseInt(line[1]);
-				else if(line[0].equals("backward-step"))
-					backwardStep = -Integer.parseInt(line[1]);
-				else if(line[0].equals("backward-short-step"))
-					backwardReadyStep = -Integer.parseInt(line[1]);
-				else if(line[0].equals("time-per-cm-stepped"))
-					timeStep = Integer.parseInt(line[1]);
-			}
-			in.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	
+	public void createGUI() {
+		ManfighterGUI gui = new ManfighterGUI(new ButtonListener());
+		frame = gui.getFrame();
+		input = gui.getInput();
+		output = gui.getOutput();
+	}
+	
+	private void setGlobalData() {
+		int[] data = mfg.getGlobalData();
+		mindist = data[0];
+		defaultStep = data[1];
+		timeStep = data[2];
+		readyTimeStep = data[3];
 	}
 
 	public void setup() {
@@ -116,6 +107,7 @@ public class Manfighter {
 		pD.setSize(new Dimension(300, 200));
 		pD.setLocation((bounds.width / 4) - (pD.getWidth()/2), (bounds.height / 3) - (pD.getHeight()/2));
 		pD.setResizable(false);
+		pD.setAlwaysOnTop(true);
 		pD.setVisible(true);
 
 		eL = new JTextArea(e.getFullInfo());
@@ -126,8 +118,10 @@ public class Manfighter {
 		eD.setSize(new Dimension(300, 200));
 		eD.setLocation((3 * bounds.width / 4) - (eD.getWidth()/2), (bounds.height / 3) - (eD.getHeight()/2));
 		eD.setResizable(false);
+		eD.setAlwaysOnTop(true);
 		eD.setVisible(true);
 
+		input.requestFocusInWindow();
 		startCombat();
 	}
 
@@ -145,7 +139,7 @@ public class Manfighter {
 		pclock = takeTurn(p, e, playerAction);
 		write("\tYou will waste: " + pclock + "ms, current time: " + clock + " ms.");
 		if(eclock == 0) {
-			eclock = takeTurn(e, p, e.getAction(getDistanceBetween(p, e)));
+			eclock = takeTurn(e, p, e.getAction(mfb.getDistanceBetween(p, e)));
 			write("\tHe will waste: " + eclock + "ms, current time: " + clock + " ms.");
 		}
 		if(pclock > 0 && eclock > 0) {
@@ -177,14 +171,16 @@ public class Manfighter {
 
 	public void otherCombat() {
 		if(eclock == 0) {
-			eclock = takeTurn(e, p, e.getAction(getDistanceBetween(p, e)));
+			eclock = takeTurn(e, p, e.getAction(mfb.getDistanceBetween(p, e)));
 			write("\tHe will waste: " + eclock + "ms, current time: " + clock + " ms.");
 		}
-		pclock--;
-		eclock--;
-		clock++;
-		p.tick();
-		e.tick();
+		if(eclock > 0) {
+			pclock--;
+			eclock--;
+			clock++;
+			p.tick();
+			e.tick();
+		}
 
 		checkPlayerStatus();
 		checkEnemyStatus();
@@ -230,15 +226,14 @@ public class Manfighter {
 			}
 
 			if(!e.getStatus().isActive()) {
-				output.append("He is no longer " + e.getStatus() + ".\n");
+				output.append("He is no longer " + e.getStatus() + " as of " + clock + ".\n");
 				e.setStatus(new BlankPersonStatus());
-				write("status-done: " +clock);
 			}
 		}
 	}
 
 	private int checkStatus(Person p) {
-		String[] names = getNames(p);
+		String[] names = mfb.getNames(p);
 		int statdmg = p.getStatus().getDamage();
 		if(statdmg != 0) {
 			statdmg = p.applyDamage(statdmg, "torso");
@@ -248,99 +243,15 @@ public class Manfighter {
 
 		return statdmg;
 	}
+	
+	public void write(String s) {
+		output.append(s + "\n");
+	}
 
 	private void updateLabels() {
 		pL.setText(p.getFullInfo());
 		eL.setText(e.getFullInfo());
 		output.setCaretPosition(output.getDocument().getLength());
-	}
-
-	private String[] getNames(Person p) {
-		if(p instanceof Player) {
-			String[] names = {"you", "your", "yourself", "are"};
-			return names;
-		} else {
-			String[] names = {p.toString(), "his", "himself", "is"};
-			return names;
-		}
-	}
-
-	private int move(Person p, Person e, int pmove, int emove) {
-		int ploc = p.getLocation();
-		int eloc = e.getLocation();
-
-		if(ploc < eloc) { //player is left of enemy
-			if(pmove > 0) { //player is attempting to advance
-				if(eloc - ploc > pmove + mindist) { //if player has space to move (cannot move through people)
-					p.setLocation(ploc + pmove);
-					return pmove;
-				}
-				else { //get as close as possible
-					p.setLocation(eloc - mindist);
-					return eloc - ploc - mindist;
-				}
-			}
-			else if(pmove < 0) { //player is attempting to retreat
-				p.setLocation(ploc + pmove);
-				return -pmove;
-			}
-			else if(emove > 0) { //enemy is attempting to advance
-				if(eloc - ploc > emove + mindist) { //if enemy has space to move
-					e.setLocation(eloc - emove);
-					return emove;
-				}
-				else { //get as close as possible
-					e.setLocation(ploc + mindist);
-					return eloc - ploc - mindist;
-				}
-			}
-			else if(emove < 0) { //enemy is attempting to retreat
-				e.setLocation(eloc - emove);
-				return -emove;
-			}
-		}
-		else { //player is right of enemy (signs flip)
-			if(pmove > 0) { //player is attempting to advance
-				if(ploc - eloc > pmove + mindist) { //if player has space to move (cannot move through people)
-					p.setLocation(ploc - pmove);
-					return pmove;
-				}
-				else { //get as close as possible
-					p.setLocation(eloc + mindist);
-					return ploc - eloc - mindist;
-				}
-			}
-			else if(pmove < 0) { //player is attempting to retreat
-				p.setLocation(ploc - pmove);
-				return -pmove;
-			}
-			else if(emove > 0) { //enemy is attempting to advance
-				if(ploc - eloc > emove + mindist) { //if enemy has space to move
-					e.setLocation(eloc + emove);
-					return emove;
-				}
-				else { //get as close as possible
-					e.setLocation(ploc - mindist);
-					return ploc - eloc - mindist;
-				}
-			}
-			else if(emove < 0) { //enemy is attempting to retreat
-				e.setLocation(eloc + emove);
-				return -emove;
-			}
-		}
-
-		return 0;
-	}
-
-	private int getDistanceBetween(Person p, Person e) {
-		return(Math.abs(p.getLocation() - e.getLocation()));
-	}
-
-	private boolean canAdvance(Person a, Person b) {
-		if(Math.abs(a.getLocation() - b.getLocation()) == mindist)
-			return false;
-		return true;
 	}
 
 	private int getCritDamage(Person y, int damage) {
@@ -356,7 +267,7 @@ public class Manfighter {
 		HashSet<Character> allActions = p.getValidActions();
 
 		output.append("Choose an action: ");
-		if(allActions.contains('a') && getDistanceBetween(p, e) <= p.getWeapon().getRange())
+		if(allActions.contains('a') && mfb.getDistanceBetween(p, e) <= p.getWeapon().getRange())
 			output.append("attack[a] ");
 		if(allActions.contains('o'))
 			output.append("reload your weapon[o] ");
@@ -368,7 +279,7 @@ public class Manfighter {
 			output.append("lower your weapon[l] ");
 		if(allActions.contains('i'))
 			output.append("aim your weapon[i] ");
-		if(allActions.contains('d') && canAdvance(p, e))
+		if(allActions.contains('d') && mfb.canAdvance(p, e))
 			output.append("advance[d] ");
 		if(allActions.contains('e'))
 			output.append("retreat[e] ");
@@ -376,20 +287,7 @@ public class Manfighter {
 			output.append("move[m] ");
 		if(allActions.contains('w'))
 			output.append("wait[w] ");
-		output.append("\n");
-	}
-
-	private int getWaitTime(Person per) {
-		if(per instanceof Player) {
-			int wait = Integer.parseInt(JOptionPane.showInputDialog
-					("Enter the number of ms you wish to wait:"));
-			while(wait < 0)
-				wait = Integer.parseInt(JOptionPane.showInputDialog
-						("Enter the number of ms you wish to wait:"));
-			return wait;
-		} else {
-			return 100; //TODO: this should probably be deterministic!
-		}
+		output.append("\n\n");
 	}
 
 	private int takeTurn(Person att, Person def, String actionLine) {
@@ -405,8 +303,8 @@ public class Manfighter {
 		else
 			action = '?';
 
-		String[] attNames = getNames(att);
-		String[] defNames = getNames(def);
+		String[] attNames = mfb.getNames(att);
+		String[] defNames = mfb.getNames(def);
 		String sentenceStarter = attNames[0].toUpperCase().charAt(0) + attNames[0].substring(1);
 
 		if(action == 'r' && validActions.contains('r')) {
@@ -444,15 +342,17 @@ public class Manfighter {
 			write("Now aiming for: " + location);
 			wep.aim(location);
 		}
-		else if(action == 'a' && validActions.contains('a') && getDistanceBetween(att, def) <= wep.getRange()) {
+		else if(action == 'a' && validActions.contains('a') && mfb.getDistanceBetween(att, def) <= wep.getRange()) {
 			actionTime = wep.getFireTime();
-			int dmg = att.getDamage(getDistanceBetween(att, def));
+			int dmg = att.getDamage(mfb.getDistanceBetween(att, def));
 			dmg = getCritDamage(att, dmg);
 			if(dmg > 0) {
 				dmg = def.applyDamage(dmg, wep.getDamageLocation());
 				damageDealt = dmg;
-				output.append(String.format("%s %s %s, dealing %d %s damage!%n", sentenceStarter, wep.getVerb(), defNames[0], dmg, wep.getDamageType()));
-				output.append(String.format("%s new health is %d.%n", (defNames[1].toUpperCase().charAt(0) + defNames[1].substring(1)), def.getHealth()));
+				write(String.format("%s %s %s in the %s, dealing %d %s damage!",
+						sentenceStarter, wep.getVerb(), defNames[0], wep.getDamageLocation(), dmg, wep.getDamageType()));
+				write(String.format("%s new health is %d.",
+						(defNames[1].toUpperCase().charAt(0) + defNames[1].substring(1)), def.getHealth()));
 
 				PersonStatus wepStat = wep.getInflictedStatus();
 				//TODO: this also blows
@@ -465,12 +365,12 @@ public class Manfighter {
 
 				int knockback = wep.getKnockback();
 				if(knockback != 0) {
-					int dis = move(att, def, 0, -knockback);
+					int dis = mfb.move(att, def, 0, -knockback);
 					output.append(String.format("%s knocked %s back %d cm.%n", sentenceStarter, defNames[0], dis));
-					output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+					output.append(String.format("You're now %d cm apart.%n", mfb.getDistanceBetween(att, def)));
 				}
 
-				if(wep.getSelfDamage() != 0 && getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
+				if(wep.getSelfDamage() != 0 && mfb.getDistanceBetween(att, def) <= wep.getSelfDamageRange()) {
 					int selfdmg = att.applyDamage(wep.getSelfDamage(), "torso");
 					output.append(String.format("%s damaged %s for %d damage!%n", sentenceStarter, attNames[2], selfdmg));
 					output.append(String.format("%s new health is %d.%n", attNames[1], att.getHealth()));
@@ -480,29 +380,25 @@ public class Manfighter {
 				output.append(String.format("%s missed!%n", sentenceStarter));
 			}			
 		} 
-		else if(action == 'd' && validActions.contains('d') && getDistanceBetween(att, def) > mindist) {
-			int dis;
+		else if(action == 'd' && validActions.contains('d') && mfb.getDistanceBetween(att, def) > mindist) {
+			int dis = mfb.move(att, def, defaultStep, 0);
 			if(wep.isReadied()) {
-				dis = move(att, def, forwardReadyStep, 0);
+				actionTime = readyTimeStep * dis;
 			} else {
-				dis = move(att, def, forwardStep, 0);	
+				actionTime = timeStep * dis;	
 			}
-
-			actionTime = timeStep * dis;
 			output.append(String.format("%s stepped forward %d cm.%n", sentenceStarter, dis));
-			output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+			output.append(String.format("You're now %d cm apart.%n", mfb.getDistanceBetween(att, def)));
 		} 
 		else if(action == 'e' && validActions.contains('e')) {
-			int dis;
+			int dis = mfb.move(att, def, -defaultStep, 0);
 			if(wep.isReadied()) {
-				dis = move(att, def, backwardReadyStep, 0);
+				actionTime = readyTimeStep * dis;
 			} else {
-				dis = move(att, def, backwardStep, 0);
+				actionTime = timeStep * dis;	
 			}
-
-			actionTime = timeStep * dis;
 			output.append(String.format("%s stepped backward %d cm.%n", sentenceStarter, dis));
-			output.append(String.format("You're now %d cm apart.%n", getDistanceBetween(att, def)));
+			output.append(String.format("You're now %d cm apart.%n", mfb.getDistanceBetween(att, def)));
 		} 
 		else if(action == 'm' && validActions.contains('e')) { //HACKS, also presently this only affects players
 			int distance, dis;
@@ -519,31 +415,33 @@ public class Manfighter {
 			}
 
 			//TODO: better parsing
-			if(wep.isReadied() && distance >= backwardReadyStep && distance <=0) {
-				dis = move(att, def, distance, 0);
+			if(wep.isReadied() && distance <0) {
+				dis = mfb.move(att, def, distance, 0);
+				actionTime = readyTimeStep * dis;
 				write("You stepped backward " + dis + " cm.");
-				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
-			} else if(wep.isReadied() && distance <= forwardReadyStep && distance >=0) {
-				dis = move(att, def, distance, 0);
+				write("You're now " + mfb.getDistanceBetween(att, def) + " cm apart.");
+			} else if(wep.isReadied() && distance >=0) {
+				dis = mfb.move(att, def, distance, 0);
+				actionTime = readyTimeStep * dis;
 				write("You stepped forward " + dis + " cm.");
-				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
-			} else if(!wep.isReadied() && distance >= backwardStep && distance <=0) {
-				dis = move(att, def, distance, 0);
+				write("You're now " + mfb.getDistanceBetween(att, def) + " cm apart.");
+			} else if(!wep.isReadied() && distance <0) {
+				dis = mfb.move(att, def, distance, 0);
+				actionTime = timeStep * dis;
 				write("You stepped backward " + dis + " cm.");
-				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
-			} else if(!wep.isReadied() && distance <= forwardStep && distance >=0) {
-				dis = move(att, def, distance, 0);
+				write("You're now " + mfb.getDistanceBetween(att, def) + " cm apart.");
+			} else if(!wep.isReadied() && distance >=0) {
+				dis = mfb.move(att, def, distance, 0);
+				actionTime = timeStep * dis;
 				write("You stepped forward " + dis + " cm.");
-				write("You're now " + getDistanceBetween(att, def) + " cm apart.");
+				write("You're now " + mfb.getDistanceBetween(att, def) + " cm apart.");
 			} else {
-				//TODO: also dumb
-				write("You can't move that far, you dummy.");
-				dis = 0;
+				write("Something went wrong when you tried to move " + distance + " cm.");
+				actionTime = 0;
 			}
-			actionTime = timeStep * dis;
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
-			actionTime = getWaitTime(att);
+			actionTime = mfb.getWaitTime(att);
 			output.append(String.format("%s %s waiting a turn.%n", sentenceStarter, attNames[3]));
 		} 
 		else {
@@ -566,18 +464,9 @@ public class Manfighter {
 
 
 
-
-
-	public void write(String s) {
-		output.append(s + "\n");
-	}
-
-	public void createGUI() {
-		ManfighterGUI gui = new ManfighterGUI(new ButtonListener());
-		frame = gui.getFrame();
-		input = gui.getInput();
-		output = gui.getOutput();
-	}
+	
+	
+	
 
 	public class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

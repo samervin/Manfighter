@@ -29,7 +29,7 @@ public abstract class Weapon {
 	protected int selfDamage = 0;
 	protected int selfDamageRange = 0;
 
-	protected String damageLocation = "legs";
+	protected String damageLocation = "torso";
 	
 	//shared methods
 	public String toString() {
