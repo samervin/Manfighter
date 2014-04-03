@@ -100,23 +100,25 @@ public class Manfighter {
 		Rectangle bounds = gc.getBounds();
 
 		pL = new JTextArea(p.getFullInfo());
+		pL.setEditable(false);
 		JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.add(pL, BorderLayout.NORTH);
 		contentPane.setOpaque(true);
 		pD.setContentPane(contentPane);
 		pD.setSize(new Dimension(300, 200));
-		pD.setLocation((bounds.width / 4) - (pD.getWidth()/2), (bounds.height / 3) - (pD.getHeight()/2));
+		pD.setLocation((bounds.width/3) - frame.getWidth()/3, (bounds.height / 2) - pD.getHeight());
 		pD.setResizable(false);
 		pD.setAlwaysOnTop(true);
 		pD.setVisible(true);
 
 		eL = new JTextArea(e.getFullInfo());
+		eL.setEditable(false);
 		JPanel contentPane2 = new JPanel(new BorderLayout());
 		contentPane2.add(eL, BorderLayout.NORTH);
 		contentPane2.setOpaque(true);
 		eD.setContentPane(contentPane2);
 		eD.setSize(new Dimension(300, 200));
-		eD.setLocation((3 * bounds.width / 4) - (eD.getWidth()/2), (bounds.height / 3) - (eD.getHeight()/2));
+		eD.setLocation((2*bounds.width/3), (bounds.height / 2) - eD.getHeight());
 		eD.setResizable(false);
 		eD.setAlwaysOnTop(true);
 		eD.setVisible(true);

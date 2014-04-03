@@ -67,7 +67,7 @@ public class ManfighterGUI extends JFrame {
 
 		GraphicsConfiguration gc = frame.getGraphicsConfiguration();  
 		Rectangle bounds = gc.getBounds();
-		frame.setLocation((bounds.width/2) - (frame.getWidth()/2), (3*bounds.height/4) - (frame.getHeight()/2));
+		frame.setLocation((bounds.width/2) - (frame.getWidth()/2), (bounds.height/2));
 
 		frame.setVisible(true);
 		frame.setResizable(false);
