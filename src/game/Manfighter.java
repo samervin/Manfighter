@@ -177,7 +177,11 @@ public class Manfighter {
 				readyforinput = false;
 			}
 		} else {
-			write("\nEnemy defeated!");
+			write("\n\nEnemy defeated!\n\n");
+			int n = JOptionPane.showConfirmDialog(frame, "Would you like your enemy's " + e.getWeapon() + "?", "Enemy defeated!", JOptionPane.YES_NO_OPTION);
+			if(n == JOptionPane.YES_OPTION) {
+				p.setWeapon(e.getWeapon());
+			}
 			setup();
 		}
 	}
@@ -420,7 +424,16 @@ public class Manfighter {
 			}
 		} 
 		else if(action == 'w' && validActions.contains('w')) {
-			actionTime = mfb.getWaitTime(att);
+			int time = 0;
+			
+			if(actionLine.split(" ").length > 1) {
+				time = Integer.parseInt(actionLine.split(" ")[1]);
+			}
+			while(time < 1) {
+				time = mfb.getWaitTime(att);
+			}
+			
+			actionTime = time;
 			output.append(String.format("%s %s waiting a turn.%n", sentenceStarter, attNames[3]));
 		} 
 		else {
