@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import status.weapon.AccuracyDown;
-import status.weapon.BlankWeaponStatus;
-import status.weapon.CritUp;
-import status.weapon.DamageUp;
-import status.weapon.FireRateUp;
-import status.weapon.RangeUp;
-import status.weapon.WeaponStatus;
+import status.weapon.neutral.BlankWeaponStatus;
+import status.weapon.neutral.CritUp;
+import status.weapon.neutral.DamageUp;
+import status.weapon.neutral.FireRateUp;
+import status.weapon.neutral.WeaponStatus;
+import status.weapon.ranged.AccuracyDown;
+import status.weapon.ranged.RangeUp;
 import weapon.Weapon;
 import weapon.melee.axe.Hatchet;
 import weapon.melee.club.CardboardTube;
@@ -65,6 +65,18 @@ public class ManfighterGenerator {
 
 	public boolean isValidName(String name) {
 		return (!stringDivisibleBy(name, 3)) || isEgg(name);
+	}
+	
+	public String getRandomGame() {
+		if(rand.getOdds(99, 100))
+			return "Manfighter";
+		else {
+			ArrayList<String> names = new ArrayList<String>();
+			names.add("Mansmasher");
+			names.add("Manwrestler");
+			int x = rand.getRand(0, names.size() - 1);
+			return names.get(x);
+		}
 	}
 	
 	public Weapon getRandomWeapon(String name) {
@@ -186,7 +198,7 @@ public class ManfighterGenerator {
 		return n;
 	}
 	
-	public WeaponStatus getRandomStatus() {
+	public WeaponStatus getRandomRangedStatus() {
 		RandGen rand = new RandGen();
 		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
 		allStati.add(new DamageUp());
@@ -195,7 +207,22 @@ public class ManfighterGenerator {
 		allStati.add(new AccuracyDown());
 		allStati.add(new FireRateUp());
 		
-		int size = allStati.size();
+		int size = allStati.size(); //this prevents errors. don't move this
+		for(int i = 0; i < size; i++)
+			allStati.add(new BlankWeaponStatus());
+		
+		int x = rand.getRand(0, allStati.size()-1);
+		return allStati.get(x);
+	}
+	
+	public WeaponStatus getRandomNeutralStatus() {
+		RandGen rand = new RandGen();
+		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
+		allStati.add(new DamageUp());
+		allStati.add(new CritUp());
+		allStati.add(new FireRateUp());
+		
+		int size = allStati.size(); //this prevents errors. don't move this
 		for(int i = 0; i < size; i++)
 			allStati.add(new BlankWeaponStatus());
 		

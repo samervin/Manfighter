@@ -10,7 +10,7 @@ import status.person.PersonStatus;
 public class Mace extends BaseClub {
 
 	public Mace() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		inflictingStatus = new Bruised();
 		damage = 200;
 		range = 40;

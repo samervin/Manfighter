@@ -6,8 +6,8 @@ import java.util.HashSet;
 
 import status.person.BlankPersonStatus;
 import status.person.PersonStatus;
-import status.weapon.BlankWeaponStatus;
-import status.weapon.WeaponStatus;
+import status.weapon.neutral.BlankWeaponStatus;
+import status.weapon.neutral.WeaponStatus;
 
 public abstract class Weapon {
 	
@@ -42,7 +42,7 @@ public abstract class Weapon {
 	}
 	
 	public String getFullInfo() {
-		String s = String.format("%s\n\tDamage: %d\n\tRange: %d\n\tReady: %b", toString(), damage, range, ready);
+		String s = String.format("%s\n\tDamage: %d\n\tRange: %d\n\tReady: %b", toString(), getDisplayDamage(), getRange(), ready);
 		return s;
 	}
 	
@@ -51,6 +51,10 @@ public abstract class Weapon {
 	}
 	
 	public abstract int getRange();
+	
+	public int getDisplayDamage() { //not for calculations, just for displaying!
+		return weaponStatus.getDamage(damage);
+	}
 	
 	public int getReadyTime() {
 		return weaponStatus.getReadyTime(readyTime);

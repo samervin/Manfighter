@@ -10,7 +10,7 @@ public class Blunderbuss extends BaseBurst {
 	private int previousPelletsHit = 0;
 
 	public Blunderbuss() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 100; //per pellet
 		range = 1500;
 		maxClip = 1;
@@ -25,6 +25,13 @@ public class Blunderbuss extends BaseBurst {
 	public String getBaseName() {
 		return "Blunderbuss";
 	}
+	
+	@Override
+	public String getFullInfo() {
+		String s = String.format("%s\n\tDamage/pellet: %d\n\tTotal pellets: %d\n\tRange: %d\n\tReady: %b",
+				toString(), damage, pelletsPerShot, range, ready);
+		return s + String.format("\n\tAmmo: %d/%d", clip, maxClip);
+	}
 
 	@Override
 	public int getDamage(int distance) {
@@ -34,17 +41,17 @@ public class Blunderbuss extends BaseBurst {
 		if(distance == range) {
 			odds = 1;
 		} else if(distance >= 5 * range / 6) {
-			odds = 8;
+			odds = 7;
 		} else if(distance >= 4 * range / 6) {
-			odds = 20;
+			odds = 19;
 		} else if(distance >= 3 * range / 6) {
-			odds = 42;
+			odds = 41;
 		} else if(distance >= 2 * range / 6) {
-			odds = 64;
+			odds = 63;
 		} else if(distance >= 1 * range / 6) {
 			odds = 85;
 		}  else {
-			odds = 96;
+			odds = 95;
 		}
 
 		int totalDamage = 0;

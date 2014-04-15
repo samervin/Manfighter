@@ -1,9 +1,5 @@
 package game;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -11,7 +7,6 @@ import java.util.HashSet;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -29,13 +24,15 @@ public class Manfighter {
 
 	private ManfighterGenerator mfg;
 	private ManfighterBoilerplate mfb;
+	private ManfighterGUI gui;
 	private int mindist, defaultStep, timeStep, readyTimeStep;
 
 	private JFrame frame;
 	private JTextField input;
-	private JTextArea output, pL, eL;
+	private JTextArea output, pL, eL, cL;
 	final JDialog pD = new JDialog(frame, "Player");
 	final JDialog eD = new JDialog(frame, "Enemy");
+	final JDialog cD = new JDialog(frame, "Information");
 
 	private boolean readyforinput = false;
 
@@ -54,8 +51,9 @@ public class Manfighter {
 	public Manfighter() {
 		createGUI();
 		mfg = new ManfighterGenerator();
-		mfb = new ManfighterBoilerplate(mindist);
 		setGlobalData();
+		mfb = new ManfighterBoilerplate(mindist);
+		frame.setTitle(mfg.getRandomGame());
 
 		String name;
 		if(TEST == 0) {
@@ -74,7 +72,7 @@ public class Manfighter {
 	}
 	
 	public void createGUI() {
-		ManfighterGUI gui = new ManfighterGUI(new ButtonListener());
+		gui = new ManfighterGUI(new ButtonListener());
 		frame = gui.getFrame();
 		input = gui.getInput();
 		output = gui.getOutput();
@@ -93,36 +91,14 @@ public class Manfighter {
 		p.setLocation(0);
 		e.setLocation(500);
 
-		pD.dispose();
-		eD.dispose();
-
-		GraphicsConfiguration gc = frame.getGraphicsConfiguration();  
-		Rectangle bounds = gc.getBounds();
-
-		pL = new JTextArea(p.getFullInfo());
-		pL.setEditable(false);
-		JPanel contentPane = new JPanel(new BorderLayout());
-		contentPane.add(pL, BorderLayout.NORTH);
-		contentPane.setOpaque(true);
-		pD.setContentPane(contentPane);
-		pD.setSize(new Dimension(300, 200));
-		pD.setLocation((bounds.width/3) - frame.getWidth()/3, (bounds.height / 2) - pD.getHeight());
-		pD.setResizable(false);
-		pD.setAlwaysOnTop(true);
-		pD.setVisible(true);
-
-		eL = new JTextArea(e.getFullInfo());
-		eL.setEditable(false);
-		JPanel contentPane2 = new JPanel(new BorderLayout());
-		contentPane2.add(eL, BorderLayout.NORTH);
-		contentPane2.setOpaque(true);
-		eD.setContentPane(contentPane2);
-		eD.setSize(new Dimension(300, 200));
-		eD.setLocation((2*bounds.width/3), (bounds.height / 2) - eD.getHeight());
-		eD.setResizable(false);
-		eD.setAlwaysOnTop(true);
-		eD.setVisible(true);
-
+		pL = new JTextArea();
+		cL = new JTextArea();
+		eL = new JTextArea();
+		gui.createDialogs(pL, cL, eL, pD, cD, eD);
+		pD.setTitle(p.toString());
+		eD.setTitle(e.toString());
+		updateLabels();
+		
 		input.requestFocusInWindow();
 		startCombat();
 	}
@@ -253,6 +229,7 @@ public class Manfighter {
 	private void updateLabels() {
 		pL.setText(p.getFullInfo());
 		eL.setText(e.getFullInfo());
+		cL.setText("Distance: " + mfb.getDistanceBetween(p, e));
 		output.setCaretPosition(output.getDocument().getLength());
 	}
 

@@ -27,12 +27,10 @@ public class ManfighterBoilerplate {
 	
 	public int getWaitTime(Person per) {
 		if(per instanceof Player) {
-			int wait = Integer.parseInt(JOptionPane.showInputDialog
-					("Enter the number of ms you wish to wait:"));
-			while(wait < 0)
-				wait = Integer.parseInt(JOptionPane.showInputDialog
-						("Enter the number of ms you wish to wait:"));
-			return wait;
+			String wait = JOptionPane.showInputDialog("Enter the number of ms you wish to wait:");
+			while(wait.equals("") || Integer.parseInt(wait) == 0)
+				wait = JOptionPane.showInputDialog("Enter the number of ms you wish to wait:");
+			return Integer.parseInt(wait);
 		} else {
 			return 100; //TODO: this should probably be deterministic!
 		}

@@ -1,14 +1,20 @@
 package weapon;
 
 
-public abstract class WeaponRanged extends Weapon {
 
+public abstract class WeaponRanged extends Weapon {
+	
 	protected int maxClip;
 	protected int clip;
 	protected int reloadTime;
 	protected int reloadOneTime;
 	
 	public abstract int getDamage(int distance);
+	
+	@Override
+	public String getFullInfo() {
+		return super.getFullInfo() + String.format("\n\tAmmo: %d/%d", clip, maxClip);
+	}
 	
 	public int getRange() {
 		return weaponStatus.getRange(range);

@@ -43,8 +43,8 @@ public abstract class Person {
 	}
 	
 	public String getFullInfo() {
-		String s = String.format("%s\n\tHealth: %d\n\tStatus: %s\n\tHead armor: %s\n\tLocation: %d", 
-				name, health, personstatus.toString(), headArmor.toString(), location);
+		String s = String.format("Health: %d\nStatus: %s\nHead armor: %s\nLocation: %d", 
+				health, personstatus.toString(), headArmor.toString(), location);
 		s = s + "\n\n" + weapon.getFullInfo();
 		return s.replaceAll("\t", "    ");
 	}

@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class BBGun extends BaseOneshot {
 
 	public BBGun(){
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 50;
 		range = 1000;
 		maxClip = 50;

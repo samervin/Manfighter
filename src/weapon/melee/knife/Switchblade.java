@@ -6,7 +6,7 @@ import status.person.Bleeding;
 public class Switchblade extends BaseKnife {
 	
 	public Switchblade() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		inflictingStatus = new Bleeding();
 		damage = 130;
 		range = 10;

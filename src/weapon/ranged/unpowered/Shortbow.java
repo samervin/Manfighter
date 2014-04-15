@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class Shortbow extends BaseUnpowered {
 	
 	public Shortbow() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 170;
 		range = 400;
 		maxClip = 1;

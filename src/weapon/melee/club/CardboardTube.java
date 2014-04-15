@@ -9,7 +9,7 @@ import status.person.Bruised;
 public class CardboardTube extends BaseClub {
 
 	public CardboardTube() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		inflictingStatus = new Bruised();
 		damage = 10;
 		range = 100;

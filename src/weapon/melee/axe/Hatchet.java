@@ -11,7 +11,7 @@ public class Hatchet extends BaseAxe {
 	private int stuckFireTime = 1400;
 
 	public Hatchet() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		damage = 215;
 		range = 15;
 		fireTime = defaultFireTime;

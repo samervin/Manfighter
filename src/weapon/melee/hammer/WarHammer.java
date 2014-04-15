@@ -10,7 +10,7 @@ import status.person.Stunned;
 public class WarHammer extends BaseHammer {
 
 	public WarHammer() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		inflictingStatus = new Stunned();
 		damage = 500;
 		range = 100;

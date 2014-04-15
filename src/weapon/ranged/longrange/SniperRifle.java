@@ -9,7 +9,7 @@ public class SniperRifle extends BaseLongrange {
 	private int readyState = 0; //0 = from the hip, 1-4 = tracking, 5+ = headshot
 
 	public SniperRifle() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 80;
 		range = 1000;
 		maxClip = 2;

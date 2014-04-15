@@ -9,7 +9,7 @@ public class HandSaw extends BaseSaw {
 	private int consecutives = 1;
 	
 	public HandSaw() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		damage = 120;
 		range = 30;
 		fireTime = 1100;

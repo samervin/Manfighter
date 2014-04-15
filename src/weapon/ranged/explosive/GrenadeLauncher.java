@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class GrenadeLauncher extends BaseExplosive {
 
 	public GrenadeLauncher() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 350;
 		range = 1000;
 		maxClip = 6;

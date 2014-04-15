@@ -2,7 +2,7 @@ package weapon;
 
 
 public abstract class WeaponMelee extends Weapon {
-
+	
 	public int getDamage(int distance) {
 		return damage;
 	}

@@ -11,7 +11,7 @@ public class MiniSMG extends BaseRapidFire {
 	public boolean rambo = true; //if you miss in a trigger pull, you automatically miss the rest
 	
 	public MiniSMG() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 20;
 		range = 1000;
 		maxClip = 25;

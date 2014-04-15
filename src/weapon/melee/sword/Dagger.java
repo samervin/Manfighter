@@ -6,9 +6,12 @@ import java.util.HashSet;
 
 public class Dagger extends BaseSword {
 
+	private final int readiedDamage = 200;
+	private final int unreadiedDamage = 120;
+	
 	public Dagger() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
-		damage = 200;
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
+		damage = unreadiedDamage;
 		range = 15;
 		fireTime = 1000;
 		readyTime = 550;
@@ -17,16 +20,25 @@ public class Dagger extends BaseSword {
 	public String getBaseName() {
 		return "Dagger";
 	}
+	
+	@Override
+	public void setReadied(boolean readiness) {
+		ready = readiness;
+		if(readiness)
+			damage = readiedDamage;
+		else
+			damage = unreadiedDamage;
+	}
 
-	public int getDamage(int distance) {
+	public int getDamage(int distance) {		
 		if(ready) {
-			ready = false;
+			setReadied(false);
 			return damage;
 		}
 		else {
-			ready = true;
+			setReadied(true);
 			System.out.println(getBaseName() + " is on the backswing, less damage.");
-			return (damage / 2);
+			return damage;
 		}
 	}
 	

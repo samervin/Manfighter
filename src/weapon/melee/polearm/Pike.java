@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class Pike extends BasePolearm {
 
 	public Pike() {
-		weaponStatus = new ManfighterGenerator().getRandomStatus();
+		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		damage = 130;
 		range = 300;
 		fireTime = 800;
