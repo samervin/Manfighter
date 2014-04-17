@@ -20,6 +20,12 @@ public class HandSaw extends BaseSaw {
 		return "Hand saw";
 	}
 	
+	@Override
+	public void reset() {
+		super.reset();
+		consecutives = 1;
+	}
+	
 	public int getDamage(int distance) {
 		if(ready) {
 			return (damage * consecutives);

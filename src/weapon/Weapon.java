@@ -121,4 +121,5 @@ public abstract class Weapon {
 	public abstract boolean hasLoadedAmmo();
 	public abstract void reload();
 	public abstract void reloadOne();
+	public abstract void reset();
 }

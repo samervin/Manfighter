@@ -10,6 +10,12 @@ public abstract class WeaponMelee extends Weapon {
 	public int getRange() {
 		return weaponStatus.getRange(range) + pointBlank;
 	}
+	
+	@Override
+	public void reset() {
+		ready = false;
+		damageLocation = "torso";
+	}
 
 	//these don't matter: they are included here because Weapon demands it!
 	public boolean hasFullAmmo() {return true;}

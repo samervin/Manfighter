@@ -129,7 +129,7 @@ public class Manfighter {
 		}
 
 		boolean gameon = true;
-		while(pclock > 0) {
+		while(pclock > 0 && gameon) {
 			otherCombat();
 			if(p.getHealth() < 1 || e.getHealth() < 1) {
 				pclock = 0;
@@ -182,6 +182,7 @@ public class Manfighter {
 			if(n == JOptionPane.YES_OPTION) {
 				p.setWeapon(e.getWeapon());
 			}
+			p.getWeapon().reset();
 			setup();
 		}
 	}

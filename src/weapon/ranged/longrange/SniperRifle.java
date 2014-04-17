@@ -23,6 +23,11 @@ public class SniperRifle extends BaseLongrange {
 	public String getBaseName() {
 		return "Sniper rifle";
 	}
+	
+	@Override
+	public void reset() {
+		readyState = 0;
+	}
 
 	public int getDamage(int distance) {
 		clip--;

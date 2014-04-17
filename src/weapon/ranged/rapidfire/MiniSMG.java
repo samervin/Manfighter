@@ -27,6 +27,13 @@ public class MiniSMG extends BaseRapidFire {
 	}
 	
 	@Override
+	public void reset() {
+		super.reset();
+		bulletsLeft = 0;
+		rambo = true;
+	}
+	
+	@Override
 	public int getFireTime() {
 		if(bulletsLeft > 0) {
 			return fireTime / 4;

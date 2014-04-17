@@ -17,6 +17,12 @@ public class Hatchet extends BaseAxe {
 		fireTime = defaultFireTime;
 		readyTime = 550;
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		stuck = false;
+	}
 
 	public String getBaseName() {
 		return "Hatchet";

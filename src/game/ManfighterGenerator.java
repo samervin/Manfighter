@@ -244,8 +244,8 @@ public class ManfighterGenerator {
 	
 	private void seedEggs() {
 		if(eggs.size() == 0) {
-			eggs.put("Cassandra", new Blunderbuss());
 			eggs.put("Pribs", new CardboardTube());
+			eggs.put("Blunderbuss", new Blunderbuss());
 		}
 	}
 	

@@ -16,6 +16,13 @@ public abstract class WeaponRanged extends Weapon {
 		return super.getFullInfo() + String.format("\n\tAmmo: %d/%d", clip, maxClip);
 	}
 	
+	@Override
+	public void reset() {
+		ready = false;
+		damageLocation = "torso";
+		clip = maxClip;
+	}
+	
 	public int getRange() {
 		return weaponStatus.getRange(range);
 	}

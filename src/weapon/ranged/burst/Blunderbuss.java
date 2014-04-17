@@ -6,12 +6,12 @@ import java.util.HashSet;
 
 public class Blunderbuss extends BaseBurst {
 
-	private final int pelletsPerShot = 10;
 	private int previousPelletsHit = 0;
 
 	public Blunderbuss() {
 		weaponStatus = new ManfighterGenerator().getRandomRangedStatus();
 		damage = 100; //per pellet
+		pelletsPerShot = 10;
 		range = 1500;
 		maxClip = 1;
 		clip = 1;
@@ -24,13 +24,6 @@ public class Blunderbuss extends BaseBurst {
 	@Override
 	public String getBaseName() {
 		return "Blunderbuss";
-	}
-	
-	@Override
-	public String getFullInfo() {
-		String s = String.format("%s\n\tDamage/pellet: %d\n\tTotal pellets: %d\n\tRange: %d\n\tReady: %b",
-				toString(), damage, pelletsPerShot, range, ready);
-		return s + String.format("\n\tAmmo: %d/%d", clip, maxClip);
 	}
 
 	@Override
