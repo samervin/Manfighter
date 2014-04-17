@@ -132,8 +132,8 @@ public class Manfighter {
 		while(pclock > 0) {
 			otherCombat();
 			if(p.getHealth() < 1 || e.getHealth() < 1) {
-				pclock = -1;
-				eclock = -1;
+				pclock = 0;
+				eclock = 0;
 				gameon = false;
 				endCombat();
 			}
@@ -233,7 +233,9 @@ public class Manfighter {
 	private void updateLabels() {
 		pL.setText(p.getFullInfo());
 		eL.setText(e.getFullInfo());
-		cL.setText("Distance: " + mfb.getDistanceBetween(p, e));
+		cL.setText("Distance apart: " + mfb.getDistanceBetween(p, e)
+				+ "\nCurrent time: " + clock + " ms"
+				+ "\nTime until next enemy action: " + eclock + " ms");
 		output.setCaretPosition(output.getDocument().getLength());
 	}
 

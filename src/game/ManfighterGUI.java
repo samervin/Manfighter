@@ -109,7 +109,7 @@ public class ManfighterGUI extends JFrame {
 		pD.setSize(defaultSize);
 		pD.setLocation(pDim.x, pDim.y);
 		pD.setResizable(false);
-		pD.setAlwaysOnTop(true);
+		//pD.setAlwaysOnTop(true);
 		pD.setVisible(true);
 		
 		//cL = new JTextArea();
@@ -121,7 +121,7 @@ public class ManfighterGUI extends JFrame {
 		cD.setSize(defaultSize);
 		cD.setLocation(cDim.x, cDim.y);
 		cD.setResizable(false);
-		cD.setAlwaysOnTop(true);
+		//cD.setAlwaysOnTop(true);
 		cD.setVisible(true);
 		
 		//eL = new JTextArea();
@@ -133,7 +133,7 @@ public class ManfighterGUI extends JFrame {
 		eD.setSize(defaultSize);
 		eD.setLocation(eDim.x, eDim.y);
 		eD.setResizable(false);
-		eD.setAlwaysOnTop(true);
+		//eD.setAlwaysOnTop(true);
 		eD.setVisible(true);
 		
 	}
