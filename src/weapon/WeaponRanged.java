@@ -23,14 +23,6 @@ public abstract class WeaponRanged extends Weapon {
 		clip = maxClip;
 	}
 	
-	public int getRange() {
-		return weaponStatus.getRange(range);
-	}
-
-	public int getFireTime() {
-		return weaponStatus.getFireTime(fireTime);
-	}
-	
 	public int getReloadTime() {
 		return reloadTime;
 	}

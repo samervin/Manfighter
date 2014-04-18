@@ -8,7 +8,7 @@ public abstract class WeaponMelee extends Weapon {
 	}
 	
 	public int getRange() {
-		return weaponStatus.getRange(range) + pointBlank;
+		return super.getRange() + pointBlank;
 	}
 	
 	@Override

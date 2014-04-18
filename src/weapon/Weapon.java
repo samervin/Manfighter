@@ -30,6 +30,7 @@ public abstract class Weapon {
 	protected int selfDamageRange = 0;
 
 	protected String damageLocation = "torso";
+	protected String damageType = "none";
 	
 	//shared methods
 	public String toString() {
@@ -50,7 +51,9 @@ public abstract class Weapon {
 		return weaponStatus;
 	}
 	
-	public abstract int getRange();
+	public int getRange() {
+		return weaponStatus.getRange(range);
+	}
 	
 	public int getDisplayDamage() { //not for calculations, just for displaying!
 		return weaponStatus.getDamage(damage);
@@ -111,7 +114,9 @@ public abstract class Weapon {
 	public abstract HashSet<Character> getWeaponActions();
 	public abstract boolean isCrit();
 	public abstract String getVerb();
-	public abstract String getDamageType();
+	public String getDamageType() {
+		return damageType;
+	}
 	public String getDamageLocation() {
 		return damageLocation;
 	}
