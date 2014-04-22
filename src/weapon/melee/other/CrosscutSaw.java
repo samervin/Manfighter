@@ -1,14 +1,16 @@
-package weapon.melee.saw;
+package weapon.melee.other;
 
 import game.ManfighterGenerator;
 
 import java.util.HashSet;
 
-public class HandSaw extends BaseSaw {
+import weapon.WeaponMelee;
+
+public class CrosscutSaw extends WeaponMelee {
 
 	private int consecutives = 1;
 	
-	public HandSaw() {
+	public CrosscutSaw() {
 		weaponStatus = new ManfighterGenerator().getRandomNeutralStatus();
 		damage = 120;
 		range = 30;
@@ -17,7 +19,19 @@ public class HandSaw extends BaseSaw {
 	}
 	
 	public String getBaseName() {
-		return "Hand saw";
+		return "Crosscut saw";
+	}
+	
+	public boolean isCrit() {
+		return ((rand.getOdds(7,50)) || weaponStatus.getCritChance());
+	}
+
+	public String getVerb() {
+		return "sawed";
+	}
+	
+	public String getDamageType() {
+		return "slicing";
 	}
 	
 	@Override
@@ -27,10 +41,15 @@ public class HandSaw extends BaseSaw {
 	}
 	
 	public int getDamage(int distance) {
+		int log = 1;
+		if(damageLocation.equalsIgnoreCase("log")) {
+			System.out.println("I'm a crosscut saw, baby drag me across your log!");
+			log = 5;
+		}
 		if(ready) {
-			return (damage * consecutives);
+			return (damage * consecutives * log);
 		} else {
-			int d = damage * consecutives;
+			int d = (damage * consecutives * log);
 			return (d / 2);
 		}
 	}

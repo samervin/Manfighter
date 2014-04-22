@@ -20,9 +20,11 @@ import weapon.melee.club.Mace;
 import weapon.melee.fists.BoxingGloves;
 import weapon.melee.fists.BrassKnuckles;
 import weapon.melee.fists.Fists;
+import weapon.melee.fists.HandWraps;
 import weapon.melee.hammer.WarHammer;
 import weapon.melee.knife.Switchblade;
-import weapon.melee.saw.HandSaw;
+import weapon.melee.other.CrosscutSaw;
+import weapon.melee.polearm.Pike;
 import weapon.melee.sword.Dagger;
 import weapon.ranged.burst.Blunderbuss;
 import weapon.ranged.explosive.GrenadeLauncher;
@@ -32,8 +34,10 @@ import weapon.ranged.oneshot.BBGun;
 import weapon.ranged.rapidfire.MiniSMG;
 import weapon.ranged.unpowered.Shortbow;
 import armor.HeadArmor;
+import armor.head.BaseballCap;
 import armor.head.BlankHeadArmor;
-import armor.head.Helmet;
+import armor.head.HadesHelm;
+import armor.head.VikingHelm;
 
 public class ManfighterGenerator {
 	
@@ -87,16 +91,24 @@ public class ManfighterGenerator {
 	}
 	
 	public Weapon getRandomWeapon() {
+		if(rand.getOdds(1, 100))
+			return getRandomRareWeapon();
+		
 		ArrayList<Weapon> allWeapons = new ArrayList<Weapon>();
 		allWeapons.add(new Hatchet());
 		allWeapons.add(new Mace());
-		allWeapons.add(new BoxingGloves()); allWeapons.add(new BrassKnuckles()); allWeapons.add(new Fists());
+		allWeapons.add(new BoxingGloves());
+			allWeapons.add(new BrassKnuckles());
+			allWeapons.add(new Fists());
+			allWeapons.add(new HandWraps());
 		allWeapons.add(new WarHammer());
 		allWeapons.add(new Switchblade());
-		allWeapons.add(new HandSaw());
+		allWeapons.add(new CrosscutSaw());
+		allWeapons.add(new Pike());
 		allWeapons.add(new Dagger());
 		allWeapons.add(new Blunderbuss());
-		allWeapons.add(new GrenadeLauncher()); allWeapons.add(new RocketLauncher());
+		allWeapons.add(new GrenadeLauncher());
+			allWeapons.add(new RocketLauncher());
 		allWeapons.add(new SniperRifle());
 		allWeapons.add(new BBGun());
 		allWeapons.add(new MiniSMG());
@@ -106,13 +118,34 @@ public class ManfighterGenerator {
 		return allWeapons.get(x);
 	}
 	
+	public Weapon getRandomRareWeapon() {
+		ArrayList<Weapon> rareWeapons = new ArrayList<Weapon>();
+		rareWeapons.add(new CardboardTube());
+		
+		int x = rand.getRand(0, rareWeapons.size() - 1);
+		return rareWeapons.get(x);
+	}
+	
 	public HeadArmor getRandomHeadArmor() {
+		if(rand.getOdds(1, 3))
+			return new BlankHeadArmor();
+		if(rand.getOdds(1, 100))
+			return getRandomRareHeadArmor();
+		
 		ArrayList<HeadArmor> allHeads = new ArrayList<HeadArmor>();
-		allHeads.add(new BlankHeadArmor());
-		allHeads.add(new Helmet());
+		allHeads.add(new BaseballCap());
+		allHeads.add(new VikingHelm());
 		
 		int x = rand.getRand(0, allHeads.size() -1);
 		return allHeads.get(x);
+	}
+	
+	public HeadArmor getRandomRareHeadArmor() {
+		ArrayList<HeadArmor> rareHeads = new ArrayList<HeadArmor>();
+		rareHeads.add(new HadesHelm());
+		
+		int x = rand.getRand(0, rareHeads.size() -1);
+		return rareHeads.get(x);
 	}
 	
 	public String getRandomLocation() {
@@ -199,7 +232,9 @@ public class ManfighterGenerator {
 	}
 	
 	public WeaponStatus getRandomRangedStatus() {
-		RandGen rand = new RandGen();
+		if(rand.getOdds(1, 2))
+			return new BlankWeaponStatus();
+		
 		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
 		allStati.add(new DamageUp());
 		allStati.add(new CritUp());
@@ -207,30 +242,22 @@ public class ManfighterGenerator {
 		allStati.add(new AccuracyDown());
 		allStati.add(new FireRateUp());
 		
-		int size = allStati.size(); //this prevents errors. don't move this
-		for(int i = 0; i < size; i++)
-			allStati.add(new BlankWeaponStatus());
-		
 		int x = rand.getRand(0, allStati.size()-1);
 		return allStati.get(x);
 	}
 	
 	public WeaponStatus getRandomNeutralStatus() {
-		RandGen rand = new RandGen();
+		if(rand.getOdds(1, 2))
+			return new BlankWeaponStatus();
+		
 		ArrayList<WeaponStatus> allStati = new ArrayList<WeaponStatus>();
 		allStati.add(new DamageUp());
 		allStati.add(new CritUp());
 		allStati.add(new FireRateUp());
 		
-		int size = allStati.size(); //this prevents errors. don't move this
-		for(int i = 0; i < size; i++)
-			allStati.add(new BlankWeaponStatus());
-		
 		int x = rand.getRand(0, allStati.size()-1);
 		return allStati.get(x);
 	}
-	
-	
 	
 	private boolean stringDivisibleBy(String str, int num) {
 		char[] a = str.toCharArray();
@@ -246,17 +273,13 @@ public class ManfighterGenerator {
 		if(eggs.size() == 0) {
 			eggs.put("Pribs", new CardboardTube());
 			eggs.put("Blunderbuss", new Blunderbuss());
+			eggs.put("again.", new Fists());
 		}
 	}
 	
 	private boolean isEgg(String name) {
 		seedEggs();
-		
-		for(String n : eggs.keySet()) {
-			if(name.equals(n))
-				return true;
-		}
-		return false;
+		return eggs.keySet().contains(name);
 	}
 	
 }

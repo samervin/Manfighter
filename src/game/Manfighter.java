@@ -59,7 +59,7 @@ public class Manfighter {
 		if(TEST == 0) {
 			name = JOptionPane.showInputDialog("Welcome to Manfighter! What's your name?");
 			if(name == null || !mfg.isValidName(name)) {
-				while(!mfg.isValidName(name)) {
+				while(name == null || !mfg.isValidName(name)) {
 					name = JOptionPane.showInputDialog("That name sucks. Try again.");
 				}
 			}	
@@ -97,19 +97,15 @@ public class Manfighter {
 		gui.createDialogs(pL, cL, eL, pD, cD, eD);
 		pD.setTitle(p.toString());
 		eD.setTitle(e.toString());
-		updateLabels();
-		
-		input.requestFocusInWindow();
-		startCombat();
-	}
-
-	public void startCombat() {
-		checkPlayerStatus();
-		checkEnemyStatus();
-		printPlayerActions();
 		clock = 0;
 		pclock = 0;
 		eclock = 0;
+		updateLabels();
+		input.requestFocusInWindow();
+		
+		checkPlayerStatus();
+		checkEnemyStatus();
+		printPlayerActions();
 		readyforinput = true;
 	}
 
@@ -170,6 +166,7 @@ public class Manfighter {
 			int n = JOptionPane.showConfirmDialog(frame, "You lost, would you like to continue?", "Game Over", JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION) {
 				p = new Player(p.toString());
+				output.setText("");
 				setup();
 			}
 			else {
@@ -177,12 +174,18 @@ public class Manfighter {
 				readyforinput = false;
 			}
 		} else {
-			write("\n\nEnemy defeated!\n\n");
 			int n = JOptionPane.showConfirmDialog(frame, "Would you like your enemy's " + e.getWeapon() + "?", "Enemy defeated!", JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION) {
 				p.setWeapon(e.getWeapon());
 			}
 			p.getWeapon().reset();
+			
+			n = JOptionPane.showConfirmDialog(frame, "Would you like your enemy's " + e.getHeadArmor() + "?", "Enemy defeated!", JOptionPane.YES_NO_OPTION);
+			if(n == JOptionPane.YES_OPTION) {
+				p.setHeadArmor(e.getHeadArmor());
+			}
+			output.setText("");
+			write(e + " defeated!");
 			setup();
 		}
 	}
@@ -325,7 +328,7 @@ public class Manfighter {
 					location = JOptionPane.showInputDialog("Enter the body part [head, torso, arms, legs] you wish to aim for:");
 			}
 
-			write("Now aiming for: " + location);
+			write(sentenceStarter + " " + attNames[3] + " now aiming for: " + location);
 			wep.aim(location);
 		}
 		else if(action == 'a' && validActions.contains('a') && mfb.getDistanceBetween(att, def) <= wep.getRange()) {

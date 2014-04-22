@@ -59,6 +59,9 @@ public abstract class Person {
 				System.out.println("Headshot!");
 				dmg = dmg * 4;
 				dmg = dmg / 3;
+			} else {
+				System.out.println("Headshot deflected!");
+				return 0;
 			}
 		}
 		
